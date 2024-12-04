@@ -123,33 +123,8 @@ public class RiftService {
             List<Player> teamB = updatePlayerLines(team.getTeamB(), teamBLines);
             newTeam = new Team(teamA, teamB);
 
-            log.info("로그 찍어봅니다 =============================== {}", hasEmptyLines);
-            for (Map.Entry<Line, Player> entry : teamALines.entrySet()) {
-                Line line = entry.getKey();    // Key 가져오기
-                Player player = entry.getValue(); // Value 가져오기
-                log.info("teamALines : Player Name: {}, Assigned Line: {}", player.getName(), line);
-            }
-            log.info("");
-            for ( Player player : newTeam.getTeamA()) {
-                log.info("getTeamA : Player Name: {}, Assigned Line: {}", player.getName(), player.getLines().get(0).getLine());
-            }
-            log.info("=========================A팀=======================================");
-
-            for (Map.Entry<Line, Player> entry : teamBLines.entrySet()) {
-                Line line = entry.getKey();    // Key 가져오기
-                Player player = entry.getValue(); // Value 가져오기
-                log.info("teamBLines : Player Name: {}, Assigned Line: {}", player.getName(), line);
-            }
-            log.info("");
-            for ( Player player : newTeam.getTeamB()) {
-                log.info("getTeamB : Player Name: {}, Assigned Line: {}", player.getName(), player.getLines().get(0).getLine());
-            }
-
-            log.info("========================B팀========================================");
-
             if (hasEmptyLines) {
-                log.error("라인 배정 실패. 적절한 팀을 구성할 수 없습니다.");
-                throw new IllegalStateException("적절한 팀을 구성할 수 없습니다");
+                throw new BaseException(BaseApiResponse.TEAM_MISMATCH);
             }
             if (!hasEmptyLines) {
                 return newTeam; // 처음 성공적으로 생성된 팀 즉시 반환
@@ -157,7 +132,7 @@ public class RiftService {
 
         } catch (Exception e) {
             log.error(e.getMessage());
-            throw new IllegalStateException("적절한 팀을 구성할 수 없습니다");
+            throw new BaseException(BaseApiResponse.TEAM_MISMATCH);
         }
         return newTeam;
     }
