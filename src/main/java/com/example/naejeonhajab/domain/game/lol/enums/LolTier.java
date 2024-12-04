@@ -1,6 +1,6 @@
 package com.example.naejeonhajab.domain.game.lol.enums;
 
-public enum Tier {
+public enum LolTier {
     UNRANKED,
     IRON_IV, IRON_III, IRON_II, IRON_I,
     BRONZE_IV, BRONZE_III, BRONZE_II, BRONZE_I,

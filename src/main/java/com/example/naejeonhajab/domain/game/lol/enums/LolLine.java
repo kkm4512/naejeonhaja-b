@@ -3,7 +3,7 @@ package com.example.naejeonhajab.domain.game.lol.enums;
 import lombok.Getter;
 
 @Getter
-public enum Line {
+public enum LolLine {
     TOP,      // 탑
     JUNGLE,   // 정글
     MID,      // 미드

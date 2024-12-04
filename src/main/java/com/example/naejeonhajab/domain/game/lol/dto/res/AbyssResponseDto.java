@@ -6,17 +6,18 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.io.Serializable;
 import java.util.List;
 
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-public class RiftResponseDto implements LolResponseDto {
+public class AbyssResponseDto implements LolResponseDto {
     private List<LolPlayer> teamA;
     private List<LolPlayer> teamB;
 
-    public static RiftResponseDto of(LolTeam team) {
-        return new RiftResponseDto(team.getTeamA(), team.getTeamB());
+    public static AbyssResponseDto of(LolTeam team) {
+        return new AbyssResponseDto(team.getTeamA(), team.getTeamB());
     }
 }
 

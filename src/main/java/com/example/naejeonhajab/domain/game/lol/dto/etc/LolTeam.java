@@ -10,7 +10,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 // 팀 분할
-public class Team {
-    private List<Player> teamA;
-    private List<Player> teamB;
+public class LolTeam {
+    private List<LolPlayer> teamA;
+    private List<LolPlayer> teamB;
 }

@@ -11,12 +11,12 @@ import java.util.List;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-public class RiftResponseDto implements LolResponseDto {
+public class TftResponseDto implements LolResponseDto {
     private List<LolPlayer> teamA;
     private List<LolPlayer> teamB;
 
-    public static RiftResponseDto of(LolTeam team) {
-        return new RiftResponseDto(team.getTeamA(), team.getTeamB());
+    public static TftResponseDto of(LolTeam team) {
+        return new TftResponseDto(team.getTeamA(), team.getTeamB());
     }
 }
 

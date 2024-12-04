@@ -3,11 +3,11 @@ package com.example.naejeonhajab.domain.game.lol.enums;
 import lombok.Getter;
 
 @Getter
-public enum LineRole {
+public enum LolLineRole {
     MAINLINE,
     SUBLINE;
 
-    LineRole() {
+    LolLineRole() {
     }
 
     public boolean isMainRole(){
