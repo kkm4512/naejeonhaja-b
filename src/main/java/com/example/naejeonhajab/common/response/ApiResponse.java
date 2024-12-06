@@ -3,30 +3,29 @@ package com.example.naejeonhajab.common.response;
 import com.example.naejeonhajab.common.response.enums.ApiResponseEnum;
 import lombok.Getter;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 
 @Getter
 public class ApiResponse<T> {
-    private final HttpStatus httpStatus;
+    private final int code;
     private final String message;
     private T data;
 
     // 데이터, 상태코드, 메시지 반환 생성자 (ApiResponseEnumImpl)
     public ApiResponse(ApiResponseEnum apiResponseEnum) {
-        this.httpStatus = apiResponseEnum.getHttpStatus();
+        this.code = apiResponseEnum.getHttpStatus().value();
         this.message = apiResponseEnum.getMessage();
     }
 
     // 데이터, 상태코드, 메시지 반환 생성자 (ApiResponseEnumImpl)
     public ApiResponse(ApiResponseEnum apiResponseEnum, T data) {
-        this.httpStatus = apiResponseEnum.getHttpStatus();
+        this.code = apiResponseEnum.getHttpStatus().value();
         this.message = apiResponseEnum.getMessage();
         this.data = data;
     }
 
     // 데이터, 상태코드, 메시지 반환 생성자 (data,httpStatus,message)
     public ApiResponse(HttpStatus httpStatus, String message, T data) {
-        this.httpStatus = httpStatus;
+        this.code = httpStatus.value();
         this.message = message;
         this.data = data;
     }

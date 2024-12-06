@@ -1,0 +1,9 @@
+services:
+  mysql:
+    container_name: mysql_container
+    image: mysql
+    ports:
+      - 3306:3306
+    environment:
+      MYSQL_ROOT_PASSWORD: '!@Skdud340'
+      MYSQL_DATABASE: naejeonhaja

@@ -13,7 +13,7 @@ public class GlobalExceptionHandler {
     public ResponseEntity<?> baseException(BaseException e) {
         ApiResponseEnum apiResponseEnum = e.getApiResponseEnum();
         ApiResponse<Void> apiResponse = new ApiResponse<>(apiResponseEnum);
-        return ResponseEntity.status(apiResponse.getHttpStatus()).body(apiResponse);
+        return ResponseEntity.status(apiResponse.getCode()).body(apiResponse);
     }
 
 
