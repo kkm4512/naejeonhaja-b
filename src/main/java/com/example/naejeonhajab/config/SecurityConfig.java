@@ -44,6 +44,7 @@ public class SecurityConfig {
                         // cors
                         .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                         .requestMatchers("/api/v1/users/**").permitAll()
+                        .requestMatchers("/api/v1/game/lol/**").permitAll()
                         .anyRequest().authenticated()
                 )
                 .build();
