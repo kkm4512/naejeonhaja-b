@@ -11,11 +11,11 @@ import com.example.naejeonhajab.domain.game.lol.dto.res.rift.RiftPlayerHistoryRe
 import com.example.naejeonhajab.domain.game.lol.dto.res.rift.RiftTeamResponseDto;
 import com.example.naejeonhajab.domain.game.lol.entity.LolPlayer;
 import com.example.naejeonhajab.domain.game.lol.entity.LolPlayerHistory;
-import com.example.naejeonhajab.domain.game.lol.entity.LolPlayerLines;
+import com.example.naejeonhajab.domain.game.lol.entity.LolLines;
 import com.example.naejeonhajab.domain.game.lol.enums.LolLine;
 import com.example.naejeonhajab.domain.game.lol.enums.LolLineRole;
 import com.example.naejeonhajab.domain.game.lol.repository.LolPlayerHistoryRepository;
-import com.example.naejeonhajab.domain.game.lol.repository.LolPlayerLinesRepository;
+import com.example.naejeonhajab.domain.game.lol.repository.LolLinesRepository;
 import com.example.naejeonhajab.domain.game.lol.repository.LolPlayerRepository;
 import com.example.naejeonhajab.domain.user.entity.User;
 import com.example.naejeonhajab.security.AuthUser;
@@ -37,7 +37,7 @@ import static com.example.naejeonhajab.common.response.enums.LolApiResponse.LOL_
 public class RiftServiceImpl {
     private final LolPlayerHistoryRepository lolPlayerHistoryRepository;
     private final LolPlayerRepository lolPlayerRepository;
-    private final LolPlayerLinesRepository lolPlayerLinesRepository;
+    private final LolLinesRepository lolLinesRepository;
 
 
     // 로그인한 사용자 && 팀생성 && 히스토리 저장
@@ -48,8 +48,8 @@ public class RiftServiceImpl {
         lolPlayerHistoryRepository.save(playerHistory);
         List<LolPlayer> playerList = LolPlayer.from(lolRequestPayloadDto,playerHistory);
         lolPlayerRepository.saveAll(playerList);
-        List<LolPlayerLines> lines = LolPlayerLines.from(lolRequestPayloadDto,playerList);
-        lolPlayerLinesRepository.saveAll(lines);
+        List<LolLines> lines = LolLines.from(lolRequestPayloadDto,playerList);
+        lolLinesRepository.saveAll(lines);
         return create(lolRequestPayloadDto.getRiftPlayerRequestDtos());
     }
 

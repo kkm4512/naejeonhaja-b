@@ -40,10 +40,10 @@ public class RiftPlayerRequestDto {
         List<RiftPlayerRequestDto> riftRequestDtos = new ArrayList<>();
         List<RiftPlayerRequestDto> teamA = team.getTeamA().stream()
                 .map(dto -> new RiftPlayerRequestDto(dto.getName(), dto.getTier(), dto.getLines()))
-                .collect(Collectors.toList());
+                .toList();
         List<RiftPlayerRequestDto> teamB = team.getTeamB().stream()
                 .map(dto -> new RiftPlayerRequestDto(dto.getName(), dto.getTier(), dto.getLines()))
-                .collect(Collectors.toList());
+                .toList();
         riftRequestDtos.addAll(teamA);
         riftRequestDtos.addAll(teamB);
         return riftRequestDtos;
