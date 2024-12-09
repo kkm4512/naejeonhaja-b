@@ -1,4 +1,4 @@
-package com.example.naejeonhajab.domain.game.lol.dto.etc;
+package com.example.naejeonhajab.domain.game.lol.dto.req.rift;
 
 import com.example.naejeonhajab.domain.game.lol.enums.LolLine;
 import com.example.naejeonhajab.domain.game.lol.enums.LolLineRole;
@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-public class LolLinesDto {
+public class RiftLinesRequestDto {
     LolLine line;
     LolLineRole lineRole;
 }
