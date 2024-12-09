@@ -38,7 +38,7 @@ public class LolPlayer {
     private int mmr;
 
     @OneToMany(mappedBy = "player", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<LolPlayerLines> lines = new ArrayList<>();
+    private List<LolLines> lines = new ArrayList<>();
 
     public static List<LolPlayer> from(RiftPlayerHistoryRequestDto lolRequestPayloadDto, LolPlayerHistory playerHistory) {
         List<LolPlayer> playerList = new ArrayList<>();

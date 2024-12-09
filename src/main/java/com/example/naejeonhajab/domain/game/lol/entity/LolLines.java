@@ -17,7 +17,7 @@ import java.util.List;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-public class LolPlayerLines {
+public class LolLines {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -35,14 +35,14 @@ public class LolPlayerLines {
     @Column(nullable = false)
     private LolLineRole lineRole;
 
-    public static List<LolPlayerLines> from(RiftPlayerHistoryRequestDto lolRequestPayloadDto, List<LolPlayer> playerList) {
-        List<LolPlayerLines> lineList = new ArrayList<>();
+    public static List<LolLines> from(RiftPlayerHistoryRequestDto riftPlayerHistoryRequestDto, List<LolPlayer> playerList) {
+        List<LolLines> lineList = new ArrayList<>();
         for ( int i=0; i<playerList.size(); i++ ) {
             LolPlayer player = playerList.get(i);
-            RiftPlayerRequestDto lolRequestDto = lolRequestPayloadDto.getRiftPlayerRequestDtos().get(i);
-            for ( RiftLinesRequestDto lines : lolRequestDto.getLines() ) {
+            RiftPlayerRequestDto riftPlayerRequestDto = riftPlayerHistoryRequestDto.getRiftPlayerRequestDtos().get(i);
+            for ( RiftLinesRequestDto lines : riftPlayerRequestDto.getLines() ) {
                 lineList.add(
-                        new LolPlayerLines(
+                        new LolLines(
                                 null,
                                 player,
                                 lines.getLine(),
@@ -53,7 +53,7 @@ public class LolPlayerLines {
         return lineList;
     }
 
-    public static RiftPlayerRequestDto of(LolPlayerLines lolPlayerLines){
+    public static RiftPlayerRequestDto of(LolLines lolPlayerLines){
         return new RiftPlayerRequestDto(
             lolPlayerLines.getPlayer().getName(),
             lolPlayerLines.getPlayer().getTier(),
