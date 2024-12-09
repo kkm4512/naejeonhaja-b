@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-public class LolLines {
+public class LolLinesDto {
     LolLine line;
     LolLineRole lineRole;
 }
