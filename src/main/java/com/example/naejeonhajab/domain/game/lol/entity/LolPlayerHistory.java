@@ -1,6 +1,6 @@
 package com.example.naejeonhajab.domain.game.lol.entity;
 
-import com.example.naejeonhajab.domain.game.lol.dto.req.common.LolRequestPayloadDto;
+import com.example.naejeonhajab.domain.game.lol.dto.req.rift.RiftPlayerHistoryRequestDto;
 import com.example.naejeonhajab.domain.game.lol.enums.LolType;
 import com.example.naejeonhajab.domain.user.entity.User;
 import jakarta.persistence.*;
@@ -52,7 +52,7 @@ public class LolPlayerHistory {
         this.players = players;
     }
 
-    public static LolPlayerHistory from (LolRequestPayloadDto lolRequestPayloadDto, User user){
+    public static LolPlayerHistory from (RiftPlayerHistoryRequestDto lolRequestPayloadDto, User user){
         return new LolPlayerHistory(
                 null,
                 user,

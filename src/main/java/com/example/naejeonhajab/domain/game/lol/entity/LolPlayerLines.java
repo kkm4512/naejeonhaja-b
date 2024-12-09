@@ -1,9 +1,8 @@
 package com.example.naejeonhajab.domain.game.lol.entity;
 
-import com.example.naejeonhajab.domain.game.lol.dto.etc.LolLinesDto;
-import com.example.naejeonhajab.domain.game.lol.dto.etc.LolPlayerDto;
-import com.example.naejeonhajab.domain.game.lol.dto.req.common.LolRequestPayloadDto;
-import com.example.naejeonhajab.domain.game.lol.dto.req.rift.RiftRequestDto;
+import com.example.naejeonhajab.domain.game.lol.dto.req.rift.RiftLinesRequestDto;
+import com.example.naejeonhajab.domain.game.lol.dto.req.rift.RiftPlayerRequestDto;
+import com.example.naejeonhajab.domain.game.lol.dto.req.rift.RiftPlayerHistoryRequestDto;
 import com.example.naejeonhajab.domain.game.lol.enums.LolLine;
 import com.example.naejeonhajab.domain.game.lol.enums.LolLineRole;
 import jakarta.persistence.*;
@@ -36,12 +35,12 @@ public class LolPlayerLines {
     @Column(nullable = false)
     private LolLineRole lineRole;
 
-    public static List<LolPlayerLines> from(LolRequestPayloadDto lolRequestPayloadDto, List<LolPlayer> playerList) {
+    public static List<LolPlayerLines> from(RiftPlayerHistoryRequestDto lolRequestPayloadDto, List<LolPlayer> playerList) {
         List<LolPlayerLines> lineList = new ArrayList<>();
         for ( int i=0; i<playerList.size(); i++ ) {
             LolPlayer player = playerList.get(i);
-            RiftRequestDto riftRequestDto = lolRequestPayloadDto.getRiftRequestDtos().get(i);
-            for ( LolLinesDto lines : riftRequestDto.getLines() ) {
+            RiftPlayerRequestDto lolRequestDto = lolRequestPayloadDto.getRiftPlayerRequestDtos().get(i);
+            for ( RiftLinesRequestDto lines : lolRequestDto.getLines() ) {
                 lineList.add(
                         new LolPlayerLines(
                                 null,
@@ -54,12 +53,11 @@ public class LolPlayerLines {
         return lineList;
     }
 
-    public static LolPlayerDto of(LolPlayerLines lolPlayerLines){
-        return new LolPlayerDto(
+    public static RiftPlayerRequestDto of(LolPlayerLines lolPlayerLines){
+        return new RiftPlayerRequestDto(
             lolPlayerLines.getPlayer().getName(),
             lolPlayerLines.getPlayer().getTier(),
-            null,
-            lolPlayerLines.getPlayer().getMmr()
+            null
         );
     }
 }
