@@ -1,5 +1,6 @@
 package com.example.naejeonhajab.domain.game.lol.controller;
 
+import com.example.naejeonhajab.common.exception.BaseException;
 import com.example.naejeonhajab.common.response.ApiResponse;
 import com.example.naejeonhajab.common.response.enums.BaseApiResponse;
 import com.example.naejeonhajab.domain.game.lol.dto.req.rift.RiftPlayerHistoryRequestDto;
@@ -9,6 +10,7 @@ import com.example.naejeonhajab.domain.game.lol.dto.res.rift.RiftPlayerHistoryRe
 import com.example.naejeonhajab.domain.game.lol.dto.res.rift.RiftTeamResponseDto;
 import com.example.naejeonhajab.domain.game.lol.service.RiftServiceImpl;
 import com.example.naejeonhajab.security.AuthUser;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -33,7 +35,7 @@ public class RiftController {
     }
 
     @PostMapping("/history")
-    public ApiResponse<RiftTeamResponseDto> createPlayerHistoryAndTeam(@RequestBody RiftPlayerHistoryRequestDto riftRequestPayloadDto, @AuthenticationPrincipal AuthUser authUser) {
+    public ApiResponse<RiftTeamResponseDto> createPlayerHistoryAndTeam(@RequestBody @Valid RiftPlayerHistoryRequestDto riftRequestPayloadDto, @AuthenticationPrincipal AuthUser authUser) {
         RiftTeamResponseDto result = lolService.createPlayerHistoryAndTeam(riftRequestPayloadDto, authUser);
         return ApiResponse.of(BaseApiResponse.SUCCESS, result);
     }

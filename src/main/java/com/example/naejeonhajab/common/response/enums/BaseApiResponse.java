@@ -9,6 +9,8 @@ public enum BaseApiResponse implements ApiResponseEnum {
     //200
     SUCCESS(HttpStatus.OK, "요청하신 작업에 성공 하였습니다"),
 
+    // 400
+    FAIL(HttpStatus.BAD_REQUEST,"요청하신 작업에 실패 하였습니다"),
     TEAM_MISMATCH(HttpStatus.BAD_REQUEST, "팀을 만들 수 없습니다, 라인을 더 폭넓혀 보세요 ! (아니면 티어가 너무 안맞을수도 ㅎ;)"),
     ;
 

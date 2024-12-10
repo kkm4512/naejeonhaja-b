@@ -17,7 +17,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
-
 import java.io.IOException;
 
 import static com.example.naejeonhajab.common.response.enums.UserApiResponse.*;
@@ -33,7 +32,6 @@ public class JwtSecurityFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest httpRequest, @NonNull HttpServletResponse httpResponse, @NonNull FilterChain chain) throws ServletException, IOException {
         String jwt = httpRequest.getHeader(AUTHORIZATION_HEADER);
-
         if (jwt != null) {
             try {
                 Claims claims = jm.toClaims(jwt);
@@ -55,16 +53,11 @@ public class JwtSecurityFilter extends OncePerRequestFilter {
                     // SecurityContextHolder에 인증 객체 설정 (사용자 인증 처리)
                     SecurityContextHolder.getContext().setAuthentication(authenticationToken);
                 }
-            } catch (SecurityException | MalformedJwtException e) {
-                throw new UserException(JWT_INVALID);
-            } catch (ExpiredJwtException e) {
-                throw new UserException(JWT_EXPIRED);
-            } catch (UnsupportedJwtException e) {
-                throw new UserException(JWT_UNSUPPORTED);
             } catch (Exception e) {
-                throw new UserException(INTERNAL_SERVER_ERROR);
+                log.error(e.getMessage());
             }
         }
+
         // 요청을 다음 필터로 넘김
         chain.doFilter(httpRequest, httpResponse);
     }
