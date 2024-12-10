@@ -10,6 +10,7 @@ import org.springframework.security.config.annotation.web.configurers.AbstractHt
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter;
 import org.springframework.web.cors.CorsConfiguration;
@@ -18,9 +19,12 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import java.util.List;
 
+import static org.springframework.http.HttpMethod.POST;
+
 @Configuration
 @RequiredArgsConstructor
 public class SecurityConfig {
+    private final AuthenticationEntryPoint entryPoint;
     private final JwtSecurityFilter jwtSecurityFilter;
 
     @Bean
@@ -43,10 +47,15 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         // cors
                         .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
+
+                        // user
                         .requestMatchers("/api/v1/users/**").permitAll()
-                        .requestMatchers("/api/v1/game/lol/**").permitAll()
+
+                        // rift
+                        .requestMatchers(POST,"/api/v1/game/lol/rift").permitAll()
                         .anyRequest().authenticated()
                 )
+                .exceptionHandling(handler -> handler.authenticationEntryPoint(entryPoint))	// 추가
                 .build();
     }
 

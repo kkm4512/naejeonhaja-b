@@ -145,14 +145,13 @@ public class RiftServiceImpl {
             if (hasEmptyLines) {
                 throw new BaseException(BaseApiResponse.TEAM_MISMATCH);
             }
-            if (!hasEmptyLines) {
+            else {
                 return newTeam; // 처음 성공적으로 생성된 팀 즉시 반환
             }
 
         } catch (Exception e) {
             throw new BaseException(BaseApiResponse.TEAM_MISMATCH);
         }
-        return newTeam;
     }
 //       라인순서대로 정리
     private RiftTeamResponseDto orderByLine(RiftTeamResponseDto team) {

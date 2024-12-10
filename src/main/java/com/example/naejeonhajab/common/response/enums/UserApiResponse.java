@@ -9,6 +9,9 @@ public enum UserApiResponse implements ApiResponseEnum {
     // 400
     INVALID_CREDENTIALS(HttpStatus.BAD_REQUEST, "아이디 또는 비밀번호가 일치하지 않습니다"),
 
+    // 403
+    NOT_LOGIN(HttpStatus.FORBIDDEN,"로그인후 이용해 주세요"),
+
     // 401
     JWT_INVALID(HttpStatus.UNAUTHORIZED, "유효하지 않은 JWT 서명입니다"),
     JWT_EXPIRED(HttpStatus.UNAUTHORIZED, "만료된 JWT 토큰입니다"),
