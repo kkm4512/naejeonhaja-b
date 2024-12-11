@@ -13,9 +13,10 @@ public enum UserApiResponse implements ApiResponseEnum {
     NOT_LOGIN(HttpStatus.FORBIDDEN,"로그인후 이용해 주세요"),
 
     // 401
-    JWT_INVALID(HttpStatus.UNAUTHORIZED, "유효하지 않은 JWT 서명입니다"),
+    JWT_INVALID(HttpStatus.UNAUTHORIZED, "유효하지 않은 JWT입니다"),
     JWT_EXPIRED(HttpStatus.UNAUTHORIZED, "만료된 JWT 토큰입니다"),
-    JWT_UNSUPPORTED(HttpStatus.UNAUTHORIZED, "지원되지 않는 JWT 토큰입니다"),
+    JWT_UNSUPPORTED(HttpStatus.UNAUTHORIZED, "지원되지 않는 JWT입니다"),
+    JWT_NOT_SIGNATURED(HttpStatus.UNAUTHORIZED, "서명되지 않은 JWT입니다"),
 
     // 404
     JWT_NOT_FOUND(HttpStatus.NOT_FOUND, "토큰을 찾을 수 없습니다"),
@@ -25,7 +26,7 @@ public enum UserApiResponse implements ApiResponseEnum {
     EMAIL_ALREADY_EXISTS(HttpStatus.CONFLICT, "이메일이 중복 되었습니다"),
 
     // 500
-    INTERNAL_SERVER_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "내부 서버 오류가 발생했습니다");
+    INTERNAL_SERVER_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "내부 서버 오류가 발생했습니다, 관리자에게 문의 해주세요");
     ;
 
     private final HttpStatus httpStatus;

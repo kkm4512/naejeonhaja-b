@@ -1,6 +1,7 @@
 package com.example.naejeonhajab.domain.user.entity;
 
-import com.example.naejeonhajab.domain.game.lol.entity.LolPlayerHistory;
+import com.example.naejeonhajab.domain.game.lol.entity.player.LolPlayerHistory;
+import com.example.naejeonhajab.domain.game.lol.entity.result.LolPlayerResultHistory;
 import com.example.naejeonhajab.domain.user.dto.common.UserRole;
 import com.example.naejeonhajab.security.AuthUser;
 import jakarta.persistence.*;
@@ -45,6 +46,9 @@ public class User {
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<LolPlayerHistory> playerHistories = new ArrayList<>();
 
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<LolPlayerResultHistory> playerResultHistories = new ArrayList<>();
+
     @CreatedDate
     @Column(updatable = false)
     private LocalDateTime createdAt;
@@ -52,6 +56,13 @@ public class User {
     @LastModifiedDate
     @Column
     private LocalDateTime updatedAt;
+
+    public User(Long id, String nickname, String email, UserRole userRole) {
+        this.id = id;
+        this.nickname = nickname;
+        this.email = email;
+        this.userRole = userRole;
+    }
 
     public static User of(AuthUser authUser){
         String roleName = authUser.getAuthorities()
@@ -65,11 +76,7 @@ public class User {
                 authUser.getUserId(),
                 authUser.getNickname(),
                 authUser.getEmail(),
-                null,
-                userRole,
-                null,
-                null,
-                null
+                userRole
         );
     }
 }

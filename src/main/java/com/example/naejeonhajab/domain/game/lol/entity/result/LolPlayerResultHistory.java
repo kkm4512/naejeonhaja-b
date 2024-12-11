@@ -1,6 +1,6 @@
-package com.example.naejeonhajab.domain.game.lol.entity;
+package com.example.naejeonhajab.domain.game.lol.entity.result;
 
-import com.example.naejeonhajab.domain.game.lol.dto.req.rift.RiftPlayerHistoryRequestDto;
+import com.example.naejeonhajab.domain.game.lol.dto.req.rift.result.RiftPlayerResultHistoryRequestDto;
 import com.example.naejeonhajab.domain.game.lol.enums.LolType;
 import com.example.naejeonhajab.domain.user.entity.User;
 import jakarta.persistence.*;
@@ -19,46 +19,41 @@ import java.util.List;
 @NoArgsConstructor
 @EntityListeners(AuditingEntityListener.class)
 @Entity
-public class LolPlayerHistory {
+public class LolPlayerResultHistory {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id", nullable = false)
+    @JoinColumn(name = "user_id")
     private User user;
 
     @Column(nullable = false)
-    private String playerHistoryTitle;
-
+    private String playerResultHistoryTitle;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private LolType type;
 
-    @OneToMany(mappedBy = "playerHistory", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<LolPlayer> players = new ArrayList<>();
-
     @CreatedDate
     @Column(updatable = false)
     private LocalDateTime createdAt;
 
-    public LolPlayerHistory(Long id, User user, String playerHistoryTitle, LolType type, List<LolPlayer> players) {
-        this.id = id;
+    @OneToMany(mappedBy = "playerResultHistory", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<LolPlayerResult> playerResults = new ArrayList<>();
+
+    public LolPlayerResultHistory(User user, String playerResultHistoryTitle, LolType type) {
         this.user = user;
-        this.playerHistoryTitle = playerHistoryTitle;
+        this.playerResultHistoryTitle = playerResultHistoryTitle;
         this.type = type;
-        this.players = players;
     }
 
-    public static LolPlayerHistory from (RiftPlayerHistoryRequestDto lolRequestPayloadDto, User user){
-        return new LolPlayerHistory(
-                null,
+    public static LolPlayerResultHistory from (RiftPlayerResultHistoryRequestDto riftPlayerResultHistoryRequestDto, User user){
+        return new LolPlayerResultHistory(
                 user,
-                lolRequestPayloadDto.getPlayerHistoryTitle(),
-                LolType.RIFT,
-                null
+                riftPlayerResultHistoryRequestDto.getPlayerResultHistoryTitle(),
+                LolType.RIFT
         );
     }
 
