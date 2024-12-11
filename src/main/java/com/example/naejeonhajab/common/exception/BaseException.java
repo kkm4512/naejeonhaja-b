@@ -8,6 +8,8 @@ public class BaseException extends RuntimeException {
     private final ApiResponseEnum apiResponseEnum;
 
     public BaseException(ApiResponseEnum apiResponseEnum) {
+        super(apiResponseEnum.getMessage());
         this.apiResponseEnum = apiResponseEnum;
     }
+
 }

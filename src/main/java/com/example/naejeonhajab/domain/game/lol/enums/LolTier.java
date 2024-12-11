@@ -37,7 +37,7 @@ public enum LolTier {
     }
 
     // 현재 티어의 점수를 반환하는 메서드
-    public int getScore() {
+    public Integer getScore() {
         return tierScoreMap.getOrDefault(this, 0);
     }
 }

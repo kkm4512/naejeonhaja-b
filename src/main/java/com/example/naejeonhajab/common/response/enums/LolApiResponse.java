@@ -10,7 +10,8 @@ public enum LolApiResponse implements ApiResponseEnum {
     // 401
 
     // 404
-    LOL_HISTORY_NOT_FOUND(HttpStatus.NOT_FOUND, "요청하신 롤 팀내역은 존재하지 않습니다")
+    LOL_HISTORY_NOT_FOUND(HttpStatus.NOT_FOUND, "요청하신 롤 팀내역은 존재하지 않습니다"),
+    LOL_RESULT_HISTORY_NOT_FOUND(HttpStatus.NOT_FOUND, "요청하신 롤 대전결과는 존재하지 않습니다")
 
     // 409
 

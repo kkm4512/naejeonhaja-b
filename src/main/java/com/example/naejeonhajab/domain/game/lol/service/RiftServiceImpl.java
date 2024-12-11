@@ -3,20 +3,25 @@ package com.example.naejeonhajab.domain.game.lol.service;
 import com.example.naejeonhajab.common.exception.BaseException;
 import com.example.naejeonhajab.common.exception.LolException;
 import com.example.naejeonhajab.common.response.enums.BaseApiResponse;
-import com.example.naejeonhajab.domain.game.lol.dto.req.rift.RiftLinesRequestDto;
-import com.example.naejeonhajab.domain.game.lol.dto.req.rift.RiftPlayerHistoryRequestDto;
-import com.example.naejeonhajab.domain.game.lol.dto.req.rift.RiftPlayerRequestDto;
-import com.example.naejeonhajab.domain.game.lol.dto.res.rift.RiftPlayerHistoryResponseDetailDto;
-import com.example.naejeonhajab.domain.game.lol.dto.res.rift.RiftPlayerHistoryResponseSimpleDto;
-import com.example.naejeonhajab.domain.game.lol.dto.res.rift.RiftTeamResponseDto;
-import com.example.naejeonhajab.domain.game.lol.entity.LolPlayer;
-import com.example.naejeonhajab.domain.game.lol.entity.LolPlayerHistory;
-import com.example.naejeonhajab.domain.game.lol.entity.LolLines;
+import com.example.naejeonhajab.domain.game.lol.dto.req.rift.player.RiftLinesRequestDto;
+import com.example.naejeonhajab.domain.game.lol.dto.req.rift.player.RiftPlayerHistoryRequestDto;
+import com.example.naejeonhajab.domain.game.lol.dto.req.rift.player.RiftPlayerRequestDto;
+import com.example.naejeonhajab.domain.game.lol.dto.req.rift.result.RiftPlayerResultHistoryRequestDto;
+import com.example.naejeonhajab.domain.game.lol.dto.res.rift.player.RiftPlayerHistoryResponseDetailDto;
+import com.example.naejeonhajab.domain.game.lol.dto.res.rift.player.RiftPlayerHistoryResponseSimpleDto;
+import com.example.naejeonhajab.domain.game.lol.dto.res.rift.player.RiftTeamResponseDto;
+import com.example.naejeonhajab.domain.game.lol.dto.res.rift.result.RiftPlayerResultHistoryResponseDetailDto;
+import com.example.naejeonhajab.domain.game.lol.dto.res.rift.result.RiftPlayerResultHistoryResponseSimpleDto;
+import com.example.naejeonhajab.domain.game.lol.entity.player.LolLines;
+import com.example.naejeonhajab.domain.game.lol.entity.player.LolPlayer;
+import com.example.naejeonhajab.domain.game.lol.entity.player.LolPlayerHistory;
+import com.example.naejeonhajab.domain.game.lol.entity.result.LolPlayerResult;
+import com.example.naejeonhajab.domain.game.lol.entity.result.LolPlayerResultHistory;
+import com.example.naejeonhajab.domain.game.lol.entity.result.LolResultLines;
 import com.example.naejeonhajab.domain.game.lol.enums.LolLine;
 import com.example.naejeonhajab.domain.game.lol.enums.LolLineRole;
-import com.example.naejeonhajab.domain.game.lol.repository.LolPlayerHistoryRepository;
-import com.example.naejeonhajab.domain.game.lol.repository.LolLinesRepository;
-import com.example.naejeonhajab.domain.game.lol.repository.LolPlayerRepository;
+import com.example.naejeonhajab.domain.game.lol.enums.LolTeam;
+import com.example.naejeonhajab.domain.game.lol.repository.*;
 import com.example.naejeonhajab.domain.user.entity.User;
 import com.example.naejeonhajab.security.AuthUser;
 import lombok.RequiredArgsConstructor;
@@ -30,6 +35,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 import static com.example.naejeonhajab.common.response.enums.LolApiResponse.LOL_HISTORY_NOT_FOUND;
+import static com.example.naejeonhajab.common.response.enums.LolApiResponse.LOL_RESULT_HISTORY_NOT_FOUND;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -38,6 +44,10 @@ public class RiftServiceImpl {
     private final LolPlayerHistoryRepository lolPlayerHistoryRepository;
     private final LolPlayerRepository lolPlayerRepository;
     private final LolLinesRepository lolLinesRepository;
+
+    private final LolPlayerResultHistoryRepository lolPlayerResultHistoryRepository;
+    private final LolPlayerResultRepository lolPlayerResultRepository;
+    private final LolResultLinesRepository lolResultLinesRepository;
 
 
     // 로그인한 사용자 && 팀생성 && 히스토리 저장
@@ -54,8 +64,24 @@ public class RiftServiceImpl {
     }
 
     // 재생성
-    public RiftTeamResponseDto createTeam(List<RiftPlayerRequestDto> riftPlayerRequestDtos) {
+    public RiftTeamResponseDto  createTeam(List<RiftPlayerRequestDto> riftPlayerRequestDtos) {
        return create(riftPlayerRequestDtos);
+    }
+
+    // 내전 결과 저장 메서드
+    @Transactional
+    public void createResultTeam(RiftPlayerResultHistoryRequestDto riftPlayerResultHistoryRequestDto, AuthUser authUser) {
+        User user = User.of(authUser);
+        LolPlayerResultHistory playerResultHistory = LolPlayerResultHistory.from(riftPlayerResultHistoryRequestDto,user);
+        lolPlayerResultHistoryRepository.save(playerResultHistory);
+        List<LolPlayerResult> playerResultsA = LolPlayerResult.from(riftPlayerResultHistoryRequestDto,playerResultHistory, LolTeam.TEAM_A);
+        List<LolPlayerResult> playerResultsB = LolPlayerResult.from(riftPlayerResultHistoryRequestDto,playerResultHistory, LolTeam.TEAM_B);
+        lolPlayerResultRepository.saveAll(playerResultsA);
+        lolPlayerResultRepository.saveAll(playerResultsB);
+        List<LolResultLines> linesA = LolResultLines.from(riftPlayerResultHistoryRequestDto,playerResultsA,LolTeam.TEAM_A);
+        List<LolResultLines> linesB = LolResultLines.from(riftPlayerResultHistoryRequestDto,playerResultsB,LolTeam.TEAM_B);
+        lolResultLinesRepository.saveAll(linesA);
+        lolResultLinesRepository.saveAll(linesB);
     }
 
     // 팀을 랜덤하게 5명으로 나눔
@@ -260,7 +286,7 @@ public class RiftServiceImpl {
                             .toList();
 
                     // Player의 lines를 재배열 후 새로운 Player 객체 생성 (불변 객체일 경우)
-                    return new RiftPlayerRequestDto(player.getName(), player.getTier(), reorderedLines);
+                    return new RiftPlayerRequestDto(player.getName(), player.getTier(),reorderedLines);
                 })
                 .collect(Collectors.toList());
     }
@@ -316,18 +342,36 @@ public class RiftServiceImpl {
         return RiftPlayerHistoryResponseDetailDto.of(lolPlayerHistory);
     }
 
+    public RiftPlayerResultHistoryResponseDetailDto getDetailResultTeam(Long playerResultHistoryId) {
+        LolPlayerResultHistory lolPlayerResultHistory = findLolPlayerResultHistoryByPlayerHistoryId(playerResultHistoryId);
+        return RiftPlayerResultHistoryResponseDetailDto.of(lolPlayerResultHistory);
+    }
+
     public Page<RiftPlayerHistoryResponseSimpleDto> getSimpleTeam(AuthUser authUser, Pageable pageable) {
         User user = User.of(authUser);
         return findLolPlayerHistoryByUser(user, pageable)
                 .map(RiftPlayerHistoryResponseSimpleDto::of);
     }
 
+    public Page<RiftPlayerResultHistoryResponseSimpleDto> getSimpleResultTeam(AuthUser authUser, Pageable pageable) {
+        User user = User.of(authUser);
+        return findLolPlayerResultHistoryByUser(user, pageable)
+                .map(RiftPlayerResultHistoryResponseSimpleDto::of);
+    }
+
     private Page<LolPlayerHistory> findLolPlayerHistoryByUser(User user, Pageable pageable) {
         return lolPlayerHistoryRepository.findByUser(user, pageable);
+    }
+
+    private Page<LolPlayerResultHistory> findLolPlayerResultHistoryByUser(User user, Pageable pageable) {
+        return lolPlayerResultHistoryRepository.findByUser(user, pageable);
     }
 
     private LolPlayerHistory findLolPlayerHistoryByPlayerHistoryId(Long playerHistoryId) {
         return lolPlayerHistoryRepository.findById(playerHistoryId).orElseThrow(() -> new LolException(LOL_HISTORY_NOT_FOUND));
     }
 
+    private LolPlayerResultHistory findLolPlayerResultHistoryByPlayerHistoryId(Long playerResultistoryId) {
+        return lolPlayerResultHistoryRepository.findById(playerResultistoryId).orElseThrow(() -> new LolException(LOL_RESULT_HISTORY_NOT_FOUND));
+    }
 }

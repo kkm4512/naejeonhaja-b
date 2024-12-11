@@ -1,4 +1,4 @@
-package com.example.naejeonhajab.domain.game.lol.dto.req.rift;
+package com.example.naejeonhajab.domain.game.lol.dto.req.rift.player;
 
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;

@@ -1,9 +1,8 @@
 package com.example.naejeonhajab.security;
 
+import com.example.naejeonhajab.common.exception.UserException;
 import com.example.naejeonhajab.domain.user.dto.common.UserRole;
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
 import jakarta.annotation.PostConstruct;
 import lombok.extern.slf4j.Slf4j;
@@ -13,6 +12,8 @@ import org.springframework.stereotype.Component;
 import java.security.Key;
 import java.util.Base64;
 import java.util.Date;
+
+import static com.example.naejeonhajab.common.response.enums.UserApiResponse.*;
 
 @Slf4j(topic = "JwtManager")
 @Component
@@ -46,13 +47,21 @@ public class JwtManager {
                 .compact();
     }
 
-    // token -> Claims
     public Claims toClaims(String jwt) {
-        return Jwts.parserBuilder()
-                .setSigningKey(key)
-                .build()
-                .parseClaimsJws(jwt)
-                .getBody();
+        try {
+            return Jwts.parserBuilder()
+                    .setSigningKey(key)
+                    .build()
+                    .parseClaimsJws(jwt)
+                    .getBody();
+        } catch (SecurityException | MalformedJwtException | IllegalArgumentException e) {
+            throw new UserException(JWT_INVALID);
+        } catch (ExpiredJwtException e) {
+            throw new UserException(JWT_EXPIRED);
+        } catch (UnsupportedJwtException e) {
+            throw new UserException(JWT_UNSUPPORTED);
+        } catch (io.jsonwebtoken.security.SignatureException e) {
+            throw new UserException(JWT_NOT_SIGNATURED);
+        }
     }
-
 }

@@ -32,6 +32,7 @@ public class SecurityConfig {
         return new BCryptPasswordEncoder();
     }
 
+
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http
@@ -40,33 +41,26 @@ public class SecurityConfig {
                 .sessionManagement(session -> session
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 )
-                .addFilterBefore(jwtSecurityFilter, SecurityContextHolderAwareRequestFilter.class)
+                .authorizeHttpRequests(auth -> auth
+                        .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll() // Preflight 요청 허용
+                        .requestMatchers("/api/v1/users/**").permitAll() // 유저 API 허용
+                        .requestMatchers(POST, "/api/v1/game/lol/rift").permitAll() // 특정 POST 요청 허용
+                        .anyRequest().authenticated() // 나머지 요청은 인증 필요
+                )
+                .addFilterBefore(jwtSecurityFilter, SecurityContextHolderAwareRequestFilter.class) // JWT 필터 추가
                 .formLogin(AbstractHttpConfigurer::disable) // Form Login 비활성화
                 .httpBasic(AbstractHttpConfigurer::disable) // HTTP Basic 인증 비활성화
                 .logout(AbstractHttpConfigurer::disable) // Logout 비활성화
-                .authorizeHttpRequests(auth -> auth
-                        // cors
-                        .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
-
-                        // user
-                        .requestMatchers("/api/v1/users/**").permitAll()
-
-                        // rift
-                        .requestMatchers(POST,"/api/v1/game/lol/rift").permitAll()
-                        .anyRequest().authenticated()
-                )
-                .exceptionHandling(handler -> handler.authenticationEntryPoint(entryPoint))	// 추가
+                .exceptionHandling(handler -> handler.authenticationEntryPoint(entryPoint)) // EntryPoint 설정
                 .build();
     }
 
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration config = new CorsConfiguration();
-        config.setAllowedOrigins(List.of(
-                "http://localhost:3000"
-        ));
-        config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
-        config.setAllowedHeaders(List.of("Content-Type", "Authorization"));
+        config.setAllowedOrigins(List.of("http://localhost:3000")); // 허용된 Origin 설정
+        config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS")); // 허용된 HTTP 메서드
+        config.setAllowedHeaders(List.of("Content-Type", "Authorization")); // 허용된 헤더
         config.setAllowCredentials(true); // 인증 정보 허용
         config.setMaxAge(3600L); // Preflight 요청 캐싱 시간
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
@@ -74,4 +68,3 @@ public class SecurityConfig {
         return source;
     }
 }
-

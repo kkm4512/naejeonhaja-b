@@ -1,8 +1,8 @@
-package com.example.naejeonhajab.domain.game.lol.entity;
+package com.example.naejeonhajab.domain.game.lol.entity.player;
 
-import com.example.naejeonhajab.domain.game.lol.dto.req.rift.RiftLinesRequestDto;
-import com.example.naejeonhajab.domain.game.lol.dto.req.rift.RiftPlayerRequestDto;
-import com.example.naejeonhajab.domain.game.lol.dto.req.rift.RiftPlayerHistoryRequestDto;
+import com.example.naejeonhajab.domain.game.lol.dto.req.rift.player.RiftLinesRequestDto;
+import com.example.naejeonhajab.domain.game.lol.dto.req.rift.player.RiftPlayerRequestDto;
+import com.example.naejeonhajab.domain.game.lol.dto.req.rift.player.RiftPlayerHistoryRequestDto;
 import com.example.naejeonhajab.domain.game.lol.enums.LolLine;
 import com.example.naejeonhajab.domain.game.lol.enums.LolLineRole;
 import jakarta.persistence.*;
@@ -23,10 +23,6 @@ public class LolLines {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "lol_player_id", nullable = false)
-    private LolPlayer player;
-
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private LolLine line;
@@ -34,6 +30,16 @@ public class LolLines {
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private LolLineRole lineRole;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "lol_player_id")
+    private LolPlayer player;
+
+    public LolLines(LolLine line, LolLineRole lineRole, LolPlayer player) {
+        this.line = line;
+        this.lineRole = lineRole;
+        this.player = player;
+    }
 
     public static List<LolLines> from(RiftPlayerHistoryRequestDto riftPlayerHistoryRequestDto, List<LolPlayer> playerList) {
         List<LolLines> lineList = new ArrayList<>();
@@ -43,10 +49,9 @@ public class LolLines {
             for ( RiftLinesRequestDto lines : riftPlayerRequestDto.getLines() ) {
                 lineList.add(
                         new LolLines(
-                                null,
-                                player,
                                 lines.getLine(),
-                                lines.getLineRole()
+                                lines.getLineRole(),
+                                player
                         ));
             }
         }
