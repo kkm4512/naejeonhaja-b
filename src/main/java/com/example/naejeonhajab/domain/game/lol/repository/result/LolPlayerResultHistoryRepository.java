@@ -1,4 +1,4 @@
-package com.example.naejeonhajab.domain.game.lol.repository;
+package com.example.naejeonhajab.domain.game.lol.repository.result;
 
 import com.example.naejeonhajab.domain.game.lol.entity.result.LolPlayerResultHistory;
 import com.example.naejeonhajab.domain.user.entity.User;

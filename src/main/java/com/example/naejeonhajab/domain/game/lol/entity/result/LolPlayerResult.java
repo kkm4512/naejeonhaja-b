@@ -1,11 +1,8 @@
 package com.example.naejeonhajab.domain.game.lol.entity.result;
 
-import com.example.naejeonhajab.common.enums.Outcome;
-import com.example.naejeonhajab.domain.game.lol.dto.req.rift.player.RiftLinesRequestDto;
-import com.example.naejeonhajab.domain.game.lol.dto.req.rift.player.RiftPlayerRequestDto;
-import com.example.naejeonhajab.domain.game.lol.dto.req.rift.result.RiftPlayerResultHistoryRequestDto;
-import com.example.naejeonhajab.domain.game.lol.dto.res.rift.result.RiftPlayerResultResultResponseDto;
-import com.example.naejeonhajab.domain.game.lol.enums.LolTeam;
+import com.example.naejeonhajab.domain.game.lol.dto.rift.common.RiftLinesDto;
+import com.example.naejeonhajab.domain.game.lol.dto.rift.common.RiftPlayerDto;
+import com.example.naejeonhajab.domain.game.lol.dto.rift.common.RiftTeamResultDto;
 import com.example.naejeonhajab.domain.game.lol.enums.LolTier;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -33,86 +30,57 @@ public class LolPlayerResult {
     @Column(nullable = false)
     private LolTier tier;
 
-    @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
-    private LolTeam team;
-
     @Column(nullable = false)
     private Integer mmr;
-
-    @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
-    private Outcome outcome;
 
     @Column(nullable = false)
     private boolean mmrReduced;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "lol_player_result_history_id")
-    private LolPlayerResultHistory playerResultHistory;
+    @JoinColumn(name = "lol_player_result_outcome_id")
+    private LolPlayerResultOutcome playerResultOutcome;
 
     @OneToMany(mappedBy = "playerResult", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<LolResultLines> lines = new ArrayList<>();
 
-    public LolPlayerResult(String name, LolTier tier, int mmr, Outcome outcome,LolPlayerResultHistory playerResultHistory, LolTeam team, boolean mmrReduced) {
+    public LolPlayerResult(String name, LolTier tier, int mmr,LolPlayerResultOutcome playerResultOutcome, boolean mmrReduced) {
         this.name = name;
         this.tier = tier;
         this.mmr = mmr;
-        this.playerResultHistory = playerResultHistory;
-        this.team = team;
-        this.outcome = outcome;
+        this.playerResultOutcome = playerResultOutcome;
         this.mmrReduced = mmrReduced;
     }
 
-    public static List<LolPlayerResult> from(RiftPlayerResultHistoryRequestDto riftPlayerResultHistoryRequestDto, LolPlayerResultHistory playerResultHistory,LolTeam team) {
+    public static List<LolPlayerResult> from(RiftTeamResultDto riftTeamResultRequestDto, LolPlayerResultOutcome lolPlayerResultOutcome) {
         List<LolPlayerResult> playerList = new ArrayList<>();
-        if (team == LolTeam.TEAM_A) {
-            for ( RiftPlayerRequestDto riftPlayerRequestDto : riftPlayerResultHistoryRequestDto.getTeamA().getTeam() ) {
-                playerList.add(
-                        new LolPlayerResult(
-                                riftPlayerRequestDto.getName(),
-                                riftPlayerRequestDto.getTier(),
-                                riftPlayerRequestDto.getTier().getScore(),
-                                riftPlayerResultHistoryRequestDto.getTeamA().getOutcome(),
-                                playerResultHistory,
-                                team,
-                                riftPlayerRequestDto.isMmrReduced()
-                        )
-                );
-            }
-        }
-        else {
-            for ( RiftPlayerRequestDto riftPlayerRequestDto : riftPlayerResultHistoryRequestDto.getTeamB().getTeam()) {
-                playerList.add(
-                        new LolPlayerResult(
-                                riftPlayerRequestDto.getName(),
-                                riftPlayerRequestDto.getTier(),
-                                riftPlayerRequestDto.getTier().getScore(),
-                                riftPlayerResultHistoryRequestDto.getTeamB().getOutcome(),
-                                playerResultHistory,
-                                team,
-                                riftPlayerRequestDto.isMmrReduced()
-                        )
-                );
-            }
+
+        for (RiftPlayerDto riftPlayerRequestDto : riftTeamResultRequestDto.getTeam()) {
+            playerList.add(
+                    new LolPlayerResult(
+                            riftPlayerRequestDto.getName(),
+                            riftPlayerRequestDto.getTier(),
+                            riftPlayerRequestDto.getTier().getScore(),
+                            lolPlayerResultOutcome,
+                            riftPlayerRequestDto.isMmrReduced()
+                    )
+            );
         }
         return playerList;
     }
 
-    public static List<RiftPlayerResultResultResponseDto> of(List<LolPlayerResult> playerResults) {
+
+    public static List<RiftPlayerDto> of(List<LolPlayerResult> playerResults) {
         return playerResults.stream()
                 .map(player -> {
                     // 각 플레이어의 라인을 별도로 처리
-                    List<RiftLinesRequestDto> lolLinesDtos = player.getLines().stream()
-                            .map(line -> new RiftLinesRequestDto(line.getLine(), line.getLineRole()))
+                    List<RiftLinesDto> lolLinesDtos = player.getLines().stream()
+                            .map(line -> new RiftLinesDto(line.getLine(), line.getLineRole()))
                             .collect(Collectors.toList());
 
                     // 새로운 LolPlayerDto 생성
-                    return new RiftPlayerResultResultResponseDto(
+                    return new RiftPlayerDto(
                             player.getName(),
                             player.getTier(),
-                            player.getOutcome(),
-                            player.getTeam(),
                             lolLinesDtos,
                             player.getMmr(),
                             player.isMmrReduced()

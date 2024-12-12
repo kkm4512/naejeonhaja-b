@@ -1,5 +1,6 @@
-package com.example.naejeonhajab.domain.game.lol.dto.req.rift.result;
+package com.example.naejeonhajab.domain.game.lol.dto.rift.req;
 
+import com.example.naejeonhajab.domain.game.lol.dto.rift.common.RiftTeamResultDto;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
@@ -9,11 +10,11 @@ import lombok.NoArgsConstructor;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-public class RiftPlayerResultHistoryRequestDto {
+public class LolPlayerResultHistoryRequestDto {
     @NotBlank(message = "대전결과 제목은 공백 일 수 없습니다")
     String playerResultHistoryTitle;
     @Valid
-    RiftTeamResultRequestDto teamA;
+    RiftTeamResultDto teamA;
     @Valid
-    RiftTeamResultRequestDto teamB;
+    RiftTeamResultDto teamB;
 }
