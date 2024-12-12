@@ -1,11 +1,10 @@
 package com.example.naejeonhajab.domain.game.lol.entity.result;
 
-import com.example.naejeonhajab.domain.game.lol.dto.req.rift.player.RiftLinesRequestDto;
-import com.example.naejeonhajab.domain.game.lol.dto.req.rift.player.RiftPlayerRequestDto;
-import com.example.naejeonhajab.domain.game.lol.dto.req.rift.result.RiftPlayerResultHistoryRequestDto;
+import com.example.naejeonhajab.domain.game.lol.dto.rift.common.RiftLinesDto;
+import com.example.naejeonhajab.domain.game.lol.dto.rift.common.RiftPlayerDto;
+import com.example.naejeonhajab.domain.game.lol.dto.rift.common.RiftTeamResultDto;
 import com.example.naejeonhajab.domain.game.lol.enums.LolLine;
 import com.example.naejeonhajab.domain.game.lol.enums.LolLineRole;
-import com.example.naejeonhajab.domain.game.lol.enums.LolTeam;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -42,37 +41,27 @@ public class LolResultLines {
         this.playerResult = playerResult;
     }
 
-    public static List<LolResultLines> from(RiftPlayerResultHistoryRequestDto riftPlayerResultHistoryRequestDto, List<LolPlayerResult> playerResults, LolTeam team) {
+    public static List<LolResultLines> from(RiftTeamResultDto riftTeamResultRequestDto, List<LolPlayerResult> playerResults) {
         List<LolResultLines> lineList = new ArrayList<>();
-        if (team == LolTeam.TEAM_A) {
-            for ( int i=0; i<playerResults.size(); i++ ) {
-                LolPlayerResult playerResult = playerResults.get(i);
-                RiftPlayerRequestDto riftPlayerRequestDto = riftPlayerResultHistoryRequestDto.getTeamA().getTeam().get(i);
-                for ( RiftLinesRequestDto lines : riftPlayerRequestDto.getLines() ) {
-                    lineList.add(
-                            new LolResultLines(
-                                    lines.getLine(),
-                                    lines.getLineRole(),
-                                    playerResult
-                            ));
-                }
+
+        for (int i = 0; i < playerResults.size(); i++) {
+            LolPlayerResult playerResult = playerResults.get(i);
+            RiftPlayerDto riftPlayerRequestDto = riftTeamResultRequestDto.getTeam().get(i);
+
+            for (RiftLinesDto lines : riftPlayerRequestDto.getLines()) {
+                lineList.add(
+                        new LolResultLines(
+                                lines.getLine(),
+                                lines.getLineRole(),
+                                playerResult
+                        )
+                );
             }
         }
-        else {
-            for ( int i=0; i<playerResults.size(); i++ ) {
-                LolPlayerResult playerResult = playerResults.get(i);
-                RiftPlayerRequestDto riftPlayerRequestDto = riftPlayerResultHistoryRequestDto.getTeamB().getTeam().get(i);
-                for ( RiftLinesRequestDto lines : riftPlayerRequestDto.getLines() ) {
-                    lineList.add(
-                            new LolResultLines(
-                                    lines.getLine(),
-                                    lines.getLineRole(),
-                                    playerResult
-                            ));
-                }
-            }
-        }
+
         return lineList;
     }
+
+
 }
 

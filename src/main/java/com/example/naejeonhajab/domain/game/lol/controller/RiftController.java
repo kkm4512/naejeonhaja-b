@@ -2,14 +2,14 @@ package com.example.naejeonhajab.domain.game.lol.controller;
 
 import com.example.naejeonhajab.common.response.ApiResponse;
 import com.example.naejeonhajab.common.response.enums.BaseApiResponse;
-import com.example.naejeonhajab.domain.game.lol.dto.req.rift.player.RiftPlayerHistoryRequestDto;
-import com.example.naejeonhajab.domain.game.lol.dto.req.rift.player.RiftPlayerRequestDto;
-import com.example.naejeonhajab.domain.game.lol.dto.req.rift.result.RiftPlayerResultHistoryRequestDto;
-import com.example.naejeonhajab.domain.game.lol.dto.res.rift.player.RiftPlayerHistoryResponseDetailDto;
-import com.example.naejeonhajab.domain.game.lol.dto.res.rift.player.RiftPlayerHistoryResponseSimpleDto;
-import com.example.naejeonhajab.domain.game.lol.dto.res.rift.player.RiftTeamResponseDto;
-import com.example.naejeonhajab.domain.game.lol.dto.res.rift.result.RiftPlayerResultHistoryResponseDetailDto;
-import com.example.naejeonhajab.domain.game.lol.dto.res.rift.result.RiftPlayerResultHistoryResponseSimpleDto;
+import com.example.naejeonhajab.domain.game.lol.dto.rift.common.RiftPlayerDto;
+import com.example.naejeonhajab.domain.game.lol.dto.rift.req.LolPlayerHistoryRequestDto;
+import com.example.naejeonhajab.domain.game.lol.dto.rift.req.LolPlayerResultHistoryRequestDto;
+import com.example.naejeonhajab.domain.game.lol.dto.rift.res.LolPlayerHistoryResponseDetailDto;
+import com.example.naejeonhajab.domain.game.lol.dto.rift.res.LolPlayerHistoryResponseSimpleDto;
+import com.example.naejeonhajab.domain.game.lol.dto.rift.res.LolTeamResponseDto;
+import com.example.naejeonhajab.domain.game.lol.dto.rift.res.RiftPlayerResultHistoryResponseDetailDto;
+import com.example.naejeonhajab.domain.game.lol.dto.rift.res.RiftPlayerResultHistoryResponseSimpleDto;
 import com.example.naejeonhajab.domain.game.lol.service.RiftServiceImpl;
 import com.example.naejeonhajab.security.AuthUser;
 import jakarta.validation.Valid;
@@ -22,8 +22,6 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
 @Validated
 @RestController
 @RequiredArgsConstructor
@@ -33,39 +31,39 @@ public class RiftController {
     private final RiftServiceImpl lolService;
 
     @PostMapping
-    public ApiResponse<RiftTeamResponseDto> createTeam(@RequestBody @Valid List<RiftPlayerRequestDto> riftPlayerRequestDtos) {
-        for (RiftPlayerRequestDto riftPlayerRequestDto : riftPlayerRequestDtos) {
-            riftPlayerRequestDto.updateMmr(riftPlayerRequestDto.getTier().getScore());
-        }
-        RiftTeamResponseDto result = lolService.createTeam(riftPlayerRequestDtos);
+    public ApiResponse<LolTeamResponseDto> createTeam(@RequestBody @Valid LolPlayerHistoryRequestDto dto) {
+        LolTeamResponseDto result = lolService.createTeam(dto);
         return ApiResponse.of(BaseApiResponse.SUCCESS, result);
     }
 
     @PostMapping("/playerHistory")
-    public ApiResponse<RiftTeamResponseDto> createPlayerHistoryAndTeam(@RequestBody @Valid RiftPlayerHistoryRequestDto riftRequestPayloadDto, @AuthenticationPrincipal AuthUser authUser) {
-        RiftTeamResponseDto result = lolService.createPlayerHistoryAndTeam(riftRequestPayloadDto, authUser);
+    public ApiResponse<LolTeamResponseDto> createPlayerHistoryAndTeam(@RequestBody @Valid LolPlayerHistoryRequestDto dto, @AuthenticationPrincipal AuthUser authUser) {
+        for (RiftPlayerDto riftPlayerRequestDto : dto.getRiftPlayerDtos()) {
+            riftPlayerRequestDto.updateMmr(riftPlayerRequestDto.getTier().getScore());
+        }
+        LolTeamResponseDto result = lolService.createPlayerHistoryAndTeam(dto, authUser);
         return ApiResponse.of(BaseApiResponse.SUCCESS, result);
     }
 
     @PostMapping("/playerResultHistory")
-    public ApiResponse<Void> createResultTeam(@RequestBody @Valid RiftPlayerResultHistoryRequestDto riftPlayerResultHistoryRequestDto, @AuthenticationPrincipal AuthUser authUser) {
-        lolService.createResultTeam(riftPlayerResultHistoryRequestDto,authUser);
+    public ApiResponse<Void> createResultTeam(@RequestBody @Valid LolPlayerResultHistoryRequestDto dto, @AuthenticationPrincipal AuthUser authUser) {
+        lolService.createResultTeam(dto,authUser);
         return ApiResponse.of(BaseApiResponse.SUCCESS);
     }
 
     // title, 10명의 유저 정보
     @GetMapping("/playerHistory/detail/{playerHistoryId}")
-    public ApiResponse<RiftPlayerHistoryResponseDetailDto> getDetailTeam(@PathVariable Long playerHistoryId){
-        RiftPlayerHistoryResponseDetailDto result = lolService.getDetailTeam(playerHistoryId);
+    public ApiResponse<LolPlayerHistoryResponseDetailDto> getDetailTeam(@PathVariable Long playerHistoryId){
+        LolPlayerHistoryResponseDetailDto result = lolService.getDetailTeam(playerHistoryId);
         return ApiResponse.of(BaseApiResponse.SUCCESS, result);
     }
 
 
     // id, title만
     @GetMapping("/playerHistory/simple/{page}")
-    public ApiResponse<Page<RiftPlayerHistoryResponseSimpleDto>> getSimpleTeam(@PathVariable int page, @AuthenticationPrincipal AuthUser authUser){
+    public ApiResponse<Page<LolPlayerHistoryResponseSimpleDto>> getSimpleTeam(@PathVariable int page, @AuthenticationPrincipal AuthUser authUser){
         Pageable pageable = PageRequest.of(page - 1, 3, Sort.Direction.DESC,"createdAt");
-        Page<RiftPlayerHistoryResponseSimpleDto> result = lolService.getSimpleTeam(authUser,pageable);
+        Page<LolPlayerHistoryResponseSimpleDto> result = lolService.getSimpleTeam(authUser,pageable);
         return ApiResponse.of(BaseApiResponse.SUCCESS, result);
     }
 

@@ -1,8 +1,8 @@
 package com.example.naejeonhajab.domain.game.lol.entity.player;
 
-import com.example.naejeonhajab.domain.game.lol.dto.req.rift.player.RiftLinesRequestDto;
-import com.example.naejeonhajab.domain.game.lol.dto.req.rift.player.RiftPlayerRequestDto;
-import com.example.naejeonhajab.domain.game.lol.dto.req.rift.player.RiftPlayerHistoryRequestDto;
+import com.example.naejeonhajab.domain.game.lol.dto.rift.common.RiftLinesDto;
+import com.example.naejeonhajab.domain.game.lol.dto.rift.common.RiftPlayerDto;
+import com.example.naejeonhajab.domain.game.lol.dto.rift.req.LolPlayerHistoryRequestDto;
 import com.example.naejeonhajab.domain.game.lol.enums.LolLine;
 import com.example.naejeonhajab.domain.game.lol.enums.LolLineRole;
 import jakarta.persistence.*;
@@ -41,12 +41,12 @@ public class LolLines {
         this.player = player;
     }
 
-    public static List<LolLines> from(RiftPlayerHistoryRequestDto riftPlayerHistoryRequestDto, List<LolPlayer> playerList) {
+    public static List<LolLines> from(LolPlayerHistoryRequestDto riftPlayerHistoryRequestDto, List<LolPlayer> playerList) {
         List<LolLines> lineList = new ArrayList<>();
         for ( int i=0; i<playerList.size(); i++ ) {
             LolPlayer player = playerList.get(i);
-            RiftPlayerRequestDto riftPlayerRequestDto = riftPlayerHistoryRequestDto.getRiftPlayerRequestDtos().get(i);
-            for ( RiftLinesRequestDto lines : riftPlayerRequestDto.getLines() ) {
+            RiftPlayerDto riftPlayerRequestDto = riftPlayerHistoryRequestDto.getRiftPlayerDtos().get(i);
+            for ( RiftLinesDto lines : riftPlayerRequestDto.getLines() ) {
                 lineList.add(
                         new LolLines(
                                 lines.getLine(),
@@ -58,8 +58,8 @@ public class LolLines {
         return lineList;
     }
 
-    public static RiftPlayerRequestDto of(LolLines lolPlayerLines){
-        return new RiftPlayerRequestDto(
+    public static RiftPlayerDto of(LolLines lolPlayerLines){
+        return new RiftPlayerDto(
             lolPlayerLines.getPlayer().getName(),
             lolPlayerLines.getPlayer().getTier(),
             null

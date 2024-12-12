@@ -1,8 +1,8 @@
 package com.example.naejeonhajab.domain.game.lol.entity.player;
 
-import com.example.naejeonhajab.domain.game.lol.dto.req.rift.player.RiftLinesRequestDto;
-import com.example.naejeonhajab.domain.game.lol.dto.req.rift.player.RiftPlayerRequestDto;
-import com.example.naejeonhajab.domain.game.lol.dto.req.rift.player.RiftPlayerHistoryRequestDto;
+import com.example.naejeonhajab.domain.game.lol.dto.rift.common.RiftLinesDto;
+import com.example.naejeonhajab.domain.game.lol.dto.rift.common.RiftPlayerDto;
+import com.example.naejeonhajab.domain.game.lol.dto.rift.req.LolPlayerHistoryRequestDto;
 import com.example.naejeonhajab.domain.game.lol.enums.LolTier;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -47,9 +47,9 @@ public class LolPlayer {
         this.playerHistory = playerHistory;
     }
 
-    public static List<LolPlayer> from(RiftPlayerHistoryRequestDto lolRequestPayloadDto, LolPlayerHistory playerHistory) {
+    public static List<LolPlayer> from(LolPlayerHistoryRequestDto lolRequestPayloadDto, LolPlayerHistory playerHistory) {
         List<LolPlayer> playerList = new ArrayList<>();
-        for ( RiftPlayerRequestDto riftPlayerRequestDto : lolRequestPayloadDto.getRiftPlayerRequestDtos() ) {
+        for ( RiftPlayerDto riftPlayerRequestDto : lolRequestPayloadDto.getRiftPlayerDtos() ) {
             playerList.add(
                     new LolPlayer(
                             riftPlayerRequestDto.getName(),
@@ -62,16 +62,16 @@ public class LolPlayer {
         return playerList;
     }
 
-    public static List<RiftPlayerRequestDto> of(List<LolPlayer> players) {
+    public static List<RiftPlayerDto> of(List<LolPlayer> players) {
         return players.stream()
                 .map(player -> {
                     // 각 플레이어의 라인을 별도로 처리
-                    List<RiftLinesRequestDto> lolLinesDtos = player.getLines().stream()
-                            .map(line -> new RiftLinesRequestDto(line.getLine(), line.getLineRole()))
+                    List<RiftLinesDto> lolLinesDtos = player.getLines().stream()
+                            .map(line -> new RiftLinesDto(line.getLine(), line.getLineRole()))
                             .collect(Collectors.toList());
 
                     // 새로운 LolPlayerDto 생성
-                    return new RiftPlayerRequestDto(
+                    return new RiftPlayerDto(
                             player.getName(),
                             player.getTier(),
                             lolLinesDtos

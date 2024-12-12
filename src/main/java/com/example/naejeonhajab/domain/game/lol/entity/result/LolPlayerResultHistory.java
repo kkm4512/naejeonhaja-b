@@ -1,6 +1,6 @@
 package com.example.naejeonhajab.domain.game.lol.entity.result;
 
-import com.example.naejeonhajab.domain.game.lol.dto.req.rift.result.RiftPlayerResultHistoryRequestDto;
+import com.example.naejeonhajab.domain.game.lol.dto.rift.req.LolPlayerResultHistoryRequestDto;
 import com.example.naejeonhajab.domain.game.lol.enums.LolType;
 import com.example.naejeonhajab.domain.user.entity.User;
 import jakarta.persistence.*;
@@ -41,7 +41,7 @@ public class LolPlayerResultHistory {
     private LocalDateTime createdAt;
 
     @OneToMany(mappedBy = "playerResultHistory", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<LolPlayerResult> playerResults = new ArrayList<>();
+    private List<LolPlayerResultOutcome> playerResultOutcomes = new ArrayList<>();
 
     public LolPlayerResultHistory(User user, String playerResultHistoryTitle, LolType type) {
         this.user = user;
@@ -49,7 +49,7 @@ public class LolPlayerResultHistory {
         this.type = type;
     }
 
-    public static LolPlayerResultHistory from (RiftPlayerResultHistoryRequestDto riftPlayerResultHistoryRequestDto, User user){
+    public static LolPlayerResultHistory from (LolPlayerResultHistoryRequestDto riftPlayerResultHistoryRequestDto, User user){
         return new LolPlayerResultHistory(
                 user,
                 riftPlayerResultHistoryRequestDto.getPlayerResultHistoryTitle(),

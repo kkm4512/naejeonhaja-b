@@ -1,6 +1,6 @@
 package com.example.naejeonhajab.domain.game.lol.entity.player;
 
-import com.example.naejeonhajab.domain.game.lol.dto.req.rift.player.RiftPlayerHistoryRequestDto;
+import com.example.naejeonhajab.domain.game.lol.dto.rift.req.LolPlayerHistoryRequestDto;
 import com.example.naejeonhajab.domain.game.lol.enums.LolType;
 import com.example.naejeonhajab.domain.user.entity.User;
 import jakarta.persistence.*;
@@ -32,7 +32,6 @@ public class LolPlayerHistory {
     @Column(nullable = false)
     private String playerHistoryTitle;
 
-
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private LolType type;
@@ -50,7 +49,7 @@ public class LolPlayerHistory {
         this.type = type;
     }
 
-    public static LolPlayerHistory from (RiftPlayerHistoryRequestDto lolRequestPayloadDto, User user){
+    public static LolPlayerHistory from (LolPlayerHistoryRequestDto lolRequestPayloadDto, User user){
         return new LolPlayerHistory(
                 user,
                 lolRequestPayloadDto.getPlayerHistoryTitle(),
