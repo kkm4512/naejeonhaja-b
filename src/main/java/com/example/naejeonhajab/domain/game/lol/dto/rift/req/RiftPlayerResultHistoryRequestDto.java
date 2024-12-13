@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-public class LolPlayerResultHistoryRequestDto {
+public class RiftPlayerResultHistoryRequestDto {
     @NotBlank(message = "대전결과 제목은 공백 일 수 없습니다")
     String playerResultHistoryTitle;
     @Valid

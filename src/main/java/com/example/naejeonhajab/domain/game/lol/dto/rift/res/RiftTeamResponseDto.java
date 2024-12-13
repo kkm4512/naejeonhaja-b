@@ -11,7 +11,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 // 팀 분할
-public class LolTeamResponseDto {
+public class RiftTeamResponseDto {
     private List<RiftPlayerDto> teamA;
     private List<RiftPlayerDto> teamB;
 }

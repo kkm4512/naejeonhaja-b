@@ -2,6 +2,7 @@ package com.example.naejeonhajab.domain.game.lol.dto.rift.res;
 
 import com.example.naejeonhajab.domain.game.lol.dto.rift.common.RiftTeamResultDto;
 import com.example.naejeonhajab.domain.game.lol.entity.result.LolPlayerResultHistory;
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -12,7 +13,9 @@ import lombok.NoArgsConstructor;
 // 제목 + 10명의 유저 의 정보 전부있음
 public class RiftPlayerResultHistoryResponseDetailDto {
     private String playerResultHistoryTitle;
+    @Valid
     private RiftTeamResultDto teamA;
+    @Valid
     private RiftTeamResultDto teamB;
 
     public static RiftPlayerResultHistoryResponseDetailDto of(LolPlayerResultHistory lolPlayerResultHistory){
