@@ -1,8 +1,10 @@
 package com.example.naejeonhajab.domain.game.lol.entity.player;
 
+import com.example.naejeonhajab.domain.game.lol.dto.abyss.common.AbyssPlayerDto;
+import com.example.naejeonhajab.domain.game.lol.dto.abyss.req.AbyssPlayerHistoryRequestDto;
 import com.example.naejeonhajab.domain.game.lol.dto.rift.common.RiftLinesDto;
 import com.example.naejeonhajab.domain.game.lol.dto.rift.common.RiftPlayerDto;
-import com.example.naejeonhajab.domain.game.lol.dto.rift.req.LolPlayerHistoryRequestDto;
+import com.example.naejeonhajab.domain.game.lol.dto.rift.req.RiftPlayerHistoryRequestDto;
 import com.example.naejeonhajab.domain.game.lol.enums.LolTier;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -47,9 +49,10 @@ public class LolPlayer {
         this.playerHistory = playerHistory;
     }
 
-    public static List<LolPlayer> from(LolPlayerHistoryRequestDto lolRequestPayloadDto, LolPlayerHistory playerHistory) {
+
+    public static List<LolPlayer> from(RiftPlayerHistoryRequestDto riftPlayerHistoryRequestDto, LolPlayerHistory playerHistory) {
         List<LolPlayer> playerList = new ArrayList<>();
-        for ( RiftPlayerDto riftPlayerRequestDto : lolRequestPayloadDto.getRiftPlayerDtos() ) {
+        for ( RiftPlayerDto riftPlayerRequestDto : riftPlayerHistoryRequestDto.getPlayerDtos() ) {
             playerList.add(
                     new LolPlayer(
                             riftPlayerRequestDto.getName(),
@@ -62,7 +65,22 @@ public class LolPlayer {
         return playerList;
     }
 
-    public static List<RiftPlayerDto> of(List<LolPlayer> players) {
+    public static List<LolPlayer> from(AbyssPlayerHistoryRequestDto abyssPlayerHistoryRequestDto, LolPlayerHistory playerHistory) {
+        List<LolPlayer> playerList = new ArrayList<>();
+        for ( AbyssPlayerDto riftPlayerRequestDto : abyssPlayerHistoryRequestDto.getPlayerDtos() ) {
+            playerList.add(
+                    new LolPlayer(
+                            riftPlayerRequestDto.getName(),
+                            riftPlayerRequestDto.getTier(),
+                            riftPlayerRequestDto.getTier().getScore(),
+                            playerHistory
+                    )
+            );
+        }
+        return playerList;
+    }
+
+    public static List<RiftPlayerDto> toRiftPlayerDtos(List<LolPlayer> players) {
         return players.stream()
                 .map(player -> {
                     // 각 플레이어의 라인을 별도로 처리
@@ -75,6 +93,19 @@ public class LolPlayer {
                             player.getName(),
                             player.getTier(),
                             lolLinesDtos
+                    );
+                })
+                .collect(Collectors.toList());
+    }
+
+    public static List<AbyssPlayerDto> toAbyssPlayerDtos(List<LolPlayer> players) {
+        return players.stream()
+                .map(player -> {
+                    // 새로운 LolPlayerDto 생성
+                    return new AbyssPlayerDto(
+                            player.getName(),
+                            player.getTier(),
+                            player.getMmr()
                     );
                 })
                 .collect(Collectors.toList());

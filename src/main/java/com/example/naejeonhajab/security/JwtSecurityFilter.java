@@ -32,8 +32,10 @@ public class JwtSecurityFilter extends OncePerRequestFilter {
         String requestURI = request.getRequestURI();
 
         // 인증이 필요 없는 경로 설정 (SecurityConfig의 permitAll과 일치시켜야 함)
-        return requestURI.startsWith("/api/v1/users") || // 유저 API
-                requestURI.equals("/api/v1/game/lol/rift"); // 특정 POST 요청 허용
+        return requestURI.startsWith("/api/v1/users") ||
+                requestURI.equals("/api/v1/game/lol/rift") ||
+                requestURI.equals("/api/v1/game/lol/abyss") ||
+                requestURI.equals("/api/v1/game/lol/tft");
     }
 
     @Override
@@ -60,7 +62,7 @@ public class JwtSecurityFilter extends OncePerRequestFilter {
                 throw new UserException(NOT_LOGIN);
             }
             chain.doFilter(httpRequest, httpResponse);
-        } catch (UserException e) {
+        } catch (Exception e) {
             httpRequest.setAttribute("exception", e);
             throw e; // EntryPoint로 전달
         }

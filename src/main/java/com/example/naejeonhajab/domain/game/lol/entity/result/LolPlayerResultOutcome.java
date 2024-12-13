@@ -1,6 +1,7 @@
 package com.example.naejeonhajab.domain.game.lol.entity.result;
 
 import com.example.naejeonhajab.common.enums.Outcome;
+import com.example.naejeonhajab.domain.game.lol.dto.abyss.common.AbyssTeamResultDto;
 import com.example.naejeonhajab.domain.game.lol.dto.rift.common.RiftTeamResultDto;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -36,9 +37,16 @@ public class LolPlayerResultOutcome {
         this.playerResultHistory = playerResultHistory;
     }
 
-    public static LolPlayerResultOutcome from(RiftTeamResultDto riftTeamResultRequestDto, LolPlayerResultHistory playerResultHistory) {
+    public static LolPlayerResultOutcome fromRiftTeamResultDtoAndLolPlayerResultHistory(RiftTeamResultDto dto, LolPlayerResultHistory playerResultHistory) {
         return new LolPlayerResultOutcome(
-                riftTeamResultRequestDto.getOutcome(),
+                dto.getOutcome(),
+                playerResultHistory
+        );
+    }
+
+    public static LolPlayerResultOutcome fromAbyssTeamResultdDtoAndLolPlayerResultHistory(AbyssTeamResultDto dto, LolPlayerResultHistory playerResultHistory) {
+        return new LolPlayerResultOutcome(
+                dto.getOutcome(),
                 playerResultHistory
         );
     }

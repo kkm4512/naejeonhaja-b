@@ -1,6 +1,7 @@
 package com.example.naejeonhajab.domain.game.lol.entity.player;
 
-import com.example.naejeonhajab.domain.game.lol.dto.rift.req.LolPlayerHistoryRequestDto;
+import com.example.naejeonhajab.domain.game.lol.dto.abyss.req.AbyssPlayerHistoryRequestDto;
+import com.example.naejeonhajab.domain.game.lol.dto.rift.req.RiftPlayerHistoryRequestDto;
 import com.example.naejeonhajab.domain.game.lol.enums.LolType;
 import com.example.naejeonhajab.domain.user.entity.User;
 import jakarta.persistence.*;
@@ -29,7 +30,6 @@ public class LolPlayerHistory {
     @JoinColumn(name = "user_id")
     private User user;
 
-    @Column(nullable = false)
     private String playerHistoryTitle;
 
     @Enumerated(EnumType.STRING)
@@ -49,11 +49,19 @@ public class LolPlayerHistory {
         this.type = type;
     }
 
-    public static LolPlayerHistory from (LolPlayerHistoryRequestDto lolRequestPayloadDto, User user){
+    public static LolPlayerHistory from (RiftPlayerHistoryRequestDto riftPlayerHistoryRequestDto, User user){
         return new LolPlayerHistory(
                 user,
-                lolRequestPayloadDto.getPlayerHistoryTitle(),
+                riftPlayerHistoryRequestDto.getPlayerHistoryTitle(),
                 LolType.RIFT
+        );
+    }
+
+    public static LolPlayerHistory from (AbyssPlayerHistoryRequestDto abyssPlayerHistoryRequestDto, User user){
+        return new LolPlayerHistory(
+                user,
+                abyssPlayerHistoryRequestDto.getPlayerHistoryTitle(),
+                LolType.ABYSS
         );
     }
 
