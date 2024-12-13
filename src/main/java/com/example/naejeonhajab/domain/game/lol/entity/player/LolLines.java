@@ -2,7 +2,7 @@ package com.example.naejeonhajab.domain.game.lol.entity.player;
 
 import com.example.naejeonhajab.domain.game.lol.dto.rift.common.RiftLinesDto;
 import com.example.naejeonhajab.domain.game.lol.dto.rift.common.RiftPlayerDto;
-import com.example.naejeonhajab.domain.game.lol.dto.rift.req.LolPlayerHistoryRequestDto;
+import com.example.naejeonhajab.domain.game.lol.dto.rift.req.RiftPlayerHistoryRequestDto;
 import com.example.naejeonhajab.domain.game.lol.enums.LolLine;
 import com.example.naejeonhajab.domain.game.lol.enums.LolLineRole;
 import jakarta.persistence.*;
@@ -24,11 +24,9 @@ public class LolLines {
     private Long id;
 
     @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
     private LolLine line;
 
     @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
     private LolLineRole lineRole;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -40,12 +38,11 @@ public class LolLines {
         this.lineRole = lineRole;
         this.player = player;
     }
-
-    public static List<LolLines> from(LolPlayerHistoryRequestDto riftPlayerHistoryRequestDto, List<LolPlayer> playerList) {
+    public static List<LolLines> from(RiftPlayerHistoryRequestDto riftPlayerHistoryRequestDto, List<LolPlayer> playerList) {
         List<LolLines> lineList = new ArrayList<>();
         for ( int i=0; i<playerList.size(); i++ ) {
             LolPlayer player = playerList.get(i);
-            RiftPlayerDto riftPlayerRequestDto = riftPlayerHistoryRequestDto.getRiftPlayerDtos().get(i);
+            RiftPlayerDto riftPlayerRequestDto = riftPlayerHistoryRequestDto.getPlayerDtos().get(i);
             for ( RiftLinesDto lines : riftPlayerRequestDto.getLines() ) {
                 lineList.add(
                         new LolLines(
@@ -57,6 +54,7 @@ public class LolLines {
         }
         return lineList;
     }
+
 
     public static RiftPlayerDto of(LolLines lolPlayerLines){
         return new RiftPlayerDto(

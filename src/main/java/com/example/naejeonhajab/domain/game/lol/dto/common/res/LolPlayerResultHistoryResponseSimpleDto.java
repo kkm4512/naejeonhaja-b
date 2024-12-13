@@ -1,4 +1,4 @@
-package com.example.naejeonhajab.domain.game.lol.dto.rift.res;
+package com.example.naejeonhajab.domain.game.lol.dto.common.res;
 
 import com.example.naejeonhajab.domain.game.lol.entity.result.LolPlayerResultHistory;
 import lombok.AllArgsConstructor;
@@ -9,12 +9,12 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Getter
 // 제목 + id 데이터 전송
-public class RiftPlayerResultHistoryResponseSimpleDto {
+public class LolPlayerResultHistoryResponseSimpleDto {
     private String playerResultHistoryTitle;
     private Long playerResultHistoryId;
 
-    public static RiftPlayerResultHistoryResponseSimpleDto of(LolPlayerResultHistory playerResultHistory) {
-        return new RiftPlayerResultHistoryResponseSimpleDto(
+    public static LolPlayerResultHistoryResponseSimpleDto of(LolPlayerResultHistory playerResultHistory) {
+        return new LolPlayerResultHistoryResponseSimpleDto(
                 playerResultHistory.getPlayerResultHistoryTitle(),
                 playerResultHistory.getId()
         );

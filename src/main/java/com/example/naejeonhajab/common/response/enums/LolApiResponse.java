@@ -6,6 +6,8 @@ import org.springframework.http.HttpStatus;
 @Getter
 public enum LolApiResponse implements ApiResponseEnum {
 
+    // 400
+    LOL_TITLE_NOT_NULL(HttpStatus.BAD_REQUEST, "제목은 공란 일 수 없습니다"),
 
     // 401
 
