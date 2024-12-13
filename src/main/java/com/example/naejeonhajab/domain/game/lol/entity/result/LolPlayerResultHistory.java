@@ -49,21 +49,12 @@ public class LolPlayerResultHistory {
         this.type = type;
     }
 
-    public static LolPlayerResultHistory fromRiftPlayerResultHistoryRequestDto(com.example.naejeonhajab.domain.game.lol.dto.req.LolPlayerResultHistoryRequestDto dto, User user){
+    public static LolPlayerResultHistory from(LolPlayerResultHistoryRequestDto dto, User user, LolType type) {
         return new LolPlayerResultHistory(
                 user,
                 dto.getPlayerResultHistoryTitle(),
-                LolType.RIFT
+                type
         );
     }
-
-    public static LolPlayerResultHistory fromAbyssPlayerResultHistoryRequestDto(LolPlayerResultHistoryRequestDto dto, User user){
-        return new LolPlayerResultHistory(
-                user,
-                dto.getPlayerResultHistoryTitle(),
-                LolType.ABYSS
-        );
-    }
-
 }
 

@@ -98,13 +98,13 @@ public class RiftServiceImpl {
     @Transactional
     public void createResultTeam(LolPlayerResultHistoryRequestDto riftPlayerResultHistoryRequestDto, AuthUser authUser) {
         User user = User.of(authUser);
-        LolPlayerResultHistory playerResultHistory = LolPlayerResultHistory.fromRiftPlayerResultHistoryRequestDto(riftPlayerResultHistoryRequestDto,user);
+        LolPlayerResultHistory playerResultHistory = LolPlayerResultHistory.from(riftPlayerResultHistoryRequestDto,user, LolType.RIFT);
         lolPlayerResultHistoryRepository.save(playerResultHistory);
-        LolPlayerResultOutcome playerResultOutcomeA = LolPlayerResultOutcome.fromRiftTeamResultDtoAndLolPlayerResultHistory(riftPlayerResultHistoryRequestDto.getTeamA(),playerResultHistory);
-        LolPlayerResultOutcome playerResultOutcomeB = LolPlayerResultOutcome.fromRiftTeamResultDtoAndLolPlayerResultHistory(riftPlayerResultHistoryRequestDto.getTeamB(),playerResultHistory);
+        LolPlayerResultOutcome playerResultOutcomeA = LolPlayerResultOutcome.from(riftPlayerResultHistoryRequestDto.getTeamA(),playerResultHistory);
+        LolPlayerResultOutcome playerResultOutcomeB = LolPlayerResultOutcome.from(riftPlayerResultHistoryRequestDto.getTeamB(),playerResultHistory);
         lolPlayerResultOutcomeRepository.saveAll(List.of(playerResultOutcomeA,playerResultOutcomeB));
-        List<LolPlayerResult> playerResultsA = LolPlayerResult.fromRiftTeamResultDtoAndLolPlayerResultOutcome(riftPlayerResultHistoryRequestDto.getTeamA(),playerResultOutcomeA);
-        List<LolPlayerResult> playerResultsB = LolPlayerResult.fromRiftTeamResultDtoAndLolPlayerResultOutcome(riftPlayerResultHistoryRequestDto.getTeamB(),playerResultOutcomeB);
+        List<LolPlayerResult> playerResultsA = LolPlayerResult.from(riftPlayerResultHistoryRequestDto.getTeamA(),playerResultOutcomeA);
+        List<LolPlayerResult> playerResultsB = LolPlayerResult.from(riftPlayerResultHistoryRequestDto.getTeamB(),playerResultOutcomeB);
         lolPlayerResultRepository.saveAll(playerResultsA);
         lolPlayerResultRepository.saveAll(playerResultsB);
         List<LolResultLines> linesA = LolResultLines.from(riftPlayerResultHistoryRequestDto.getTeamA(),playerResultsA);

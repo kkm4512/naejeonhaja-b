@@ -42,7 +42,6 @@ public class LolPlayerResult {
     @OneToMany(mappedBy = "playerResult", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<LolResultLines> lines = new ArrayList<>();
 
-    // 소환사의 협곡
     public LolPlayerResult(String name, LolTier tier, int mmr,LolPlayerResultOutcome playerResultOutcome, boolean mmrReduced) {
         this.name = name;
         this.tier = tier;
@@ -51,15 +50,8 @@ public class LolPlayerResult {
         this.mmrReduced = mmrReduced;
     }
 
-    // 칼바람
-    public LolPlayerResult(String name, LolTier tier, Integer mmr,LolPlayerResultOutcome playerResultOutcome) {
-        this.name = name;
-        this.tier = tier;
-        this.mmr = mmr;
-        this.playerResultOutcome = playerResultOutcome;
-    }
 
-    public static List<LolPlayerResult> fromRiftTeamResultDtoAndLolPlayerResultOutcome(com.example.naejeonhajab.domain.game.lol.dto.common.LolTeamResultDto dto, LolPlayerResultOutcome lolPlayerResultOutcome) {
+    public static List<LolPlayerResult> from(LolTeamResultDto dto, LolPlayerResultOutcome lolPlayerResultOutcome) {
         List<LolPlayerResult> playerList = new ArrayList<>();
 
         for (LolPlayerDto riftPlayerRequestDto : dto.getTeam()) {
@@ -69,23 +61,8 @@ public class LolPlayerResult {
                             riftPlayerRequestDto.getTier(),
                             riftPlayerRequestDto.getTier().getScore(),
                             lolPlayerResultOutcome,
-                            riftPlayerRequestDto.getMmrReduced()
-                    )
-            );
-        }
-        return playerList;
-    }
-
-    public static List<LolPlayerResult> fromAbyssTeamResultDtoAndLolPlayerResultOutcome(LolTeamResultDto dto, LolPlayerResultOutcome lolPlayerResultOutcome) {
-        List<LolPlayerResult> playerList = new ArrayList<>();
-
-        for (LolPlayerDto riftPlayerRequestDto : dto.getTeam()) {
-            playerList.add(
-                    new LolPlayerResult(
-                            riftPlayerRequestDto.getName(),
-                            riftPlayerRequestDto.getTier(),
-                            riftPlayerRequestDto.getTier().getScore(),
-                            lolPlayerResultOutcome
+                            // 칼바람, TFT는 null로 들어오니까 처리해주기
+                            riftPlayerRequestDto.getMmrReduced() != null && riftPlayerRequestDto.getMmrReduced()
                     )
             );
         }
