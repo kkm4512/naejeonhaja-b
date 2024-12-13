@@ -1,6 +1,6 @@
 package com.example.naejeonhajab.domain.game.lol.dto.rift.common;
 
-import com.example.naejeonhajab.domain.game.lol.dto.rift.res.LolTeamResponseDto;
+import com.example.naejeonhajab.domain.game.lol.dto.rift.res.RiftTeamResponseDto;
 import com.example.naejeonhajab.domain.game.lol.entity.result.LolPlayerResult;
 import com.example.naejeonhajab.domain.game.lol.enums.LolTier;
 import jakarta.validation.Valid;
@@ -52,7 +52,7 @@ public class RiftPlayerDto {
         this.mmr = tier.getScore();
     }
 
-    public static List<RiftPlayerDto> of(LolTeamResponseDto team) {
+    public static List<RiftPlayerDto> of(RiftTeamResponseDto team) {
         List<RiftPlayerDto> riftRequestDtos = new ArrayList<>();
         List<RiftPlayerDto> teamA = team.getTeamA().stream()
                 .map(dto -> new RiftPlayerDto(dto.getName(), dto.getTier(), dto.getLines()))
@@ -67,7 +67,7 @@ public class RiftPlayerDto {
 
     public static List<RiftPlayerDto> of(List<LolPlayerResult> playerResults) {
         return playerResults.stream()
-                .map(dto -> new RiftPlayerDto(dto.getName(), dto.getTier(), RiftLinesDto.of(dto.getLines()) ))
+                .map(dto -> new RiftPlayerDto(dto.getName(), dto.getTier(), RiftLinesDto.of(dto.getLines()), dto.getMmr(), dto.isMmrReduced()  ))
                 .toList();
     }
 

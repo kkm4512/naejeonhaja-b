@@ -44,7 +44,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll() // Preflight 요청 허용
                         .requestMatchers("/api/v1/users/**").permitAll() // 유저 API 허용
-                        .requestMatchers(POST, "/api/v1/game/lol/rift").permitAll() // 특정 POST 요청 허용
+                        .requestMatchers(POST, "/api/v1/game/lol/*").permitAll() // 특정 POST 요청 허용
                         .anyRequest().authenticated() // 나머지 요청은 인증 필요
                 )
                 .addFilterBefore(jwtSecurityFilter, SecurityContextHolderAwareRequestFilter.class) // JWT 필터 추가
