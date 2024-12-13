@@ -1,7 +1,6 @@
 package com.example.naejeonhajab.domain.game.lol.entity.result;
 
-import com.example.naejeonhajab.domain.game.lol.dto.abyss.req.AbyssPlayerResultHistoryRequestDto;
-import com.example.naejeonhajab.domain.game.lol.dto.rift.req.RiftPlayerResultHistoryRequestDto;
+import com.example.naejeonhajab.domain.game.lol.dto.req.LolPlayerResultHistoryRequestDto;
 import com.example.naejeonhajab.domain.game.lol.enums.LolType;
 import com.example.naejeonhajab.domain.user.entity.User;
 import jakarta.persistence.*;
@@ -50,7 +49,7 @@ public class LolPlayerResultHistory {
         this.type = type;
     }
 
-    public static LolPlayerResultHistory fromRiftPlayerResultHistoryRequestDto(RiftPlayerResultHistoryRequestDto dto, User user){
+    public static LolPlayerResultHistory fromRiftPlayerResultHistoryRequestDto(com.example.naejeonhajab.domain.game.lol.dto.req.LolPlayerResultHistoryRequestDto dto, User user){
         return new LolPlayerResultHistory(
                 user,
                 dto.getPlayerResultHistoryTitle(),
@@ -58,7 +57,7 @@ public class LolPlayerResultHistory {
         );
     }
 
-    public static LolPlayerResultHistory fromAbyssPlayerResultHistoryRequestDto(AbyssPlayerResultHistoryRequestDto dto, User user){
+    public static LolPlayerResultHistory fromAbyssPlayerResultHistoryRequestDto(LolPlayerResultHistoryRequestDto dto, User user){
         return new LolPlayerResultHistory(
                 user,
                 dto.getPlayerResultHistoryTitle(),

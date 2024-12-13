@@ -1,18 +1,18 @@
 package com.example.naejeonhajab.domain.game.lol.service;
 
-import com.example.naejeonhajab.domain.game.lol.dto.common.res.LolPlayerHistoryResponseSimpleDto;
-import com.example.naejeonhajab.domain.game.lol.dto.common.res.LolPlayerResultHistoryResponseSimpleDto;
+import com.example.naejeonhajab.domain.game.lol.dto.res.LolPlayerHistoryResponseSimpleDto;
+import com.example.naejeonhajab.domain.game.lol.dto.res.LolPlayerResultHistoryResponseSimpleDto;
 import com.example.naejeonhajab.domain.game.lol.mapper.RiftMapper;
 import com.example.naejeonhajab.common.exception.BaseException;
 import com.example.naejeonhajab.common.exception.LolException;
 import com.example.naejeonhajab.common.response.enums.BaseApiResponse;
-import com.example.naejeonhajab.domain.game.lol.dto.rift.common.RiftLinesDto;
-import com.example.naejeonhajab.domain.game.lol.dto.rift.common.RiftPlayerDto;
-import com.example.naejeonhajab.domain.game.lol.dto.rift.req.RiftPlayerHistoryRequestDto;
-import com.example.naejeonhajab.domain.game.lol.dto.rift.req.RiftPlayerResultHistoryRequestDto;
-import com.example.naejeonhajab.domain.game.lol.dto.rift.res.RiftPlayerHistoryResponseDetailDto;
-import com.example.naejeonhajab.domain.game.lol.dto.rift.res.RiftTeamResponseDto;
-import com.example.naejeonhajab.domain.game.lol.dto.rift.res.RiftPlayerResultHistoryResponseDetailDto;
+import com.example.naejeonhajab.domain.game.lol.dto.common.LolLinesDto;
+import com.example.naejeonhajab.domain.game.lol.dto.common.LolPlayerDto;
+import com.example.naejeonhajab.domain.game.lol.dto.req.LolPlayerHistoryRequestDto;
+import com.example.naejeonhajab.domain.game.lol.dto.req.LolPlayerResultHistoryRequestDto;
+import com.example.naejeonhajab.domain.game.lol.dto.res.LolPlayerHistoryResponseDetailDto;
+import com.example.naejeonhajab.domain.game.lol.dto.res.LolTeamResponseDto;
+import com.example.naejeonhajab.domain.game.lol.dto.res.LolPlayerResultHistoryResponseDetailDto;
 import com.example.naejeonhajab.domain.game.lol.entity.player.LolLines;
 import com.example.naejeonhajab.domain.game.lol.entity.player.LolPlayer;
 import com.example.naejeonhajab.domain.game.lol.entity.player.LolPlayerHistory;
@@ -45,7 +45,7 @@ import java.util.stream.Collectors;
 import static com.example.naejeonhajab.common.response.enums.LolApiResponse.LOL_HISTORY_NOT_FOUND;
 import static com.example.naejeonhajab.common.response.enums.LolApiResponse.LOL_RESULT_HISTORY_NOT_FOUND;
 
-@Slf4j
+@Slf4j(topic = "RiftServiceImpl")
 @RequiredArgsConstructor
 @Service("riftServiceImpl")
 public class RiftServiceImpl {
@@ -64,12 +64,12 @@ public class RiftServiceImpl {
     private static int retries = 10000; // 최대 시도 횟수
 
     // 10명의 인원으로, 5:5 팀 구성해준후 반환
-    public RiftTeamResponseDto createTeam(RiftPlayerHistoryRequestDto dto) {
+    public LolTeamResponseDto createTeam(LolPlayerHistoryRequestDto dto) {
         return create(dto);
     }
 
     @Transactional
-    public RiftTeamResponseDto createPlayerHistoryAndTeam(RiftPlayerHistoryRequestDto dto, AuthUser authUser) {
+    public LolTeamResponseDto createPlayerHistoryAndTeam(LolPlayerHistoryRequestDto dto, AuthUser authUser) {
 //        User user = User.of(authUser);
 //        LolPlayerHistory playerHistory = LolPlayerHistory.from(dto, user);
 //        List<LolPlayer> playerList = LolPlayer.from(dto, playerHistory);
@@ -84,7 +84,7 @@ public class RiftServiceImpl {
 //        return create(dto);
 
         User user = User.of(authUser);
-        LolPlayerHistory playerHistory = LolPlayerHistory.from(dto,user);
+        LolPlayerHistory playerHistory = LolPlayerHistory.from(dto,user, LolType.RIFT);
         List<LolPlayer> playerList = LolPlayer.from(dto,playerHistory);
         List<LolLines> lines = LolLines.from(dto,playerList);
         lolPlayerHistoryRepository.save(playerHistory);
@@ -96,7 +96,7 @@ public class RiftServiceImpl {
 
     // 내전 결과 저장 메서드
     @Transactional
-    public void createResultTeam(RiftPlayerResultHistoryRequestDto riftPlayerResultHistoryRequestDto, AuthUser authUser) {
+    public void createResultTeam(LolPlayerResultHistoryRequestDto riftPlayerResultHistoryRequestDto, AuthUser authUser) {
         User user = User.of(authUser);
         LolPlayerResultHistory playerResultHistory = LolPlayerResultHistory.fromRiftPlayerResultHistoryRequestDto(riftPlayerResultHistoryRequestDto,user);
         lolPlayerResultHistoryRepository.save(playerResultHistory);
@@ -114,9 +114,9 @@ public class RiftServiceImpl {
     }
 
     // 팀을 랜덤하게 5명으로 나눔
-    public RiftTeamResponseDto splitTeam(List<RiftPlayerDto> riftPlayerRequestDtos) {
-        List<RiftPlayerDto> teamA = new ArrayList<>();
-        List<RiftPlayerDto> teamB = new ArrayList<>();
+    public LolTeamResponseDto splitTeam(List<LolPlayerDto> riftPlayerRequestDtos) {
+        List<LolPlayerDto> teamA = new ArrayList<>();
+        List<LolPlayerDto> teamB = new ArrayList<>();
         try {
             Collections.shuffle(riftPlayerRequestDtos);
             for ( int i=0; i<riftPlayerRequestDtos.size()/2; i++ ){
@@ -124,30 +124,31 @@ public class RiftServiceImpl {
                 teamB.add(riftPlayerRequestDtos.get(i + (riftPlayerRequestDtos.size()/2)));
             }
         } catch (Exception e) {
+            log.error(e.getMessage(), e);
             throw new BaseException(BaseApiResponse.TEAM_MISMATCH);
         }
 
-        return new RiftTeamResponseDto(teamA, teamB);
+        return new LolTeamResponseDto(teamA, teamB);
     }
 
     // 티어를 기준으로 5:5 팀 나누기
-    public RiftTeamResponseDto generateBalanceByTier(RiftTeamResponseDto team) {
-        List<RiftPlayerDto> bestTeamA = new ArrayList<>();
-        List<RiftPlayerDto> bestTeamB = new ArrayList<>();
+    public LolTeamResponseDto generateBalanceByTier(LolTeamResponseDto team) {
+        List<LolPlayerDto> bestTeamA = new ArrayList<>();
+        List<LolPlayerDto> bestTeamB = new ArrayList<>();
         try {
-            List<RiftPlayerDto> allPlayers = new ArrayList<>();
+            List<LolPlayerDto> allPlayers = new ArrayList<>();
             allPlayers.addAll(team.getTeamA());
             allPlayers.addAll(team.getTeamB());
             // 모든 조합 탐색
             int n = allPlayers.size() / 2;
-            List<List<RiftPlayerDto>> allCombinations = generateCombinations(allPlayers, n);
+            List<List<LolPlayerDto>> allCombinations = generateCombinations(allPlayers, n);
 
             int minDifference = Integer.MAX_VALUE;
 
 
             // 각 조합에 대해 점수 차이를 계산
-            for (List<RiftPlayerDto> teamA : allCombinations) {
-                List<RiftPlayerDto> teamB = new ArrayList<>(allPlayers);
+            for (List<LolPlayerDto> teamA : allCombinations) {
+                List<LolPlayerDto> teamB = new ArrayList<>(allPlayers);
                 teamB.removeAll(teamA);
 
                 int teamA_score = calculateScore(teamA);
@@ -162,36 +163,38 @@ public class RiftServiceImpl {
             }
 
         } catch (Exception e) {
+            log.error(e.getMessage(), e);
             throw new BaseException(BaseApiResponse.TEAM_MISMATCH);
         }
         // 가장 밸런스가 좋은 팀 반환
-        return new RiftTeamResponseDto(bestTeamA, bestTeamB);
+        return new LolTeamResponseDto(bestTeamA, bestTeamB);
     }
 
     // MainLine으로 정렬된 새로운 팀을 반환
-    private RiftTeamResponseDto normalizeLineOrder(RiftTeamResponseDto team) {
-        List<RiftPlayerDto> teamA;
-        List<RiftPlayerDto> teamB;
+    private LolTeamResponseDto normalizeLineOrder(LolTeamResponseDto team) {
+        List<LolPlayerDto> teamA;
+        List<LolPlayerDto> teamB;
         try {
             teamA = soryTeamByLineRole(team.getTeamA());
             teamB = soryTeamByLineRole(team.getTeamB());
         } catch (Exception e) {
+            log.error(e.getMessage(), e);
             throw new BaseException(BaseApiResponse.TEAM_MISMATCH);
         }
-        return new RiftTeamResponseDto(teamA, teamB);
+        return new LolTeamResponseDto(teamA, teamB);
     }
 
     // 라인이 각자 올바르게 구성되어있는지 확인
-    private RiftTeamResponseDto checkLineAndRetryForLineBalance(RiftTeamResponseDto team) {
-        RiftTeamResponseDto newTeam;
-        Map<LolLine, RiftPlayerDto> teamALines = new HashMap<>();
-        Map<LolLine, RiftPlayerDto> teamBLines = new HashMap<>();
+    private LolTeamResponseDto checkLineAndRetryForLineBalance(LolTeamResponseDto team) {
+        LolTeamResponseDto newTeam;
+        Map<LolLine, LolPlayerDto> teamALines = new HashMap<>();
+        Map<LolLine, LolPlayerDto> teamBLines = new HashMap<>();
         try {
             boolean hasEmptyLines = assignLines(team,teamALines,teamBLines);
 
-            List<RiftPlayerDto> teamA = updatePlayerLines(team.getTeamA(), teamALines);
-            List<RiftPlayerDto> teamB = updatePlayerLines(team.getTeamB(), teamBLines);
-            newTeam = new RiftTeamResponseDto(teamA, teamB);
+            List<LolPlayerDto> teamA = updatePlayerLines(team.getTeamA(), teamALines);
+            List<LolPlayerDto> teamB = updatePlayerLines(team.getTeamB(), teamBLines);
+            newTeam = new LolTeamResponseDto(teamA, teamB);
 
             if (hasEmptyLines) {
                 throw new BaseException(BaseApiResponse.TEAM_MISMATCH);
@@ -201,13 +204,14 @@ public class RiftServiceImpl {
             }
 
         } catch (Exception e) {
+            log.error(e.getMessage(), e);
             throw new BaseException(BaseApiResponse.TEAM_MISMATCH);
         }
     }
     // 라인순서대로 정리 (전체적)
-    private RiftTeamResponseDto orderByLine(RiftTeamResponseDto team) {
-        List<RiftPlayerDto> sortedTeamA;
-        List<RiftPlayerDto> sortedTeamB;
+    private LolTeamResponseDto orderByLine(LolTeamResponseDto team) {
+        List<LolPlayerDto> sortedTeamA;
+        List<LolPlayerDto> sortedTeamB;
         try {
             // 원하는 라인 순서
             List<LolLine> lineOrder = List.of(LolLine.values());
@@ -220,13 +224,14 @@ public class RiftServiceImpl {
 
             // 정렬된 팀으로 새로운 Team 객체 반환
         } catch (Exception e) {
+            log.error(e.getMessage(), e);
             throw new BaseException(BaseApiResponse.TEAM_MISMATCH);
         }
-        return new RiftTeamResponseDto(sortedTeamA, sortedTeamB);
+        return new LolTeamResponseDto(sortedTeamA, sortedTeamB);
     }
 
     // 실제 라인 정렬 담당 함수
-    private List<RiftPlayerDto> sortTeamByLine(List<RiftPlayerDto> riftPlayerRequestDtos, List<LolLine> lineOrder) {
+    private List<LolPlayerDto> sortTeamByLine(List<LolPlayerDto> riftPlayerRequestDtos, List<LolLine> lineOrder) {
         // Player를 정렬하는 로직
         return riftPlayerRequestDtos.stream()
                 .sorted(Comparator.comparingInt(player -> {
@@ -240,17 +245,17 @@ public class RiftServiceImpl {
 
 
     // Player의 Line 정보를 Map에 맞게 업데이트하고, 새로운 List<Player>를 반환하는 메서드
-    private List<RiftPlayerDto> updatePlayerLines(List<RiftPlayerDto> riftPlayerRequestDtos, Map<LolLine, RiftPlayerDto> lineMap) {
+    private List<LolPlayerDto> updatePlayerLines(List<LolPlayerDto> riftPlayerRequestDtos, Map<LolLine, LolPlayerDto> lineMap) {
         return riftPlayerRequestDtos.stream()
                 .peek(player ->
                         lineMap.forEach((assignedLine, assignedPlayer) -> {
                             if (player.getName().equals(assignedPlayer.getName())) {
                                 // true라면 SUbLINE 배정
-                                if (player.isMmrReduced()) {
-                                    player.updateLines(List.of(new RiftLinesDto(assignedLine, LolLineRole.SUBLINE)));
+                                if (player.getMmrReduced()) {
+                                    player.updateLines(List.of(new LolLinesDto(assignedLine, LolLineRole.SUBLINE)));
                                 }
                                 else {
-                                    player.updateLines(List.of(new RiftLinesDto(assignedLine, LolLineRole.MAINLINE)));
+                                    player.updateLines(List.of(new LolLinesDto(assignedLine, LolLineRole.MAINLINE)));
                                 }
                                 // Player의 Lines를 업데이트
                             }
@@ -262,16 +267,16 @@ public class RiftServiceImpl {
 
     // 중복된 라인 제거하고, 서브라인이라면 mmr 200점 차감시킴 (전체적)
     // 두팀 모두 중복되지않은 라인을 가지고 있을경우 false 반환
-    private boolean assignLines(RiftTeamResponseDto team, Map<LolLine, RiftPlayerDto> teamALines, Map<LolLine, RiftPlayerDto> teamBLines) {
+    private boolean assignLines(LolTeamResponseDto team, Map<LolLine, LolPlayerDto> teamALines, Map<LolLine, LolPlayerDto> teamBLines) {
         assignTeamLines(team.getTeamA(), teamALines);
         assignTeamLines(team.getTeamB(), teamBLines);
         return hasEmptyLines(teamALines) || hasEmptyLines(teamBLines);
     }
 
     // 실질적인 중복 라인 제거하는 메서드
-    private void assignTeamLines(List<RiftPlayerDto> players, Map<LolLine, RiftPlayerDto> lineMap) {
-        for (RiftPlayerDto player : players) {
-            for (RiftLinesDto line : player.getLines()) {
+    private void assignTeamLines(List<LolPlayerDto> players, Map<LolLine, LolPlayerDto> lineMap) {
+        for (LolPlayerDto player : players) {
+            for (LolLinesDto line : player.getLines()) {
                 if (lineMap.containsKey(line.getLine())) continue;
 
                 // MAINLINE 처리
@@ -293,17 +298,17 @@ public class RiftServiceImpl {
 
 
     // 존재하지않는 것이 하나라도 있으면 true 반환
-    private boolean hasEmptyLines(Map<LolLine, RiftPlayerDto> lineMap) {
+    private boolean hasEmptyLines(Map<LolLine, LolPlayerDto> lineMap) {
         List<LolLine> requiredPositions = List.of(LolLine.values()); // Enum 값 그대로 사용
         return requiredPositions.stream().anyMatch(pos -> !lineMap.containsKey(pos));
     }
 
     // MainLine은 앞으로, SubLine은 뒤로
-    private List<RiftPlayerDto> soryTeamByLineRole(List<RiftPlayerDto> players){
+    private List<LolPlayerDto> soryTeamByLineRole(List<LolPlayerDto> players){
         return players.stream()
                 .map(player -> {
                     // lines를 MainLine이 먼저 오도록 정렬
-                    List<RiftLinesDto> reorderedLines = player.getLines().stream()
+                    List<LolLinesDto> reorderedLines = player.getLines().stream()
                             .sorted((line1, line2) -> {
                                 if (line1.getLineRole().isMainRole()) return -1; // MainLine을 앞에 배치
                                 if (line2.getLineRole().isMainRole()) return 1;
@@ -312,28 +317,28 @@ public class RiftServiceImpl {
                             .toList();
 
                     // Player의 lines를 재배열 후 새로운 Player 객체 생성 (불변 객체일 경우)
-                    return new RiftPlayerDto(player.getName(), player.getTier(),reorderedLines);
+                    return new LolPlayerDto(player.getName(), player.getTier(),reorderedLines,player.getMmr(),player.getMmrReduced());
                 })
                 .collect(Collectors.toList());
     }
 
 
     // 각 팀의 mmr 총합 계산
-    private int calculateScore(List<RiftPlayerDto> team) {
+    private int calculateScore(List<LolPlayerDto> team) {
         return team.stream()
-                .mapToInt(RiftPlayerDto::getMmr)
+                .mapToInt(LolPlayerDto::getMmr)
                 .sum();
     }
 
     // 두 팀중 최적의 mmr점수 차이가 적은 조합을 찾는 메서드
-    private List<List<RiftPlayerDto>> generateCombinations(List<RiftPlayerDto> players, int size) {
-        List<List<RiftPlayerDto>> combinations = new ArrayList<>();
+    private List<List<LolPlayerDto>> generateCombinations(List<LolPlayerDto> players, int size) {
+        List<List<LolPlayerDto>> combinations = new ArrayList<>();
         generateCombinationsHelper(players, new ArrayList<>(), 0, size, combinations);
         return combinations;
     }
 
     // 두 팀중 최적의 mmr점수 차이가 적은 조합을 찾는 메서드 실질적으로 이행하는 메서드
-    private void generateCombinationsHelper(List<RiftPlayerDto> players, List<RiftPlayerDto> current, int index, int size, List<List<RiftPlayerDto>> result) {
+    private void generateCombinationsHelper(List<LolPlayerDto> players, List<LolPlayerDto> current, int index, int size, List<List<LolPlayerDto>> result) {
         if (current.size() == size) {
             result.add(new ArrayList<>(current));
             return;
@@ -350,14 +355,14 @@ public class RiftServiceImpl {
     }
 
     // 10명의 유저를 받아, 5:5대전팀을 만들어주는 공통 메서드
-    public RiftTeamResponseDto create(RiftPlayerHistoryRequestDto dto) {
-        initMmr(dto.getPlayerDtos());
+    public LolTeamResponseDto create(LolPlayerHistoryRequestDto dto) {
+        initMmr(dto.getLolPlayerDtos());
         while (retries > 0) {
             try {
-                RiftTeamResponseDto one = splitTeam(dto.getPlayerDtos());
-                RiftTeamResponseDto two = generateBalanceByTier(one);
-                RiftTeamResponseDto three = normalizeLineOrder(two);
-                RiftTeamResponseDto four = checkLineAndRetryForLineBalance(three);
+                LolTeamResponseDto one = splitTeam(dto.getLolPlayerDtos());
+                LolTeamResponseDto two = generateBalanceByTier(one);
+                LolTeamResponseDto three = normalizeLineOrder(two);
+                LolTeamResponseDto four = checkLineAndRetryForLineBalance(three);
                 return orderByLine(four);
             } catch (Exception e) {
                 retries--;
@@ -367,22 +372,22 @@ public class RiftServiceImpl {
     }
 
     // 10명의 유저에 대해 티어에 따른 MMR 부여 메서드
-    private void initMmr(List<RiftPlayerDto> riftRequestDtos){
-        for (RiftPlayerDto riftPlayerRequestDto : riftRequestDtos) {
+    private void initMmr(List<LolPlayerDto> riftRequestDtos){
+        for (LolPlayerDto riftPlayerRequestDto : riftRequestDtos) {
             riftPlayerRequestDto.updateMmr(riftPlayerRequestDto.getTier().getScore());
         }
     }
 
     // 특정 ID의 플레이어 상세 히스토리 반환 (단일)
-    public RiftPlayerHistoryResponseDetailDto getDetailTeam(Long playerHistoryId) {
+    public LolPlayerHistoryResponseDetailDto getDetailTeam(Long playerHistoryId) {
         LolPlayerHistory lolPlayerHistory = findLolPlayerHistoryByPlayerHistoryId(playerHistoryId);
-        return RiftPlayerHistoryResponseDetailDto.of(lolPlayerHistory);
+        return LolPlayerHistoryResponseDetailDto.of(lolPlayerHistory);
     }
 
     // 특정 ID의 플레이어 대전 상세 내역 반환 (단일)
-    public RiftPlayerResultHistoryResponseDetailDto getDetailResultTeam(Long playerResultHistoryId) {
+    public LolPlayerResultHistoryResponseDetailDto getDetailResultTeam(Long playerResultHistoryId) {
         LolPlayerResultHistory lolPlayerResultHistory = findLolPlayerResultHistoryByPlayerHistoryId(playerResultHistoryId);
-        return RiftPlayerResultHistoryResponseDetailDto.of(lolPlayerResultHistory);
+        return LolPlayerResultHistoryResponseDetailDto.of(lolPlayerResultHistory);
     }
 
     // 현재 유저가 가지고있는 플레이어 히스토리 내역 조회 (다건)

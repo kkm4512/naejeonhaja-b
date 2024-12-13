@@ -6,10 +6,19 @@ import lombok.Getter;
 @Getter
 public class BaseException extends RuntimeException {
     private final ApiResponseEnum apiResponseEnum;
+    private final String originalMessage; // 원본 메시지 저장
 
     public BaseException(ApiResponseEnum apiResponseEnum) {
         super(apiResponseEnum.getMessage());
         this.apiResponseEnum = apiResponseEnum;
+        this.originalMessage = null; // 원본 메시지가 없을 경우
+    }
+
+    // 원초적 e.getMessage()를 가져오기 위함
+    public BaseException(ApiResponseEnum apiResponseEnum, Throwable cause) {
+        super(apiResponseEnum.getMessage(), cause);
+        this.apiResponseEnum = apiResponseEnum;
+        this.originalMessage = cause.getMessage(); // 원초적 메시지 저장
     }
 
 }

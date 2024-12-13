@@ -1,4 +1,4 @@
-package com.example.naejeonhajab.domain.game.lol.dto.rift.common;
+package com.example.naejeonhajab.domain.game.lol.dto.common;
 
 import com.example.naejeonhajab.common.enums.Outcome;
 import com.example.naejeonhajab.domain.game.lol.entity.result.LolPlayerResultOutcome;
@@ -14,17 +14,17 @@ import java.util.List;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-public class RiftTeamResultDto {
+public class LolTeamResultDto {
     @NotNull(message = "승리 여부는 공백 일 수 없습니다")
     Outcome outcome;
     @Valid
     @Size(max = 5, message = "팀은 5명이 최대 인원입니다")
-    List<RiftPlayerDto> team;
+    List<LolPlayerDto> team;
 
-    public static RiftTeamResultDto of(LolPlayerResultOutcome lolPlayerResultOutcome) {
-        return new RiftTeamResultDto(
+    public static LolTeamResultDto of(LolPlayerResultOutcome lolPlayerResultOutcome) {
+        return new LolTeamResultDto(
                 lolPlayerResultOutcome.getOutcome(),
-                RiftPlayerDto.of(lolPlayerResultOutcome.getPlayerResults())
+                LolPlayerDto.of(lolPlayerResultOutcome.getPlayerResults())
         );
     }
 }

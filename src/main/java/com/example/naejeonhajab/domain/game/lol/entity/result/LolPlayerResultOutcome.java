@@ -1,8 +1,7 @@
 package com.example.naejeonhajab.domain.game.lol.entity.result;
 
 import com.example.naejeonhajab.common.enums.Outcome;
-import com.example.naejeonhajab.domain.game.lol.dto.abyss.common.AbyssTeamResultDto;
-import com.example.naejeonhajab.domain.game.lol.dto.rift.common.RiftTeamResultDto;
+import com.example.naejeonhajab.domain.game.lol.dto.common.LolTeamResultDto;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -37,14 +36,14 @@ public class LolPlayerResultOutcome {
         this.playerResultHistory = playerResultHistory;
     }
 
-    public static LolPlayerResultOutcome fromRiftTeamResultDtoAndLolPlayerResultHistory(RiftTeamResultDto dto, LolPlayerResultHistory playerResultHistory) {
+    public static LolPlayerResultOutcome fromRiftTeamResultDtoAndLolPlayerResultHistory(LolTeamResultDto dto, LolPlayerResultHistory playerResultHistory) {
         return new LolPlayerResultOutcome(
                 dto.getOutcome(),
                 playerResultHistory
         );
     }
 
-    public static LolPlayerResultOutcome fromAbyssTeamResultdDtoAndLolPlayerResultHistory(AbyssTeamResultDto dto, LolPlayerResultHistory playerResultHistory) {
+    public static LolPlayerResultOutcome fromAbyssTeamResultdDtoAndLolPlayerResultHistory(LolTeamResultDto dto, LolPlayerResultHistory playerResultHistory) {
         return new LolPlayerResultOutcome(
                 dto.getOutcome(),
                 playerResultHistory

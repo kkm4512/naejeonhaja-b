@@ -6,4 +6,8 @@ public class UserException extends BaseException {
     public UserException(ApiResponseEnum apiResponseEnum) {
         super(apiResponseEnum);
     }
+
+    public UserException(ApiResponseEnum apiResponseEnum, Throwable cause) {
+        super(apiResponseEnum, cause);
+    }
 }
