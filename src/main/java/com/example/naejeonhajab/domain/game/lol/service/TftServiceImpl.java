@@ -6,11 +6,7 @@ import com.example.naejeonhajab.common.response.enums.BaseApiResponse;
 import com.example.naejeonhajab.domain.game.lol.dto.common.LolPlayerDto;
 import com.example.naejeonhajab.domain.game.lol.dto.req.LolPlayerHistoryRequestDto;
 import com.example.naejeonhajab.domain.game.lol.dto.req.LolPlayerResultHistoryRequestDto;
-import com.example.naejeonhajab.domain.game.lol.dto.res.LolPlayerHistoryResponseDetailDto;
-import com.example.naejeonhajab.domain.game.lol.dto.res.LolPlayerResultHistoryResponseDetailDto;
-import com.example.naejeonhajab.domain.game.lol.dto.res.LolTeamResponseDto;
-import com.example.naejeonhajab.domain.game.lol.dto.res.LolPlayerHistoryResponseSimpleDto;
-import com.example.naejeonhajab.domain.game.lol.dto.res.LolPlayerResultHistoryResponseSimpleDto;
+import com.example.naejeonhajab.domain.game.lol.dto.res.*;
 import com.example.naejeonhajab.domain.game.lol.entity.player.LolPlayer;
 import com.example.naejeonhajab.domain.game.lol.entity.player.LolPlayerHistory;
 import com.example.naejeonhajab.domain.game.lol.entity.result.LolPlayerResult;
@@ -40,8 +36,8 @@ import static com.example.naejeonhajab.common.response.enums.LolApiResponse.LOL_
 
 @Slf4j
 @RequiredArgsConstructor
-@Service("abyssServiceImpl")
-public class AbyssServiceImpl {
+@Service("tftServiceImpl")
+public class TftServiceImpl {
     // Player
     private final LolPlayerHistoryRepository lolPlayerHistoryRepository;
     private final LolPlayerRepository lolPlayerRepository;
@@ -62,7 +58,7 @@ public class AbyssServiceImpl {
     @Transactional
     public LolTeamResponseDto createPlayerHistoryAndTeam(LolPlayerHistoryRequestDto dto, AuthUser authUser) {
         User user = User.of(authUser);
-        LolPlayerHistory playerHistory = LolPlayerHistory.from(dto,user, LolType.ABYSS);
+        LolPlayerHistory playerHistory = LolPlayerHistory.from(dto,user, LolType.TFT);
         lolPlayerHistoryRepository.save(playerHistory);
         List<LolPlayer> playerList = LolPlayer.from(dto,playerHistory);
         lolPlayerRepository.saveAll(playerList);
@@ -73,7 +69,7 @@ public class AbyssServiceImpl {
     @Transactional
     public void createResultTeam(LolPlayerResultHistoryRequestDto dto, AuthUser authUser) {
         User user = User.of(authUser);
-        LolPlayerResultHistory playerResultHistory = LolPlayerResultHistory.from(dto,user,LolType.ABYSS);
+        LolPlayerResultHistory playerResultHistory = LolPlayerResultHistory.from(dto,user,LolType.TFT);
         lolPlayerResultHistoryRepository.save(playerResultHistory);
         LolPlayerResultOutcome playerResultOutcomeA = LolPlayerResultOutcome.from(dto.getTeamA(),playerResultHistory);
         LolPlayerResultOutcome playerResultOutcomeB = LolPlayerResultOutcome.from(dto.getTeamB(),playerResultHistory);
@@ -219,11 +215,11 @@ public class AbyssServiceImpl {
 
 
     private Page<LolPlayerHistory> findLolPlayerHistoryByUser(User user, Pageable pageable) {
-        return lolPlayerHistoryRepository.findByUserAndType(user, LolType.ABYSS,pageable);
+        return lolPlayerHistoryRepository.findByUserAndType(user, LolType.TFT,pageable);
     }
 
     private Page<LolPlayerResultHistory> findLolPlayerResultHistoryByUser(User user, Pageable pageable) {
-        return lolPlayerResultHistoryRepository.findByUserAndType(user, LolType.ABYSS,pageable);
+        return lolPlayerResultHistoryRepository.findByUserAndType(user, LolType.TFT,pageable);
     }
 
     private LolPlayerHistory findLolPlayerHistoryByPlayerHistoryId(Long playerHistoryId) {

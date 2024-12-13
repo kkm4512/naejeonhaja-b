@@ -36,14 +36,7 @@ public class LolPlayerResultOutcome {
         this.playerResultHistory = playerResultHistory;
     }
 
-    public static LolPlayerResultOutcome fromRiftTeamResultDtoAndLolPlayerResultHistory(LolTeamResultDto dto, LolPlayerResultHistory playerResultHistory) {
-        return new LolPlayerResultOutcome(
-                dto.getOutcome(),
-                playerResultHistory
-        );
-    }
-
-    public static LolPlayerResultOutcome fromAbyssTeamResultdDtoAndLolPlayerResultHistory(LolTeamResultDto dto, LolPlayerResultHistory playerResultHistory) {
+    public static LolPlayerResultOutcome from(LolTeamResultDto dto, LolPlayerResultHistory playerResultHistory) {
         return new LolPlayerResultOutcome(
                 dto.getOutcome(),
                 playerResultHistory
