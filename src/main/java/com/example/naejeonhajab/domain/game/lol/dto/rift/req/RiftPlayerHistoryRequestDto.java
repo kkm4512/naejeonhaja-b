@@ -12,9 +12,9 @@ import java.util.List;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-public class LolPlayerHistoryRequestDto {
+public class RiftPlayerHistoryRequestDto {
     String playerHistoryTitle;
     @Valid
-    @Size(max = 10, message = "최대 10명의 플레이어만 들어 올 수 있습니다")
-    List<RiftPlayerDto> riftPlayerDtos;
+    @Size(max = 10, message = "최대 10명의 플레이어만 들어올 수 있습니다.")
+    List<RiftPlayerDto> playerDtos;
 }

@@ -18,7 +18,7 @@ public class RiftTeamResultDto {
     @NotNull(message = "승리 여부는 공백 일 수 없습니다")
     Outcome outcome;
     @Valid
-    @Size(min = 11, message = "유저는 10명이 최대 인원입니다")
+    @Size(max = 5, message = "팀은 5명이 최대 인원입니다")
     List<RiftPlayerDto> team;
 
     public static RiftTeamResultDto of(LolPlayerResultOutcome lolPlayerResultOutcome) {
