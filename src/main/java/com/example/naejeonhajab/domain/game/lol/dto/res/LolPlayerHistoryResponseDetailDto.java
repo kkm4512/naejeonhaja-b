@@ -1,6 +1,6 @@
-package com.example.naejeonhajab.domain.game.lol.dto.rift.res;
+package com.example.naejeonhajab.domain.game.lol.dto.res;
 
-import com.example.naejeonhajab.domain.game.lol.dto.rift.common.RiftPlayerDto;
+import com.example.naejeonhajab.domain.game.lol.dto.common.LolPlayerDto;
 import com.example.naejeonhajab.domain.game.lol.entity.player.LolPlayer;
 import com.example.naejeonhajab.domain.game.lol.entity.player.LolPlayerHistory;
 import jakarta.validation.Valid;
@@ -15,16 +15,16 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 // 제목 + 10명의 유저 의 정보 전부있음
-public class RiftPlayerHistoryResponseDetailDto {
+public class LolPlayerHistoryResponseDetailDto {
     private String playerHistoryTitle;
     @Valid
     @Size
-    private List<RiftPlayerDto> playerDtos;
+    private List<LolPlayerDto> playerDtos;
 
-    public static RiftPlayerHistoryResponseDetailDto of(LolPlayerHistory lolPlayerHistory){
+    public static LolPlayerHistoryResponseDetailDto of(LolPlayerHistory lolPlayerHistory){
         List<LolPlayer> players = lolPlayerHistory.getPlayers();
-        List<RiftPlayerDto> playerDtos = LolPlayer.toRiftPlayerDtos(players);
-        return new RiftPlayerHistoryResponseDetailDto(
+        List<LolPlayerDto> playerDtos = LolPlayer.to(players);
+        return new LolPlayerHistoryResponseDetailDto(
                 lolPlayerHistory.getPlayerHistoryTitle(),
                 playerDtos
         );

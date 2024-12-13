@@ -1,4 +1,4 @@
-package com.example.naejeonhajab.domain.game.lol.dto.common.res;
+package com.example.naejeonhajab.domain.game.lol.dto.res;
 
 import com.example.naejeonhajab.domain.game.lol.entity.result.LolPlayerResultHistory;
 import lombok.AllArgsConstructor;

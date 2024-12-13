@@ -1,8 +1,8 @@
 package com.example.naejeonhajab.domain.game.lol.entity.player;
 
-import com.example.naejeonhajab.domain.game.lol.dto.rift.common.RiftLinesDto;
-import com.example.naejeonhajab.domain.game.lol.dto.rift.common.RiftPlayerDto;
-import com.example.naejeonhajab.domain.game.lol.dto.rift.req.RiftPlayerHistoryRequestDto;
+import com.example.naejeonhajab.domain.game.lol.dto.common.LolLinesDto;
+import com.example.naejeonhajab.domain.game.lol.dto.common.LolPlayerDto;
+import com.example.naejeonhajab.domain.game.lol.dto.req.LolPlayerHistoryRequestDto;
 import com.example.naejeonhajab.domain.game.lol.enums.LolLine;
 import com.example.naejeonhajab.domain.game.lol.enums.LolLineRole;
 import jakarta.persistence.*;
@@ -38,12 +38,12 @@ public class LolLines {
         this.lineRole = lineRole;
         this.player = player;
     }
-    public static List<LolLines> from(RiftPlayerHistoryRequestDto riftPlayerHistoryRequestDto, List<LolPlayer> playerList) {
+    public static List<LolLines> from(LolPlayerHistoryRequestDto riftPlayerHistoryRequestDto, List<LolPlayer> playerList) {
         List<LolLines> lineList = new ArrayList<>();
         for ( int i=0; i<playerList.size(); i++ ) {
             LolPlayer player = playerList.get(i);
-            RiftPlayerDto riftPlayerRequestDto = riftPlayerHistoryRequestDto.getPlayerDtos().get(i);
-            for ( RiftLinesDto lines : riftPlayerRequestDto.getLines() ) {
+            LolPlayerDto riftPlayerRequestDto = riftPlayerHistoryRequestDto.getLolPlayerDtos().get(i);
+            for ( LolLinesDto lines : riftPlayerRequestDto.getLines() ) {
                 lineList.add(
                         new LolLines(
                                 lines.getLine(),
@@ -56,11 +56,13 @@ public class LolLines {
     }
 
 
-    public static RiftPlayerDto of(LolLines lolPlayerLines){
-        return new RiftPlayerDto(
+    public static LolPlayerDto of(LolLines lolPlayerLines){
+        return new LolPlayerDto(
             lolPlayerLines.getPlayer().getName(),
             lolPlayerLines.getPlayer().getTier(),
-            null
+            null,
+            null,
+                null
         );
     }
 }

@@ -1,6 +1,6 @@
-package com.example.naejeonhajab.domain.game.lol.dto.rift.req;
+package com.example.naejeonhajab.domain.game.lol.dto.req;
 
-import com.example.naejeonhajab.domain.game.lol.dto.rift.common.RiftPlayerDto;
+import com.example.naejeonhajab.domain.game.lol.dto.common.LolPlayerDto;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
@@ -12,9 +12,9 @@ import java.util.List;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-public class RiftPlayerHistoryRequestDto {
+public class LolPlayerHistoryRequestDto {
     String playerHistoryTitle;
     @Valid
     @Size(max = 10, message = "최대 10명의 플레이어만 들어올 수 있습니다.")
-    List<RiftPlayerDto> playerDtos;
+    List<LolPlayerDto> lolPlayerDtos;
 }

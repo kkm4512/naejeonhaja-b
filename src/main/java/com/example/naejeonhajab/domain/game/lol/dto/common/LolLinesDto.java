@@ -1,4 +1,4 @@
-package com.example.naejeonhajab.domain.game.lol.dto.rift.common;
+package com.example.naejeonhajab.domain.game.lol.dto.common;
 
 import com.example.naejeonhajab.domain.game.lol.entity.result.LolResultLines;
 import com.example.naejeonhajab.domain.game.lol.enums.LolLine;
@@ -14,16 +14,14 @@ import java.util.List;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-public class RiftLinesDto {
-    @NotNull(message = "라인은 공란 일 수 없습니다")
+public class LolLinesDto {
     LolLine line;
-    @NotNull(message = "서브라인,메인라인은 공란 일 수 없습니다")
     LolLineRole lineRole;
 
-    public static List<RiftLinesDto> of(List<LolResultLines> lines) {
-        List<RiftLinesDto> result = new ArrayList<>();
+    public static List<LolLinesDto> of(List<LolResultLines> lines) {
+        List<LolLinesDto> result = new ArrayList<>();
         for (LolResultLines line : lines) {
-            result.add(new RiftLinesDto(line.getLine(), line.getLineRole()));
+            result.add(new LolLinesDto(line.getLine(), line.getLineRole()));
         }
         return result;
     }

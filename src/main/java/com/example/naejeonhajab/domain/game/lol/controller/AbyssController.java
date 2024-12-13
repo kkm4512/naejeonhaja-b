@@ -3,12 +3,11 @@ package com.example.naejeonhajab.domain.game.lol.controller;
 import com.example.naejeonhajab.common.exception.LolException;
 import com.example.naejeonhajab.common.response.ApiResponse;
 import com.example.naejeonhajab.common.response.enums.BaseApiResponse;
-import com.example.naejeonhajab.common.response.enums.LolApiResponse;
-import com.example.naejeonhajab.domain.game.lol.dto.abyss.req.AbyssPlayerHistoryRequestDto;
-import com.example.naejeonhajab.domain.game.lol.dto.abyss.req.AbyssPlayerResultHistoryRequestDto;
-import com.example.naejeonhajab.domain.game.lol.dto.abyss.res.*;
-import com.example.naejeonhajab.domain.game.lol.dto.common.res.LolPlayerHistoryResponseSimpleDto;
-import com.example.naejeonhajab.domain.game.lol.dto.common.res.LolPlayerResultHistoryResponseSimpleDto;
+import com.example.naejeonhajab.domain.game.lol.dto.req.LolPlayerHistoryRequestDto;
+import com.example.naejeonhajab.domain.game.lol.dto.req.LolPlayerResultHistoryRequestDto;
+import com.example.naejeonhajab.domain.game.lol.dto.res.*;
+import com.example.naejeonhajab.domain.game.lol.dto.res.LolPlayerHistoryResponseSimpleDto;
+import com.example.naejeonhajab.domain.game.lol.dto.res.LolPlayerResultHistoryResponseSimpleDto;
 import com.example.naejeonhajab.domain.game.lol.service.AbyssServiceImpl;
 import com.example.naejeonhajab.security.AuthUser;
 import jakarta.validation.Valid;
@@ -32,30 +31,30 @@ public class AbyssController {
     private final AbyssServiceImpl lolService;
 
     @PostMapping
-    public ApiResponse<AbyssTeamResponseDto> createTeam(@RequestBody @Valid AbyssPlayerHistoryRequestDto dto) {
-        AbyssTeamResponseDto result = lolService.createTeam(dto);
+    public ApiResponse<LolTeamResponseDto> createTeam(@RequestBody @Valid LolPlayerHistoryRequestDto dto) {
+        LolTeamResponseDto result = lolService.createTeam(dto);
         return ApiResponse.of(BaseApiResponse.SUCCESS, result);
     }
 
     @PostMapping("/playerHistory")
-    public ApiResponse<AbyssTeamResponseDto> createPlayerHistoryAndTeam(@RequestBody @Valid AbyssPlayerHistoryRequestDto dto, @AuthenticationPrincipal AuthUser authUser) {
+    public ApiResponse<LolTeamResponseDto> createPlayerHistoryAndTeam(@RequestBody @Valid LolPlayerHistoryRequestDto dto, @AuthenticationPrincipal AuthUser authUser) {
         if (dto.getPlayerHistoryTitle() == null || dto.getPlayerHistoryTitle().isBlank()) {
             throw new LolException(LOL_TITLE_NOT_NULL);
         }
-        AbyssTeamResponseDto result = lolService.createPlayerHistoryAndTeam(dto, authUser);
+        LolTeamResponseDto result = lolService.createPlayerHistoryAndTeam(dto, authUser);
         return ApiResponse.of(BaseApiResponse.SUCCESS, result);
     }
 
     @PostMapping("/playerResultHistory")
-    public ApiResponse<Void> createResultTeam(@RequestBody @Valid AbyssPlayerResultHistoryRequestDto dto, @AuthenticationPrincipal AuthUser authUser) {
+    public ApiResponse<Void> createResultTeam(@RequestBody @Valid LolPlayerResultHistoryRequestDto dto, @AuthenticationPrincipal AuthUser authUser) {
         lolService.createResultTeam(dto,authUser);
         return ApiResponse.of(BaseApiResponse.SUCCESS);
     }
 
     // title, 10명의 유저 정보
     @GetMapping("/playerHistory/detail/{playerHistoryId}")
-    public ApiResponse<AbyssPlayerHistoryResponseDetailDto> getDetailTeam(@PathVariable Long playerHistoryId){
-        AbyssPlayerHistoryResponseDetailDto result = lolService.getDetailTeam(playerHistoryId);
+    public ApiResponse<LolPlayerHistoryResponseDetailDto> getDetailTeam(@PathVariable Long playerHistoryId){
+        LolPlayerHistoryResponseDetailDto result = lolService.getDetailTeam(playerHistoryId);
         return ApiResponse.of(BaseApiResponse.SUCCESS, result);
     }
 
@@ -70,8 +69,8 @@ public class AbyssController {
 
     // title, 10명의 유저 정보
     @GetMapping("/playerResultHistory/detail/{playerResultHistoryId}")
-    public ApiResponse<AbyssPlayerResultHistoryResponseDetailDto> getDetailResultTeam(@PathVariable Long playerResultHistoryId){
-        AbyssPlayerResultHistoryResponseDetailDto result = lolService.getDetailResultTeam(playerResultHistoryId);
+    public ApiResponse<LolPlayerResultHistoryResponseDetailDto> getDetailResultTeam(@PathVariable Long playerResultHistoryId){
+        LolPlayerResultHistoryResponseDetailDto result = lolService.getDetailResultTeam(playerResultHistoryId);
         return ApiResponse.of(BaseApiResponse.SUCCESS, result);
     }
 

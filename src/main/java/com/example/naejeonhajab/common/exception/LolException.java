@@ -6,4 +6,8 @@ public class LolException extends BaseException {
     public LolException(ApiResponseEnum apiResponseEnum) {
         super(apiResponseEnum);
     }
+
+    public LolException(ApiResponseEnum apiResponseEnum, Throwable cause) {
+        super(apiResponseEnum, cause);
+    }
 }
