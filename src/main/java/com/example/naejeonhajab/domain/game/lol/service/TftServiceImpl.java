@@ -57,9 +57,6 @@ public class TftServiceImpl {
     // Util
     private final LolUtilService lolUtilService;
 
-    // Variable
-    private static int retries = 10_000;
-
     // 10명의 인원으로, 5:5 팀 구성해준후 반환
     public LolTeamResponseDto createTeam(LolPlayerHistoryRequestDto dto) {
         return create(dto);
@@ -80,7 +77,7 @@ public class TftServiceImpl {
     @Transactional
     public void saveResultHistory(LolPlayerResultHistoryRequestDto riftPlayerResultHistoryRequestDto, AuthUser authUser) {
         User user = User.of(authUser);
-        LolPlayerResultHistory playerResultHistory = LolPlayerResultHistory.from(riftPlayerResultHistoryRequestDto,user, LolType.RIFT);
+        LolPlayerResultHistory playerResultHistory = LolPlayerResultHistory.from(riftPlayerResultHistoryRequestDto,user, LolType.TFT);
         LolPlayerResultOutcome playerResultOutcomeA = LolPlayerResultOutcome.from(riftPlayerResultHistoryRequestDto.getTeamA(),playerResultHistory);
         LolPlayerResultOutcome playerResultOutcomeB = LolPlayerResultOutcome.from(riftPlayerResultHistoryRequestDto.getTeamB(),playerResultHistory);
         List<LolPlayerResult> playerResultsA = LolPlayerResult.from(riftPlayerResultHistoryRequestDto.getTeamA(),playerResultOutcomeA);
@@ -93,6 +90,7 @@ public class TftServiceImpl {
 
     // 10명의 유저를 받아, 5:5대전팀을 만들어주는 공통 메서드
     public LolTeamResponseDto create(LolPlayerHistoryRequestDto dto) {
+        int retries = 10_000;
         lolUtilService.initMmr(dto.getLolPlayerDtos());
         while (retries > 0) {
             try {
