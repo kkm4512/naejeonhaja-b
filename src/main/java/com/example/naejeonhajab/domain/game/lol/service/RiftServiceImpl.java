@@ -3,7 +3,6 @@ package com.example.naejeonhajab.domain.game.lol.service;
 import com.example.naejeonhajab.common.exception.BaseException;
 import com.example.naejeonhajab.common.exception.LolException;
 import com.example.naejeonhajab.common.response.enums.BaseApiResponse;
-import com.example.naejeonhajab.domain.game.lol.dto.common.LolPlayerDto;
 import com.example.naejeonhajab.domain.game.lol.dto.req.LolPlayerHistoryRequestDto;
 import com.example.naejeonhajab.domain.game.lol.dto.req.LolPlayerResultHistoryRequestDto;
 import com.example.naejeonhajab.domain.game.lol.dto.res.*;
@@ -32,8 +31,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import static com.example.naejeonhajab.common.response.enums.LolApiResponse.LOL_HISTORY_NOT_FOUND;
@@ -48,7 +45,7 @@ public class RiftServiceImpl {
     private final LolPlayerResultHistoryRepository lolPlayerResultHistoryRepository;
 
     // Mapper
-    private final LolMapper riftMapper;
+    private final LolMapper lolMapper;
 
     // Balance
     private final LolBalanceServiceImpl lolBalanceService;
@@ -73,9 +70,9 @@ public class RiftServiceImpl {
         LolPlayerHistory playerHistory = LolPlayerHistory.from(dto, user,LolType.RIFT);
         List<LolPlayer> playerList = LolPlayer.from(dto, playerHistory);
         List<LolLines> lines = LolLines.from(dto, playerList);
-        riftMapper.insertPlayerHistory(playerHistory);
-        riftMapper.insertPlayers(playerList);
-        riftMapper.insertLines(lines);
+        lolMapper.insertPlayerHistory(playerHistory);
+        lolMapper.insertPlayers(playerList);
+        lolMapper.insertLines(lines);
         return create(dto);
     }
 
@@ -91,12 +88,12 @@ public class RiftServiceImpl {
         List<LolPlayerResult> playerResultsB = LolPlayerResult.from(dto.getTeamB(),playerResultOutcomeB);
         List<LolResultLines> linesA = LolResultLines.from(dto.getTeamA(),playerResultsA);
         List<LolResultLines> linesB = LolResultLines.from(dto.getTeamB(),playerResultsB);
-        riftMapper.inserPlayerResultHistory(playerResultHistory);
-        riftMapper.insertPlayerResultOutcome(List.of(playerResultOutcomeA,playerResultOutcomeB));
-        riftMapper.insertPlayersResult(playerResultsA);
-        riftMapper.insertPlayersResult(playerResultsB);
-        riftMapper.insertResultLines(linesA);
-        riftMapper.insertResultLines(linesB);
+        lolMapper.inserPlayerResultHistory(playerResultHistory);
+        lolMapper.insertPlayerResultOutcome(List.of(playerResultOutcomeA,playerResultOutcomeB));
+        lolMapper.insertPlayersResult(playerResultsA);
+        lolMapper.insertPlayersResult(playerResultsB);
+        lolMapper.insertResultLines(linesA);
+        lolMapper.insertResultLines(linesB);
     }
 
 
