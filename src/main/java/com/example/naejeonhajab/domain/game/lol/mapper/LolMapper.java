@@ -1,12 +1,12 @@
 package com.example.naejeonhajab.domain.game.lol.mapper;
 
-import com.example.naejeonhajab.domain.game.lol.entity.player.LolLines;
-import com.example.naejeonhajab.domain.game.lol.entity.player.LolPlayer;
-import com.example.naejeonhajab.domain.game.lol.entity.player.LolPlayerHistory;
-import com.example.naejeonhajab.domain.game.lol.entity.result.LolPlayerResult;
-import com.example.naejeonhajab.domain.game.lol.entity.result.LolPlayerResultHistory;
-import com.example.naejeonhajab.domain.game.lol.entity.result.LolPlayerResultOutcome;
-import com.example.naejeonhajab.domain.game.lol.entity.result.LolResultLines;
+import com.example.naejeonhajab.domain.game.lol.entity.playerHistory.LolLines;
+import com.example.naejeonhajab.domain.game.lol.entity.playerHistory.LolPlayer;
+import com.example.naejeonhajab.domain.game.lol.entity.playerHistory.LolPlayerHistory;
+import com.example.naejeonhajab.domain.game.lol.entity.resultHistory.LolPlayerResult;
+import com.example.naejeonhajab.domain.game.lol.entity.resultHistory.LolPlayerResultHistory;
+import com.example.naejeonhajab.domain.game.lol.entity.resultHistory.LolPlayerResultOutcome;
+import com.example.naejeonhajab.domain.game.lol.entity.resultHistory.LolResultLines;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;

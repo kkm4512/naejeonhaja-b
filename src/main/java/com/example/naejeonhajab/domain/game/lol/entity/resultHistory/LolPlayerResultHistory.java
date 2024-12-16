@@ -1,4 +1,4 @@
-package com.example.naejeonhajab.domain.game.lol.entity.result;
+package com.example.naejeonhajab.domain.game.lol.entity.resultHistory;
 
 import com.example.naejeonhajab.domain.game.lol.dto.req.LolPlayerResultHistoryRequestDto;
 import com.example.naejeonhajab.domain.game.lol.enums.LolType;

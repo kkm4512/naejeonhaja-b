@@ -1,12 +1,10 @@
 package com.example.naejeonhajab.domain.game.lol.dto.common;
 
 import com.example.naejeonhajab.domain.game.lol.dto.res.LolTeamResponseDto;
-import com.example.naejeonhajab.domain.game.lol.entity.result.LolPlayerResult;
+import com.example.naejeonhajab.domain.game.lol.entity.resultHistory.LolPlayerResult;
 import com.example.naejeonhajab.domain.game.lol.enums.LolTier;
-import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

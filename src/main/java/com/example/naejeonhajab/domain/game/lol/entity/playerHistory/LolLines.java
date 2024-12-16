@@ -1,4 +1,4 @@
-package com.example.naejeonhajab.domain.game.lol.entity.player;
+package com.example.naejeonhajab.domain.game.lol.entity.playerHistory;
 
 import com.example.naejeonhajab.domain.game.lol.dto.common.LolLinesDto;
 import com.example.naejeonhajab.domain.game.lol.dto.common.LolPlayerDto;

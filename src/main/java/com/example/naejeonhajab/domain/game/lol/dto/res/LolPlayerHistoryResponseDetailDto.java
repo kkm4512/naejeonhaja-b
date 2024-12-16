@@ -1,8 +1,8 @@
 package com.example.naejeonhajab.domain.game.lol.dto.res;
 
 import com.example.naejeonhajab.domain.game.lol.dto.common.LolPlayerDto;
-import com.example.naejeonhajab.domain.game.lol.entity.player.LolPlayer;
-import com.example.naejeonhajab.domain.game.lol.entity.player.LolPlayerHistory;
+import com.example.naejeonhajab.domain.game.lol.entity.playerHistory.LolPlayer;
+import com.example.naejeonhajab.domain.game.lol.entity.playerHistory.LolPlayerHistory;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;

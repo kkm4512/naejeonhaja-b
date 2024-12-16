@@ -1,7 +1,7 @@
-package com.example.naejeonhajab.domain.game.lol.entity.result;
+package com.example.naejeonhajab.domain.game.lol.entity.playerHistory;
 
 import com.example.naejeonhajab.domain.game.lol.dto.common.LolPlayerDto;
-import com.example.naejeonhajab.domain.game.lol.dto.common.LolTeamResultDto;
+import com.example.naejeonhajab.domain.game.lol.dto.req.LolPlayerHistoryRequestDto;
 import com.example.naejeonhajab.domain.game.lol.dto.common.LolLinesDto;
 import com.example.naejeonhajab.domain.game.lol.enums.LolTier;
 import jakarta.persistence.*;
@@ -17,7 +17,7 @@ import java.util.stream.Collectors;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-public class LolPlayerResult {
+public class LolPlayer {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -31,47 +31,40 @@ public class LolPlayerResult {
     private LolTier tier;
 
     @Column(nullable = false)
-    private Integer mmr;
+    private int mmr;
 
-    private boolean mmrReduced;
+    @OneToMany(mappedBy = "player", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<LolLines> lines = new ArrayList<>();
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "lol_player_result_outcome_id")
-    private LolPlayerResultOutcome playerResultOutcome;
+    @JoinColumn(name = "lol_player_history_id")
+    private LolPlayerHistory playerHistory;
 
-    @OneToMany(mappedBy = "playerResult", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<LolResultLines> lines = new ArrayList<>();
-
-    public LolPlayerResult(String name, LolTier tier, int mmr,LolPlayerResultOutcome playerResultOutcome, boolean mmrReduced) {
+    public LolPlayer(String name, LolTier tier, int mmr, LolPlayerHistory playerHistory) {
         this.name = name;
         this.tier = tier;
         this.mmr = mmr;
-        this.playerResultOutcome = playerResultOutcome;
-        this.mmrReduced = mmrReduced;
+        this.playerHistory = playerHistory;
     }
 
 
-    public static List<LolPlayerResult> from(LolTeamResultDto dto, LolPlayerResultOutcome lolPlayerResultOutcome) {
-        List<LolPlayerResult> playerList = new ArrayList<>();
-
-        for (LolPlayerDto riftPlayerRequestDto : dto.getTeam()) {
+    public static List<LolPlayer> from(LolPlayerHistoryRequestDto dto, LolPlayerHistory playerHistory) {
+        List<LolPlayer> playerList = new ArrayList<>();
+        for ( LolPlayerDto riftPlayerRequestDto : dto.getLolPlayerDtos() ) {
             playerList.add(
-                    new LolPlayerResult(
+                    new LolPlayer(
                             riftPlayerRequestDto.getName(),
                             riftPlayerRequestDto.getTier(),
                             riftPlayerRequestDto.getTier().getScore(),
-                            lolPlayerResultOutcome,
-                            // 칼바람, TFT는 null로 들어오니까 처리해주기
-                            riftPlayerRequestDto.getMmrReduced() != null && riftPlayerRequestDto.getMmrReduced()
+                            playerHistory
                     )
             );
         }
         return playerList;
     }
 
-
-    public static List<LolPlayerDto> of(List<LolPlayerResult> playerResults) {
-        return playerResults.stream()
+    public static List<LolPlayerDto> to(List<LolPlayer> players) {
+        return players.stream()
                 .map(player -> {
                     // 각 플레이어의 라인을 별도로 처리
                     List<LolLinesDto> lolLinesDtos = player.getLines().stream()
@@ -83,11 +76,11 @@ public class LolPlayerResult {
                             player.getName(),
                             player.getTier(),
                             lolLinesDtos,
-                            player.getMmr(),
-                            player.isMmrReduced()
+                            player.getMmr()
                     );
                 })
                 .collect(Collectors.toList());
     }
 
 }
+

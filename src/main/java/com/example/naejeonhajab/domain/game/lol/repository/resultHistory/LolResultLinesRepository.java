@@ -1,7 +1,7 @@
-package com.example.naejeonhajab.domain.game.lol.repository.result;
+package com.example.naejeonhajab.domain.game.lol.repository.resultHistory;
 
-import com.example.naejeonhajab.domain.game.lol.entity.result.LolPlayerResult;
-import com.example.naejeonhajab.domain.game.lol.entity.result.LolResultLines;
+import com.example.naejeonhajab.domain.game.lol.entity.resultHistory.LolPlayerResult;
+import com.example.naejeonhajab.domain.game.lol.entity.resultHistory.LolResultLines;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;

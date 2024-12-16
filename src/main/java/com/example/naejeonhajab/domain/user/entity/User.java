@@ -1,7 +1,7 @@
 package com.example.naejeonhajab.domain.user.entity;
 
-import com.example.naejeonhajab.domain.game.lol.entity.player.LolPlayerHistory;
-import com.example.naejeonhajab.domain.game.lol.entity.result.LolPlayerResultHistory;
+import com.example.naejeonhajab.domain.game.lol.entity.playerHistory.LolPlayerHistory;
+import com.example.naejeonhajab.domain.game.lol.entity.resultHistory.LolPlayerResultHistory;
 import com.example.naejeonhajab.domain.user.dto.common.UserRole;
 import com.example.naejeonhajab.security.AuthUser;
 import jakarta.persistence.*;
