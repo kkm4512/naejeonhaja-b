@@ -5,5 +5,19 @@ services:
     ports:
       - 3306:3306
     environment:
-      MYSQL_ROOT_PASSWORD: '!@Skdud340'
-      MYSQL_DATABASE: naejeonhaja
+      MYSQL_ROOT_PASSWORD: ${MYSQL_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DB_NAME}
+    volumes:
+      - mysql_data:/var/lib/mysql
+
+  server:
+    container_name: server_container
+    image: nayoun340/naejeonhaja
+    ports:
+      - 8080:8080
+    depends_on:
+      - mysql
+    restart: always
+
+volumes:
+  mysql_data:
