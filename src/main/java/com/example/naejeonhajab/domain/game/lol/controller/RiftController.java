@@ -46,16 +46,8 @@ public class RiftController {
         if (dto.getPlayerHistoryTitle() == null || dto.getPlayerHistoryTitle().isBlank()) {
             throw new LolException(LOL_TITLE_NOT_NULL);
         }
-        for (LolPlayerDto riftPlayerRequestDto : dto.getLolPlayerDtos()) {
-            riftPlayerRequestDto.updateMmr(riftPlayerRequestDto.getTier().getScore());
-        }
-        try {
-            LolTeamResponseDto result = lolService.createPlayerHistoryAndTeam(dto, authUser);
-            return ApiResponse.of(BaseApiResponse.SUCCESS, result);
-        } catch (Exception e) {
-            log.error(e.getMessage(), e);
-            throw new LolException(BaseApiResponse.TEAM_MISMATCH);
-        }
+        LolTeamResponseDto result = lolService.createPlayerHistoryAndTeam(dto, authUser);
+        return ApiResponse.of(BaseApiResponse.SUCCESS, result);
     }
 
     @PostMapping("/playerResultHistory")
