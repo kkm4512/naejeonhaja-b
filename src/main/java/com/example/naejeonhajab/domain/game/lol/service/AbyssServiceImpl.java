@@ -85,7 +85,6 @@ public class AbyssServiceImpl {
     public void saveResultHistory(LolPlayerResultHistoryRequestDto dto, AuthUser authUser) {
         User user = User.of(authUser);
         LolPlayerResultHistory playerResultHistory = LolPlayerResultHistory.from(dto,user,LolType.ABYSS);
-        lolPlayerResultHistoryRepository.save(playerResultHistory);
         LolPlayerResultOutcome playerResultOutcomeA = LolPlayerResultOutcome.from(dto.getTeamA(),playerResultHistory);
         LolPlayerResultOutcome playerResultOutcomeB = LolPlayerResultOutcome.from(dto.getTeamB(),playerResultHistory);
         List<LolPlayerResult> playerResultsA = LolPlayerResult.from(dto.getTeamA(),playerResultOutcomeA);

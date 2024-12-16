@@ -6,7 +6,6 @@ import com.example.naejeonhajab.common.response.enums.BaseApiResponse;
 import com.example.naejeonhajab.domain.game.lol.dto.req.LolPlayerHistoryRequestDto;
 import com.example.naejeonhajab.domain.game.lol.dto.req.LolPlayerResultHistoryRequestDto;
 import com.example.naejeonhajab.domain.game.lol.dto.res.*;
-import com.example.naejeonhajab.domain.game.lol.service.AbyssServiceImpl;
 import com.example.naejeonhajab.domain.game.lol.service.TftServiceImpl;
 import com.example.naejeonhajab.security.AuthUser;
 import jakarta.validation.Valid;
@@ -36,48 +35,48 @@ public class TftController {
     }
 
     @PostMapping("/playerHistory")
-    public ApiResponse<LolTeamResponseDto> createPlayerHistoryAndTeam(@RequestBody @Valid LolPlayerHistoryRequestDto dto, @AuthenticationPrincipal AuthUser authUser) {
+    public ApiResponse<LolTeamResponseDto> createTeamAndSavePlayerHistory(@RequestBody @Valid LolPlayerHistoryRequestDto dto, @AuthenticationPrincipal AuthUser authUser) {
         if (dto.getPlayerHistoryTitle() == null || dto.getPlayerHistoryTitle().isBlank()) {
             throw new LolException(LOL_TITLE_NOT_NULL);
         }
-        LolTeamResponseDto result = lolService.createPlayerHistoryAndTeam(dto, authUser);
+        LolTeamResponseDto result = lolService.createTeamAndSavePlayerHistory(dto, authUser);
         return ApiResponse.of(BaseApiResponse.SUCCESS, result);
     }
 
     @PostMapping("/playerResultHistory")
-    public ApiResponse<Void> createResultTeam(@RequestBody @Valid LolPlayerResultHistoryRequestDto dto, @AuthenticationPrincipal AuthUser authUser) {
-        lolService.createResultTeam(dto,authUser);
+    public ApiResponse<Void> saveResultHistory(@RequestBody @Valid LolPlayerResultHistoryRequestDto dto, @AuthenticationPrincipal AuthUser authUser) {
+        lolService.saveResultHistory(dto,authUser);
         return ApiResponse.of(BaseApiResponse.SUCCESS);
     }
 
     // title, 10명의 유저 정보
     @GetMapping("/playerHistory/detail/{playerHistoryId}")
-    public ApiResponse<LolPlayerHistoryResponseDetailDto> getDetailTeam(@PathVariable Long playerHistoryId){
-        LolPlayerHistoryResponseDetailDto result = lolService.getDetailTeam(playerHistoryId);
+    public ApiResponse<LolPlayerHistoryResponseDetailDto> getPlayerHistoryDetailTeam(@PathVariable Long playerHistoryId){
+        LolPlayerHistoryResponseDetailDto result = lolService.getPlayerHistoryDetailTeam(playerHistoryId);
         return ApiResponse.of(BaseApiResponse.SUCCESS, result);
     }
 
 
     // id, title만
     @GetMapping("/playerHistory/simple/{page}")
-    public ApiResponse<Page<LolPlayerHistoryResponseSimpleDto>> getSimpleTeam(@PathVariable int page, @AuthenticationPrincipal AuthUser authUser){
+    public ApiResponse<Page<LolPlayerHistoryResponseSimpleDto>> getPlayerHistorySimpleTeam(@PathVariable int page, @AuthenticationPrincipal AuthUser authUser){
         Pageable pageable = PageRequest.of(page - 1, 3, Sort.Direction.DESC,"createdAt");
-        Page<LolPlayerHistoryResponseSimpleDto> result = lolService.getSimpleTeam(authUser,pageable);
+        Page<LolPlayerHistoryResponseSimpleDto> result = lolService.getPlayerHistorySimpleTeam(authUser,pageable);
         return ApiResponse.of(BaseApiResponse.SUCCESS, result);
     }
 
     // title, 10명의 유저 정보
     @GetMapping("/playerResultHistory/detail/{playerResultHistoryId}")
-    public ApiResponse<LolPlayerResultHistoryResponseDetailDto> getDetailResultTeam(@PathVariable Long playerResultHistoryId){
-        LolPlayerResultHistoryResponseDetailDto result = lolService.getDetailResultTeam(playerResultHistoryId);
+    public ApiResponse<LolPlayerResultHistoryResponseDetailDto> getResultHistoryDetailTeam(@PathVariable Long playerResultHistoryId){
+        LolPlayerResultHistoryResponseDetailDto result = lolService.getResultHistoryDetailTeam(playerResultHistoryId);
         return ApiResponse.of(BaseApiResponse.SUCCESS, result);
     }
 
     // id, title만
     @GetMapping("/playerResultHistory/simple/{page}")
-    public ApiResponse<Page<LolPlayerResultHistoryResponseSimpleDto>> getSimpleResultTeam(@PathVariable int page, @AuthenticationPrincipal AuthUser authUser){
+    public ApiResponse<Page<LolPlayerResultHistoryResponseSimpleDto>> getResultHistorySimpleTeam(@PathVariable int page, @AuthenticationPrincipal AuthUser authUser){
         Pageable pageable = PageRequest.of(page - 1, 10, Sort.Direction.DESC,"createdAt");
-        Page<LolPlayerResultHistoryResponseSimpleDto> result = lolService.getSimpleResultTeam(authUser,pageable);
+        Page<LolPlayerResultHistoryResponseSimpleDto> result = lolService.getResultHistorySimpleTeam(authUser,pageable);
         return ApiResponse.of(BaseApiResponse.SUCCESS, result);
     }
 }
