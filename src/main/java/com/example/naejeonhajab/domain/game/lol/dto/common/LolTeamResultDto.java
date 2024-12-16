@@ -1,7 +1,7 @@
 package com.example.naejeonhajab.domain.game.lol.dto.common;
 
 import com.example.naejeonhajab.common.enums.Outcome;
-import com.example.naejeonhajab.domain.game.lol.entity.result.LolPlayerResultOutcome;
+import com.example.naejeonhajab.domain.game.lol.entity.resultHistory.LolPlayerResultOutcome;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;

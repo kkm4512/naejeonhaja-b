@@ -1,7 +1,7 @@
 package com.example.naejeonhajab.domain.game.lol.dto.res;
 
 import com.example.naejeonhajab.domain.game.lol.dto.common.LolTeamResultDto;
-import com.example.naejeonhajab.domain.game.lol.entity.result.LolPlayerResultHistory;
+import com.example.naejeonhajab.domain.game.lol.entity.resultHistory.LolPlayerResultHistory;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import lombok.Getter;

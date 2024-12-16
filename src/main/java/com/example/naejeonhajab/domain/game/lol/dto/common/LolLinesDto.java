@@ -1,9 +1,8 @@
 package com.example.naejeonhajab.domain.game.lol.dto.common;
 
-import com.example.naejeonhajab.domain.game.lol.entity.result.LolResultLines;
+import com.example.naejeonhajab.domain.game.lol.entity.resultHistory.LolResultLines;
 import com.example.naejeonhajab.domain.game.lol.enums.LolLine;
 import com.example.naejeonhajab.domain.game.lol.enums.LolLineRole;
-import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

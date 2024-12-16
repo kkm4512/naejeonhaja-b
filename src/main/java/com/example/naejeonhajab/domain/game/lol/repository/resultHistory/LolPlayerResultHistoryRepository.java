@@ -1,6 +1,6 @@
-package com.example.naejeonhajab.domain.game.lol.repository.result;
+package com.example.naejeonhajab.domain.game.lol.repository.resultHistory;
 
-import com.example.naejeonhajab.domain.game.lol.entity.result.LolPlayerResultHistory;
+import com.example.naejeonhajab.domain.game.lol.entity.resultHistory.LolPlayerResultHistory;
 import com.example.naejeonhajab.domain.game.lol.enums.LolType;
 import com.example.naejeonhajab.domain.user.entity.User;
 import org.springframework.data.domain.Page;

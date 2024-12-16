@@ -17,17 +17,22 @@ spring:
     properties:
       hibernate:
         # jpa query 갯수 확인
-#        generate_statistics: true
+        # generate_statistics: true
         dialect: org.hibernate.dialect.MySQLDialect
         show_sql: true
         format_sql: true
+# JWT
 jwt:
   secret:
     key: ${JWT_SECRET_KEY}
 
+# MyBatis
 mybatis:
   mapper-locations: classpath:mapper/*.xml
   configuration:
     map-underscore-to-camel-case: true
-    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+    # MyBatis 쿼리 로깅 확인
+#    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+
+
 
