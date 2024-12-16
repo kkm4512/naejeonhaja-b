@@ -1,8 +1,5 @@
 package com.example.naejeonhajab.domain.game.lol.service;
 
-import com.example.naejeonhajab.domain.game.lol.dto.res.LolPlayerHistoryResponseSimpleDto;
-import com.example.naejeonhajab.domain.game.lol.dto.res.LolPlayerResultHistoryResponseSimpleDto;
-import com.example.naejeonhajab.domain.game.lol.mapper.RiftMapper;
 import com.example.naejeonhajab.common.exception.BaseException;
 import com.example.naejeonhajab.common.exception.LolException;
 import com.example.naejeonhajab.common.response.enums.BaseApiResponse;
@@ -10,9 +7,7 @@ import com.example.naejeonhajab.domain.game.lol.dto.common.LolLinesDto;
 import com.example.naejeonhajab.domain.game.lol.dto.common.LolPlayerDto;
 import com.example.naejeonhajab.domain.game.lol.dto.req.LolPlayerHistoryRequestDto;
 import com.example.naejeonhajab.domain.game.lol.dto.req.LolPlayerResultHistoryRequestDto;
-import com.example.naejeonhajab.domain.game.lol.dto.res.LolPlayerHistoryResponseDetailDto;
-import com.example.naejeonhajab.domain.game.lol.dto.res.LolTeamResponseDto;
-import com.example.naejeonhajab.domain.game.lol.dto.res.LolPlayerResultHistoryResponseDetailDto;
+import com.example.naejeonhajab.domain.game.lol.dto.res.*;
 import com.example.naejeonhajab.domain.game.lol.entity.player.LolLines;
 import com.example.naejeonhajab.domain.game.lol.entity.player.LolPlayer;
 import com.example.naejeonhajab.domain.game.lol.entity.player.LolPlayerHistory;
@@ -23,13 +18,9 @@ import com.example.naejeonhajab.domain.game.lol.entity.result.LolResultLines;
 import com.example.naejeonhajab.domain.game.lol.enums.LolLine;
 import com.example.naejeonhajab.domain.game.lol.enums.LolLineRole;
 import com.example.naejeonhajab.domain.game.lol.enums.LolType;
-import com.example.naejeonhajab.domain.game.lol.repository.player.LolLinesRepository;
+import com.example.naejeonhajab.domain.game.lol.mapper.LolMapper;
 import com.example.naejeonhajab.domain.game.lol.repository.player.LolPlayerHistoryRepository;
-import com.example.naejeonhajab.domain.game.lol.repository.player.LolPlayerRepository;
 import com.example.naejeonhajab.domain.game.lol.repository.result.LolPlayerResultHistoryRepository;
-import com.example.naejeonhajab.domain.game.lol.repository.result.LolPlayerResultOutcomeRepository;
-import com.example.naejeonhajab.domain.game.lol.repository.result.LolPlayerResultRepository;
-import com.example.naejeonhajab.domain.game.lol.repository.result.LolResultLinesRepository;
 import com.example.naejeonhajab.domain.user.entity.User;
 import com.example.naejeonhajab.security.AuthUser;
 import lombok.RequiredArgsConstructor;
@@ -51,16 +42,8 @@ import static com.example.naejeonhajab.common.response.enums.LolApiResponse.LOL_
 public class RiftServiceImpl {
     // Player
     private final LolPlayerHistoryRepository lolPlayerHistoryRepository;
-    private final LolPlayerRepository lolPlayerRepository;
-    private final LolLinesRepository lolLinesRepository;
-    private final RiftMapper riftMapper;
-
-    // Result
     private final LolPlayerResultHistoryRepository lolPlayerResultHistoryRepository;
-    private final LolPlayerResultRepository lolPlayerResultRepository;
-    private final LolResultLinesRepository lolResultLinesRepository;
-    private final LolPlayerResultOutcomeRepository lolPlayerResultOutcomeRepository;
-
+    private final LolMapper riftMapper;
     private static int retries = 10000; // 최대 시도 횟수
 
     // 10명의 인원으로, 5:5 팀 구성해준후 반환
@@ -70,26 +53,13 @@ public class RiftServiceImpl {
 
     @Transactional
     public LolTeamResponseDto createPlayerHistoryAndTeam(LolPlayerHistoryRequestDto dto, AuthUser authUser) {
-//        User user = User.of(authUser);
-//        LolPlayerHistory playerHistory = LolPlayerHistory.from(dto, user);
-//        List<LolPlayer> playerList = LolPlayer.from(dto, playerHistory);
-//        List<LolLines> lines = LolLines.from(dto, playerList);
-//        Long startTime = System.nanoTime();
-//        riftMapper.insertPlayerHistory(playerHistory);
-//        riftMapper.insertPlayers(playerList);
-//        riftMapper.insertLines(lines);
-//        Long endTime = System.nanoTime();
-//        QueryCountInterceptor.getQueryCount();
-//        log.info("MyBatis 쿼리시간 {}ns", endTime - startTime );
-//        return create(dto);
-
         User user = User.of(authUser);
-        LolPlayerHistory playerHistory = LolPlayerHistory.from(dto,user, LolType.RIFT);
-        List<LolPlayer> playerList = LolPlayer.from(dto,playerHistory);
-        List<LolLines> lines = LolLines.from(dto,playerList);
-        lolPlayerHistoryRepository.save(playerHistory);
-        lolPlayerRepository.saveAll(playerList);
-        lolLinesRepository.saveAll(lines);
+        LolPlayerHistory playerHistory = LolPlayerHistory.from(dto, user,LolType.RIFT);
+        List<LolPlayer> playerList = LolPlayer.from(dto, playerHistory);
+        List<LolLines> lines = LolLines.from(dto, playerList);
+        riftMapper.insertPlayerHistory(playerHistory);
+        riftMapper.insertPlayers(playerList);
+        riftMapper.insertLines(lines);
         return create(dto);
     }
 
@@ -99,34 +69,33 @@ public class RiftServiceImpl {
     public void createResultTeam(LolPlayerResultHistoryRequestDto riftPlayerResultHistoryRequestDto, AuthUser authUser) {
         User user = User.of(authUser);
         LolPlayerResultHistory playerResultHistory = LolPlayerResultHistory.from(riftPlayerResultHistoryRequestDto,user, LolType.RIFT);
-        lolPlayerResultHistoryRepository.save(playerResultHistory);
         LolPlayerResultOutcome playerResultOutcomeA = LolPlayerResultOutcome.from(riftPlayerResultHistoryRequestDto.getTeamA(),playerResultHistory);
         LolPlayerResultOutcome playerResultOutcomeB = LolPlayerResultOutcome.from(riftPlayerResultHistoryRequestDto.getTeamB(),playerResultHistory);
-        lolPlayerResultOutcomeRepository.saveAll(List.of(playerResultOutcomeA,playerResultOutcomeB));
         List<LolPlayerResult> playerResultsA = LolPlayerResult.from(riftPlayerResultHistoryRequestDto.getTeamA(),playerResultOutcomeA);
         List<LolPlayerResult> playerResultsB = LolPlayerResult.from(riftPlayerResultHistoryRequestDto.getTeamB(),playerResultOutcomeB);
-        lolPlayerResultRepository.saveAll(playerResultsA);
-        lolPlayerResultRepository.saveAll(playerResultsB);
         List<LolResultLines> linesA = LolResultLines.from(riftPlayerResultHistoryRequestDto.getTeamA(),playerResultsA);
         List<LolResultLines> linesB = LolResultLines.from(riftPlayerResultHistoryRequestDto.getTeamB(),playerResultsB);
-        lolResultLinesRepository.saveAll(linesA);
-        lolResultLinesRepository.saveAll(linesB);
+        riftMapper.inserPlayerResultHistory(playerResultHistory);
+        riftMapper.insertPlayerResultOutcome(List.of(playerResultOutcomeA,playerResultOutcomeB));
+        riftMapper.insertPlayersResult(playerResultsA);
+        riftMapper.insertPlayersResult(playerResultsB);
+        riftMapper.insertResultLines(linesA);
+        riftMapper.insertResultLines(linesB);
     }
 
     // 팀을 랜덤하게 5명으로 나눔
     public LolTeamResponseDto splitTeam(List<LolPlayerDto> riftPlayerRequestDtos) {
         List<LolPlayerDto> teamA = new ArrayList<>();
         List<LolPlayerDto> teamB = new ArrayList<>();
-        try {
-            Collections.shuffle(riftPlayerRequestDtos);
-            for ( int i=0; i<riftPlayerRequestDtos.size()/2; i++ ){
-                teamA.add(riftPlayerRequestDtos.get(i));
-                teamB.add(riftPlayerRequestDtos.get(i + (riftPlayerRequestDtos.size()/2)));
-            }
-        } catch (Exception e) {
-            log.error(e.getMessage(), e);
-            throw new BaseException(BaseApiResponse.TEAM_MISMATCH);
+    try {
+        Collections.shuffle(riftPlayerRequestDtos);
+        for ( int i=0; i<riftPlayerRequestDtos.size()/2; i++ ){
+            teamA.add(riftPlayerRequestDtos.get(i));
+            teamB.add(riftPlayerRequestDtos.get(i + (riftPlayerRequestDtos.size()/2)));
         }
+    } catch (Exception e) {
+        throw new BaseException(BaseApiResponse.TEAM_MISMATCH);
+    }
 
         return new LolTeamResponseDto(teamA, teamB);
     }
@@ -163,7 +132,6 @@ public class RiftServiceImpl {
             }
 
         } catch (Exception e) {
-            log.error(e.getMessage(), e);
             throw new BaseException(BaseApiResponse.TEAM_MISMATCH);
         }
         // 가장 밸런스가 좋은 팀 반환
@@ -178,7 +146,6 @@ public class RiftServiceImpl {
             teamA = soryTeamByLineRole(team.getTeamA());
             teamB = soryTeamByLineRole(team.getTeamB());
         } catch (Exception e) {
-            log.error(e.getMessage(), e);
             throw new BaseException(BaseApiResponse.TEAM_MISMATCH);
         }
         return new LolTeamResponseDto(teamA, teamB);
@@ -204,7 +171,6 @@ public class RiftServiceImpl {
             }
 
         } catch (Exception e) {
-            log.error(e.getMessage(), e);
             throw new BaseException(BaseApiResponse.TEAM_MISMATCH);
         }
     }
@@ -224,7 +190,6 @@ public class RiftServiceImpl {
 
             // 정렬된 팀으로 새로운 Team 객체 반환
         } catch (Exception e) {
-            log.error(e.getMessage(), e);
             throw new BaseException(BaseApiResponse.TEAM_MISMATCH);
         }
         return new LolTeamResponseDto(sortedTeamA, sortedTeamB);

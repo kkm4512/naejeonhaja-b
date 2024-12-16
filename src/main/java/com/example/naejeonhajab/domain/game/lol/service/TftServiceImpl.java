@@ -3,21 +3,25 @@ package com.example.naejeonhajab.domain.game.lol.service;
 import com.example.naejeonhajab.common.exception.BaseException;
 import com.example.naejeonhajab.common.exception.LolException;
 import com.example.naejeonhajab.common.response.enums.BaseApiResponse;
+import com.example.naejeonhajab.domain.game.lol.dto.common.LolLinesDto;
 import com.example.naejeonhajab.domain.game.lol.dto.common.LolPlayerDto;
 import com.example.naejeonhajab.domain.game.lol.dto.req.LolPlayerHistoryRequestDto;
 import com.example.naejeonhajab.domain.game.lol.dto.req.LolPlayerResultHistoryRequestDto;
 import com.example.naejeonhajab.domain.game.lol.dto.res.*;
+import com.example.naejeonhajab.domain.game.lol.entity.player.LolLines;
 import com.example.naejeonhajab.domain.game.lol.entity.player.LolPlayer;
 import com.example.naejeonhajab.domain.game.lol.entity.player.LolPlayerHistory;
 import com.example.naejeonhajab.domain.game.lol.entity.result.LolPlayerResult;
 import com.example.naejeonhajab.domain.game.lol.entity.result.LolPlayerResultHistory;
 import com.example.naejeonhajab.domain.game.lol.entity.result.LolPlayerResultOutcome;
+import com.example.naejeonhajab.domain.game.lol.entity.result.LolResultLines;
 import com.example.naejeonhajab.domain.game.lol.enums.LolType;
 import com.example.naejeonhajab.domain.game.lol.repository.player.LolPlayerHistoryRepository;
 import com.example.naejeonhajab.domain.game.lol.repository.player.LolPlayerRepository;
 import com.example.naejeonhajab.domain.game.lol.repository.result.LolPlayerResultHistoryRepository;
 import com.example.naejeonhajab.domain.game.lol.repository.result.LolPlayerResultOutcomeRepository;
 import com.example.naejeonhajab.domain.game.lol.repository.result.LolPlayerResultRepository;
+import com.example.naejeonhajab.domain.game.lol.repository.result.LolResultLinesRepository;
 import com.example.naejeonhajab.domain.user.entity.User;
 import com.example.naejeonhajab.security.AuthUser;
 import lombok.RequiredArgsConstructor;
@@ -45,6 +49,7 @@ public class TftServiceImpl {
     // Result
     private final LolPlayerResultHistoryRepository lolPlayerResultHistoryRepository;
     private final LolPlayerResultRepository lolPlayerResultRepository;
+    private final LolResultLinesRepository lolResultLinesRepository;
     private final LolPlayerResultOutcomeRepository lolPlayerResultOutcomeRepository;
 
     private static int retries = 10000; // 최대 시도 횟수
@@ -59,26 +64,26 @@ public class TftServiceImpl {
     public LolTeamResponseDto createPlayerHistoryAndTeam(LolPlayerHistoryRequestDto dto, AuthUser authUser) {
         User user = User.of(authUser);
         LolPlayerHistory playerHistory = LolPlayerHistory.from(dto,user, LolType.TFT);
-        lolPlayerHistoryRepository.save(playerHistory);
         List<LolPlayer> playerList = LolPlayer.from(dto,playerHistory);
-        lolPlayerRepository.saveAll(playerList);
+        List<LolLines> linesDtoList = LolLines.from(dto,playerList);
+        lolPlayerHistoryRepository.save(playerHistory);
         return create(dto);
     }
 
     // 내전 결과 저장 메서드
     @Transactional
-    public void createResultTeam(LolPlayerResultHistoryRequestDto dto, AuthUser authUser) {
+    public void createResultTeam(LolPlayerResultHistoryRequestDto riftPlayerResultHistoryRequestDto, AuthUser authUser) {
         User user = User.of(authUser);
-        LolPlayerResultHistory playerResultHistory = LolPlayerResultHistory.from(dto,user,LolType.TFT);
+        LolPlayerResultHistory playerResultHistory = LolPlayerResultHistory.from(riftPlayerResultHistoryRequestDto,user, LolType.RIFT);
+        LolPlayerResultOutcome playerResultOutcomeA = LolPlayerResultOutcome.from(riftPlayerResultHistoryRequestDto.getTeamA(),playerResultHistory);
+        LolPlayerResultOutcome playerResultOutcomeB = LolPlayerResultOutcome.from(riftPlayerResultHistoryRequestDto.getTeamB(),playerResultHistory);
+        List<LolPlayerResult> playerResultsA = LolPlayerResult.from(riftPlayerResultHistoryRequestDto.getTeamA(),playerResultOutcomeA);
+        List<LolPlayerResult> playerResultsB = LolPlayerResult.from(riftPlayerResultHistoryRequestDto.getTeamB(),playerResultOutcomeB);
+        List<LolResultLines> linesA = LolResultLines.from(riftPlayerResultHistoryRequestDto.getTeamA(),playerResultsA);
+        List<LolResultLines> linesB = LolResultLines.from(riftPlayerResultHistoryRequestDto.getTeamB(),playerResultsB);
         lolPlayerResultHistoryRepository.save(playerResultHistory);
-        LolPlayerResultOutcome playerResultOutcomeA = LolPlayerResultOutcome.from(dto.getTeamA(),playerResultHistory);
-        LolPlayerResultOutcome playerResultOutcomeB = LolPlayerResultOutcome.from(dto.getTeamB(),playerResultHistory);
-        lolPlayerResultOutcomeRepository.saveAll(List.of(playerResultOutcomeA,playerResultOutcomeB));
-        List<LolPlayerResult> playerResultsA = LolPlayerResult.from(dto.getTeamA(),playerResultOutcomeA);
-        List<LolPlayerResult> playerResultsB = LolPlayerResult.from(dto.getTeamB(),playerResultOutcomeB);
-        lolPlayerResultRepository.saveAll(playerResultsA);
-        lolPlayerResultRepository.saveAll(playerResultsB);
     }
+
 
     // 팀을 랜덤하게 5명으로 나눔
     public LolTeamResponseDto splitTeam(List<LolPlayerDto> riftPlayerRequestDtos) {
