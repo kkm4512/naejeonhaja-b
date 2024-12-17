@@ -64,7 +64,7 @@ public class SecurityConfig {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration config = new CorsConfiguration();
-        config.setAllowedOrigins(List.of("http://localhost:3000")); // 허용된 Origin 설정
+        config.setAllowedOrigins(List.of("http://localhost:3000","https://naejeonhaja-f.vercel.app")); // 허용된 Origin 설정
         config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS")); // 허용된 HTTP 메서드
         config.setAllowedHeaders(List.of("Content-Type", "Authorization")); // 허용된 헤더
         config.setAllowCredentials(true); // 인증 정보 허용
