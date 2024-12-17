@@ -18,6 +18,8 @@ services:
     depends_on:
       - mysql
     restart: always
+    env_file:
+      - .env  # .env 파일을 읽어서 환경 변수로 전달
 
 volumes:
   mysql_data:
