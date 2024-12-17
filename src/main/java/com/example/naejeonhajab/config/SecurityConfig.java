@@ -42,8 +42,14 @@ public class SecurityConfig {
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 )
                 .authorizeHttpRequests(auth -> auth
+                        // method 상관없이 요청 허용
+                        .requestMatchers(
+                                "/health"
+                        ).permitAll()
+
+
                         .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll() // Preflight 요청 허용
-                        .requestMatchers("/api/v1/users/**").permitAll() // 유저 API 허용
+                        .requestMatchers(POST,"/api/v1/users/**").permitAll() // 유저 API 허용
                         .requestMatchers(POST, "/api/v1/game/lol/*").permitAll() // 특정 POST 요청 허용
                         .anyRequest().authenticated() // 나머지 요청은 인증 필요
                 )
