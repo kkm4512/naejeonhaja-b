@@ -64,7 +64,12 @@ public class SecurityConfig {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration config = new CorsConfiguration();
-        config.setAllowedOrigins(List.of("http://localhost:3000","https://naejeonhaja.com")); // 허용된 Origin 설정
+        // 허용된 Origin 설정 (클라이언트와 서브도메인 포함)
+        config.setAllowedOrigins(List.of(
+                "http://localhost:3000",       // 로컬 개발용
+                "https://naejeonhaja.com",     // 클라이언트 도메인
+                "https://server.naejeonhaja.com" // 서버 도메인 (서버와 클라이언트 간 CORS 요청 허용)
+        ));
         config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS")); // 허용된 HTTP 메서드
         config.setAllowedHeaders(List.of("Content-Type", "Authorization")); // 허용된 헤더
         config.setAllowCredentials(true); // 인증 정보 허용
