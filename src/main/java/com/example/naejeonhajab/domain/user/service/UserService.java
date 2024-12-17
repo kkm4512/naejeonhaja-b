@@ -61,6 +61,8 @@ public class UserService {
         ResponseCookie cookie = ResponseCookie.from(AUTHORIZATION_HEADER, jwt)
                 .path("/")                  // 쿠키의 경로 설정
                 .secure(true)   // HTTPS 연결만 허용
+                .sameSite("None")
+                .httpOnly(false)
                 .maxAge(7 * 24 * 60 * 60)   // 쿠키 만료 시간 (7일)
                 .build();
 
