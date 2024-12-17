@@ -35,7 +35,8 @@ public class JwtSecurityFilter extends OncePerRequestFilter {
         return requestURI.startsWith("/api/v1/users") ||
                 requestURI.equals("/api/v1/game/lol/rift") ||
                 requestURI.equals("/api/v1/game/lol/abyss") ||
-                requestURI.equals("/api/v1/game/lol/tft");
+                requestURI.equals("/api/v1/game/lol/tft") ||
+                requestURI.equals("/health");
     }
 
     @Override
