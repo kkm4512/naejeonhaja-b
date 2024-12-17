@@ -47,6 +47,7 @@ public class SecurityConfig {
                                 "/health"
                         ).permitAll()
 
+
                         .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll() // Preflight 요청 허용
                         .requestMatchers(POST,"/api/v1/users/**").permitAll() // 유저 API 허용
                         .requestMatchers(POST, "/api/v1/game/lol/*").permitAll() // 특정 POST 요청 허용
