@@ -5,7 +5,7 @@ on:
     branches: [ main ]
 
 jobs:
-  cicd:
+  ci:
     runs-on: [ ubuntu-latest ]
     steps:
       - name: 깃헙 코드를 VM으로 복사
