@@ -1,7 +1,7 @@
-name: 'CI_CD'
+name: 'CD'
 
 on:
-  pull_request:
+  push:
     branches: [ main ]
 
 jobs:
@@ -31,7 +31,7 @@ jobs:
       - name: 빌드 및 테스트 코드 돌리는중 ...
         run: |
           chmod +x ./gradlew
-          ./gradlew build
+          ./gradlew build -x test
 
       - name: 도커 이미지 빌드 및 푸시
         run: |
