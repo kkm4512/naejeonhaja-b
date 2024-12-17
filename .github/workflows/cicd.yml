@@ -38,3 +38,41 @@ jobs:
           docker login -u ${{secrets.DOCKER_ID}} -p ${{secrets.DOCKER_TOKEN}}
           docker build -t ${{secrets.DOCKER_ID}}/${{secrets.DOCKER_REPO}} .
           docker push ${{secrets.DOCKER_ID}}/${{secrets.DOCKER_REPO}}
+
+      # 여기서 복사 시킬떄 compose.yml파일이랑 env파일을 둘이 같은 위치에 두게한다음에 해야할듯
+      - name: 로컬 ENV -> 배포 EMV
+        run: |
+          echo "${{ secrets.DEPLOY_ENV }}" > .env
+        shell: bash
+
+      - name: ec2에 docker-compose.yml 파일 복사시키기 (env와 동일한 위치)
+        uses: appleboy/scp-action@v0.1.4
+        with:
+          host: ${{secrets.AWS_IP}}
+          key: ${{secrets.AWS_KEY}}
+          username: ubuntu
+          source: ./docker-compose.yml
+          target: ~/
+
+      - name: ec2에 env 파일 복사시키기 (docker-compose.yml과 동일한 위치)
+        uses: appleboy/scp-action@v0.1.4
+        with:
+          host: ${{secrets.AWS_IP}}
+          key: ${{secrets.AWS_KEY}}
+          username: ubuntu
+          source: .env
+          target: ~/
+
+      - name: Aws 내부에서 docker-compose 실행시키기
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{secrets.AWS_IP}}
+          key: ${{secrets.AWS_KEY}}
+          username: ubuntu
+          script: |            
+            cd ~/
+            sudo docker-compose down
+            docker-compose up -d
+            sudo docker image prune -f          
+
+
