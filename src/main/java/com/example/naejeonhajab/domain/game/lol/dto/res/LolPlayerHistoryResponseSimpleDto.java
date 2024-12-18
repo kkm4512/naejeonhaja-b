@@ -1,9 +1,12 @@
 package com.example.naejeonhajab.domain.game.lol.dto.res;
 
+import com.example.naejeonhajab.domain.game.lol.entity.playerHistory.LolPlayer;
 import com.example.naejeonhajab.domain.game.lol.entity.playerHistory.LolPlayerHistory;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+
+import java.util.List;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -18,5 +21,9 @@ public class LolPlayerHistoryResponseSimpleDto {
                 playerHistory.getPlayerHistoryTitle(),
                 playerHistory.getId()
         );
+    }
+
+    public static List<LolPlayerHistoryResponseSimpleDto> of(List<LolPlayerHistory> playerHistorys) {
+        return playerHistorys.stream().map(LolPlayerHistoryResponseSimpleDto::of).toList();
     }
 }

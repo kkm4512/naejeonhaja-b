@@ -6,8 +6,14 @@ import com.example.naejeonhajab.domain.user.entity.User;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 
 public interface LolPlayerHistoryRepository extends JpaRepository<LolPlayerHistory, Long> {
     Page<LolPlayerHistory> findByUserAndType(User user, LolType lolType, Pageable pageable);
+    @Query("SELECT lph from LolPlayerHistory lph" +
+            " WHERE lph.type = :lolType" +
+            " AND lph.playerHistoryTitle LIKE %:playerHistoryTitle%"
+    )
+    Page<LolPlayerHistory> searchPlayerHistoryByTitle(User user, LolType lolType, Pageable pageable, String playerHistoryTitle);
 
 }
