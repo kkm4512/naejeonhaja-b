@@ -20,6 +20,8 @@ services:
     restart: always
     env_file:
       - .env  # .env 파일을 읽어서 환경 변수로 전달
+    environment:
+      - SPRING_PROFILES_ACTIVE=prd
 
 volumes:
   mysql_data:

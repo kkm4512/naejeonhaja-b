@@ -1,7 +1,6 @@
 package com.example.naejeonhajab.security;
 
 import com.example.naejeonhajab.common.exception.UserException;
-import com.example.naejeonhajab.domain.user.dto.common.UserRole;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
 import jakarta.annotation.PostConstruct;

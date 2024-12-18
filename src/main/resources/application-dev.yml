@@ -1,0 +1,35 @@
+server:
+  port: 8081
+# DB config
+spring:
+  config:
+    import: optional:file:.env[.properties]
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://${MYSQL_HOST}:${MYSQL_PORT}/${MYSQL_DB_NAME}?serverTimezone=Asia/Seoul
+    username: ${MYSQL_NAME}
+    password: ${MYSQL_PASSWORD}
+  # DB update
+  jpa:
+    hibernate:
+      ddl-auto: update
+    # sql
+    properties:
+      hibernate:
+        # jpa query 갯수 확인
+        # generate_statistics: true
+        dialect: org.hibernate.dialect.MySQLDialect
+        show_sql: true
+        format_sql: true
+# JWT
+jwt:
+  secret:
+    key: ${JWT_SECRET_KEY}
+
+# MyBatis
+mybatis:
+  mapper-locations: classpath:mapper/*.xml
+  configuration:
+    map-underscore-to-camel-case: true
+    # MyBatis 쿼리 로깅 확인
+#    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
