@@ -6,6 +6,7 @@ import com.example.naejeonhajab.domain.user.dto.req.SigninRequestDto;
 import com.example.naejeonhajab.domain.user.dto.req.SignupRequestDto;
 import com.example.naejeonhajab.domain.user.service.UserService;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -19,13 +20,13 @@ public class UserController {
     private final UserService userService;
 
     @PostMapping("/signup")
-    public ApiResponse<Void> signup(@RequestBody SignupRequestDto dto){
+    public ApiResponse<Void> signup(@RequestBody @Valid SignupRequestDto dto){
         userService.signUp(dto);
         return ApiResponse.of(BaseApiResponse.SUCCESS);
     }
 
     @PostMapping("/signin")
-    public ApiResponse<Void> signin(@RequestBody SigninRequestDto dto, HttpServletResponse response){
+    public ApiResponse<Void> signin(@RequestBody @Valid SigninRequestDto dto, HttpServletResponse response){
         userService.signin(dto,response);
         return ApiResponse.of(BaseApiResponse.SUCCESS);
     }
