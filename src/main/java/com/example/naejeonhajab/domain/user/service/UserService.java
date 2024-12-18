@@ -11,6 +11,7 @@ import com.example.naejeonhajab.security.JwtDto;
 import com.example.naejeonhajab.security.JwtManager;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseCookie;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -26,6 +27,8 @@ public class UserService {
     private final UserRepository userRepository;
     private final PasswordEncoder pe;
     private final JwtManager jm;
+    @Value("${variables.domain:}")
+    public String domain;
 
     @Transactional
     public void signUp(SignupRequestDto dto) {
@@ -58,14 +61,26 @@ public class UserService {
 
         String jwt = jm.generateJwt(JwtDto.of(user));
 
-        ResponseCookie cookie = ResponseCookie.from(AUTHORIZATION_HEADER, jwt)
-                .path("/")
-                .secure(true)
-                .domain("naejeonhaja.com")
-                .sameSite("None")
-                .httpOnly(false)
-                .maxAge(7 * 24 * 60 * 60)
-                .build();
+        // prd 환경이라면
+        ResponseCookie cookie;
+        if (domain != null && !domain.isEmpty()) {
+            cookie = ResponseCookie.from(AUTHORIZATION_HEADER, jwt)
+                    .path("/")
+                    .secure(true)
+                    .domain("naejeonhaja.com")
+                    .sameSite("None")
+                    .httpOnly(false)
+                    .maxAge(7 * 24 * 60 * 60)
+                    .build();
+        }
+        else {
+            cookie = ResponseCookie.from(AUTHORIZATION_HEADER, jwt)
+                    .path("/")
+                    .httpOnly(false)
+                    .maxAge(7 * 24 * 60 * 60)
+                    .build();
+        }
+
 
         response.addHeader("Set-Cookie", cookie.toString());
     }

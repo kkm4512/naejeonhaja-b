@@ -1,0 +1,23 @@
+server:
+  port: 8082
+
+# DB config
+spring:
+  config:
+    import: optional:file:.env[.properties]
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://${MYSQL_HOST}:${MYSQL_PORT}/${MYSQL_DB_NAME}?serverTimezone=Asia/Seoul
+    username: ${MYSQL_NAME}
+    password: ${MYSQL_PASSWORD}
+  # DB update
+  jpa:
+    hibernate:
+      ddl-auto: update
+# JWT
+jwt:
+  secret:
+    key: ${JWT_SECRET_KEY}
+variables:
+  domain: "naejeonhaja.com"
+
