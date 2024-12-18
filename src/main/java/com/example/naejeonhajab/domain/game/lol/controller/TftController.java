@@ -83,7 +83,7 @@ public class TftController {
     }
 
     //클라이언트로부터 요청받은 제목과 유사한것들을 반환시키기 (10개씩 반환시키면 적당할듯)
-    @GetMapping("/search")
+    @GetMapping("/simpleSearch")
     public ApiResponse<List<LolPlayerHistoryResponseSimpleDto>> playerHistorySearch(
             @RequestParam(required = false) String playerHistoryTitle,
             @RequestParam(required = false) int page,
