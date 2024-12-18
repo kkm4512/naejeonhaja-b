@@ -108,18 +108,21 @@ public class AbyssServiceImpl {
     }
 
     // 특정 ID의 플레이어 상세 히스토리 반환 (단일)
+    @Transactional(readOnly = true)
     public LolPlayerHistoryResponseDetailDto getPlayerHistoryDetailTeam(Long playerHistoryId) {
         LolPlayerHistory lolPlayerHistory = findLolPlayerHistoryByPlayerHistoryId(playerHistoryId);
         return LolPlayerHistoryResponseDetailDto.of(lolPlayerHistory);
     }
 
     // 특정 ID의 플레이어 대전 상세 내역 반환 (단일)
+    @Transactional(readOnly = true)
     public LolPlayerResultHistoryResponseDetailDto getResultHistoryDetailTeam(Long playerResultHistoryId) {
         LolPlayerResultHistory lolPlayerResultHistory = findLolPlayerResultHistoryByPlayerHistoryId(playerResultHistoryId);
         return LolPlayerResultHistoryResponseDetailDto.of(lolPlayerResultHistory);
     }
 
     // 현재 유저가 가지고있는 플레이어 히스토리 내역 조회 (다건)
+    @Transactional(readOnly = true)
     public Page<LolPlayerHistoryResponseSimpleDto> getPlayerHistorySimpleTeam(AuthUser authUser, Pageable pageable) {
         User user = User.of(authUser);
         return findLolPlayerHistoryByUser(user, pageable)
@@ -127,26 +130,47 @@ public class AbyssServiceImpl {
     }
 
     // 현재 유저가 가지고있는 대전 상세 내역 조회 (다건)
+    @Transactional(readOnly = true)
     public Page<LolPlayerResultHistoryResponseSimpleDto> getResultHistorySimpleTeam(AuthUser authUser, Pageable pageable) {
         User user = User.of(authUser);
         return findLolPlayerResultHistoryByUser(user, pageable)
                 .map(LolPlayerResultHistoryResponseSimpleDto::of);
     }
 
+    // 플레이어 히스토리 내역 검색
+    @Transactional(readOnly = true)
+    public List<LolPlayerHistoryResponseSimpleDto> playerHistorySearch(String playerHistoryTitle, AuthUser authUser, Pageable pageable) {
+        User user = User.of(authUser);
+        Page<LolPlayerHistory> pageResult = searchPlayerHistoryByTitle(user, pageable, playerHistoryTitle);
+        List<LolPlayerHistory> listResult = pageResult.getContent();
+        return LolPlayerHistoryResponseSimpleDto.of(listResult);
+    }
 
-    private Page<LolPlayerHistory> findLolPlayerHistoryByUser(User user, Pageable pageable) {
+
+    // PlayerHistory
+    @Transactional(readOnly = true)
+    protected Page<LolPlayerHistory> findLolPlayerHistoryByUser(User user, Pageable pageable) {
         return lolPlayerHistoryRepository.findByUserAndType(user, LolType.ABYSS,pageable);
     }
 
-    private Page<LolPlayerResultHistory> findLolPlayerResultHistoryByUser(User user, Pageable pageable) {
-        return lolPlayerResultHistoryRepository.findByUserAndType(user, LolType.ABYSS,pageable);
-    }
-
-    private LolPlayerHistory findLolPlayerHistoryByPlayerHistoryId(Long playerHistoryId) {
+    @Transactional(readOnly = true)
+    protected LolPlayerHistory findLolPlayerHistoryByPlayerHistoryId(Long playerHistoryId) {
         return lolPlayerHistoryRepository.findById(playerHistoryId).orElseThrow(() -> new LolException(LOL_HISTORY_NOT_FOUND));
     }
 
-    private LolPlayerResultHistory findLolPlayerResultHistoryByPlayerHistoryId(Long playerResultistoryId) {
+    @Transactional(readOnly = true)
+    protected Page<LolPlayerHistory> searchPlayerHistoryByTitle(User user, Pageable pageable, String playerHistoryTitle) {
+        return lolPlayerHistoryRepository.searchPlayerHistoryByTitle(user, LolType.ABYSS, pageable, playerHistoryTitle);
+    }
+
+    // PlayerResultHistory
+    @Transactional(readOnly = true)
+    protected Page<LolPlayerResultHistory> findLolPlayerResultHistoryByUser(User user, Pageable pageable) {
+        return lolPlayerResultHistoryRepository.findByUserAndType(user, LolType.ABYSS,pageable);
+    }
+
+    @Transactional(readOnly = true)
+    protected LolPlayerResultHistory findLolPlayerResultHistoryByPlayerHistoryId(Long playerResultistoryId) {
         return lolPlayerResultHistoryRepository.findById(playerResultistoryId).orElseThrow(() -> new LolException(LOL_RESULT_HISTORY_NOT_FOUND));
     }
 }

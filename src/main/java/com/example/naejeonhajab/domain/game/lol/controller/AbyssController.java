@@ -20,6 +20,8 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 import static com.example.naejeonhajab.common.response.enums.LolApiResponse.LOL_TITLE_NOT_NULL;
 
 @Validated
@@ -79,6 +81,18 @@ public class AbyssController {
     public ApiResponse<Page<LolPlayerResultHistoryResponseSimpleDto>> getResultHistorySimpleTeam(@PathVariable int page, @AuthenticationPrincipal AuthUser authUser){
         Pageable pageable = PageRequest.of(page - 1, 10, Sort.Direction.DESC,"createdAt");
         Page<LolPlayerResultHistoryResponseSimpleDto> result = lolService.getResultHistorySimpleTeam(authUser,pageable);
+        return ApiResponse.of(BaseApiResponse.SUCCESS, result);
+    }
+
+    //클라이언트로부터 요청받은 제목과 유사한것들을 반환시키기 (10개씩 반환시키면 적당할듯)
+    @GetMapping("/search")
+    public ApiResponse<List<LolPlayerHistoryResponseSimpleDto>> playerHistorySearch(
+            @RequestParam(required = false) String playerHistoryTitle,
+            @RequestParam(required = false) int page,
+            @AuthenticationPrincipal AuthUser authUser
+    ){
+        Pageable pageable = PageRequest.of(page - 1,3, Sort.Direction.DESC,"createdAt");
+        List<LolPlayerHistoryResponseSimpleDto> result = lolService.playerHistorySearch(playerHistoryTitle,authUser,pageable);
         return ApiResponse.of(BaseApiResponse.SUCCESS, result);
     }
 }
