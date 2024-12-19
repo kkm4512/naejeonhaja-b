@@ -3,13 +3,15 @@ package com.example.naejeonhajab.domain.game.lol.controller;
 import com.example.naejeonhajab.common.exception.LolException;
 import com.example.naejeonhajab.common.response.ApiResponse;
 import com.example.naejeonhajab.common.response.enums.BaseApiResponse;
-import com.example.naejeonhajab.domain.game.lol.dto.req.LolPlayerHistoryRequestDto;
-import com.example.naejeonhajab.domain.game.lol.dto.req.LolPlayerResultHistoryRequestDto;
-import com.example.naejeonhajab.domain.game.lol.dto.res.LolPlayerHistoryResponseDetailDto;
-import com.example.naejeonhajab.domain.game.lol.dto.res.LolPlayerHistoryResponseSimpleDto;
-import com.example.naejeonhajab.domain.game.lol.dto.res.LolTeamResponseDto;
-import com.example.naejeonhajab.domain.game.lol.dto.res.LolPlayerResultHistoryResponseDetailDto;
-import com.example.naejeonhajab.domain.game.lol.dto.res.LolPlayerResultHistoryResponseSimpleDto;
+import com.example.naejeonhajab.domain.game.lol.dto.req.playerResultHistory.LolPlayerResultHistoryDetailSearchRequestDto;
+import com.example.naejeonhajab.domain.game.lol.dto.req.playerHistory.LolPlayerHistoryRequestDto;
+import com.example.naejeonhajab.domain.game.lol.dto.req.playerHistory.LolPlayerHistorySImpleSearchRequestDto;
+import com.example.naejeonhajab.domain.game.lol.dto.req.playerResultHistory.LolPlayerResultHistoryRequestDto;
+import com.example.naejeonhajab.domain.game.lol.dto.res.playerHistory.LolPlayerHistoryResponseDetailDto;
+import com.example.naejeonhajab.domain.game.lol.dto.res.playerHistory.LolPlayerHistoryResponseSimpleDto;
+import com.example.naejeonhajab.domain.game.lol.dto.common.LolTeamResponseDto;
+import com.example.naejeonhajab.domain.game.lol.dto.res.playerResultHistory.LolPlayerResultHistoryResponseDetailDto;
+import com.example.naejeonhajab.domain.game.lol.dto.res.playerResultHistory.LolPlayerResultHistoryResponseSimpleDto;
 import com.example.naejeonhajab.domain.game.lol.service.RiftServiceImpl;
 import com.example.naejeonhajab.security.AuthUser;
 import jakarta.validation.Valid;
@@ -23,7 +25,6 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 
 import static com.example.naejeonhajab.common.response.enums.LolApiResponse.LOL_TITLE_NOT_NULL;
 
@@ -90,13 +91,22 @@ public class RiftController {
 
     //클라이언트로부터 요청받은 제목과 유사한것들을 반환시키기 (10개씩 반환시키면 적당할듯)
     @GetMapping("/simpleSearch")
-    public ApiResponse<List<LolPlayerHistoryResponseSimpleDto>> playerHistorySearch(
-            @RequestParam(required = false) String playerHistoryTitle,
-            @RequestParam(required = false) int page,
+    public ApiResponse<Page<LolPlayerHistoryResponseSimpleDto>> playerHistorySearch(
+            @Valid @ModelAttribute LolPlayerHistorySImpleSearchRequestDto dto,
             @AuthenticationPrincipal AuthUser authUser
     ){
-        Pageable pageable = PageRequest.of(page - 1,3, Sort.Direction.DESC,"createdAt");
-        List<LolPlayerHistoryResponseSimpleDto> result = lolService.playerHistorySearch(playerHistoryTitle,authUser,pageable);
+        Pageable pageable = PageRequest.of(dto.getPage() - 1,3, Sort.Direction.DESC,"createdAt");
+        Page<LolPlayerHistoryResponseSimpleDto> result = lolService.playerHistorySearch(dto.getPlayerHistoryTitle(),authUser,pageable);
+        return ApiResponse.of(BaseApiResponse.SUCCESS, result);
+    }
+
+    @GetMapping("/detailSearch")
+    public ApiResponse<Page<LolPlayerResultHistoryResponseSimpleDto>> playerResultHistorySearch(
+            @Valid @ModelAttribute LolPlayerResultHistoryDetailSearchRequestDto dto,
+            @AuthenticationPrincipal AuthUser authUser
+    ){
+        Pageable pageable = PageRequest.of(dto.getPage() - 1,10, Sort.Direction.DESC,"createdAt");
+        Page<LolPlayerResultHistoryResponseSimpleDto> result = lolService.playerResultHistorySearch(dto.getPlayerResultHistoryTitle(),authUser,pageable);
         return ApiResponse.of(BaseApiResponse.SUCCESS, result);
     }
 }

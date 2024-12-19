@@ -3,9 +3,13 @@ package com.example.naejeonhajab.domain.game.lol.service;
 import com.example.naejeonhajab.common.exception.BaseException;
 import com.example.naejeonhajab.common.exception.LolException;
 import com.example.naejeonhajab.common.response.enums.BaseApiResponse;
-import com.example.naejeonhajab.domain.game.lol.dto.req.LolPlayerHistoryRequestDto;
-import com.example.naejeonhajab.domain.game.lol.dto.req.LolPlayerResultHistoryRequestDto;
-import com.example.naejeonhajab.domain.game.lol.dto.res.*;
+import com.example.naejeonhajab.domain.game.lol.dto.common.LolTeamResponseDto;
+import com.example.naejeonhajab.domain.game.lol.dto.req.playerHistory.LolPlayerHistoryRequestDto;
+import com.example.naejeonhajab.domain.game.lol.dto.req.playerResultHistory.LolPlayerResultHistoryRequestDto;
+import com.example.naejeonhajab.domain.game.lol.dto.res.playerHistory.LolPlayerHistoryResponseDetailDto;
+import com.example.naejeonhajab.domain.game.lol.dto.res.playerHistory.LolPlayerHistoryResponseSimpleDto;
+import com.example.naejeonhajab.domain.game.lol.dto.res.playerResultHistory.LolPlayerResultHistoryResponseDetailDto;
+import com.example.naejeonhajab.domain.game.lol.dto.res.playerResultHistory.LolPlayerResultHistoryResponseSimpleDto;
 import com.example.naejeonhajab.domain.game.lol.entity.playerHistory.LolLines;
 import com.example.naejeonhajab.domain.game.lol.entity.playerHistory.LolPlayer;
 import com.example.naejeonhajab.domain.game.lol.entity.playerHistory.LolPlayerHistory;
@@ -147,11 +151,18 @@ public class RiftServiceImpl {
 
     // 플레이어 히스토리 내역 검색
     @Transactional(readOnly = true)
-    public List<LolPlayerHistoryResponseSimpleDto> playerHistorySearch(String playerHistoryTitle, AuthUser authUser, Pageable pageable) {
+    public Page<LolPlayerHistoryResponseSimpleDto> playerHistorySearch(String playerHistoryTitle, AuthUser authUser, Pageable pageable) {
         User user = User.of(authUser);
         Page<LolPlayerHistory> pageResult = searchPlayerHistoryByTitle(user, pageable, playerHistoryTitle);
-        List<LolPlayerHistory> listResult = pageResult.getContent();
-        return LolPlayerHistoryResponseSimpleDto.of(listResult);
+        return pageResult.map(LolPlayerHistoryResponseSimpleDto::of);
+    }
+
+    // 플레이어 대전결과 히스토리 내역 검색
+    @Transactional(readOnly = true)
+    public Page<LolPlayerResultHistoryResponseSimpleDto> playerResultHistorySearch(String playerResultHistoryTitle, AuthUser authUser, Pageable pageable) {
+        User user = User.of(authUser);
+        Page<LolPlayerResultHistory> pageResult = searchPlayerResultHistoryByTitle(user, pageable, playerResultHistoryTitle);
+        return pageResult.map(LolPlayerResultHistoryResponseSimpleDto::of);
     }
 
 
@@ -180,5 +191,10 @@ public class RiftServiceImpl {
     @Transactional(readOnly = true)
     protected LolPlayerResultHistory findLolPlayerResultHistoryByPlayerHistoryId(Long playerResultistoryId) {
         return lolPlayerResultHistoryRepository.findById(playerResultistoryId).orElseThrow(() -> new LolException(LOL_RESULT_HISTORY_NOT_FOUND));
+    }
+
+    @Transactional(readOnly = true)
+    protected Page<LolPlayerResultHistory> searchPlayerResultHistoryByTitle(User user, Pageable pageable,String playerResultHistoryTitle) {
+        return lolPlayerResultHistoryRepository.searchPlayerResultHistoryByTitle(user, LolType.RIFT, pageable, playerResultHistoryTitle);
     }
 }

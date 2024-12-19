@@ -3,11 +3,13 @@ package com.example.naejeonhajab.domain.game.lol.controller;
 import com.example.naejeonhajab.common.exception.LolException;
 import com.example.naejeonhajab.common.response.ApiResponse;
 import com.example.naejeonhajab.common.response.enums.BaseApiResponse;
-import com.example.naejeonhajab.domain.game.lol.dto.req.LolPlayerHistoryRequestDto;
-import com.example.naejeonhajab.domain.game.lol.dto.req.LolPlayerResultHistoryRequestDto;
-import com.example.naejeonhajab.domain.game.lol.dto.res.*;
-import com.example.naejeonhajab.domain.game.lol.dto.res.LolPlayerHistoryResponseSimpleDto;
-import com.example.naejeonhajab.domain.game.lol.dto.res.LolPlayerResultHistoryResponseSimpleDto;
+import com.example.naejeonhajab.domain.game.lol.dto.common.LolTeamResponseDto;
+import com.example.naejeonhajab.domain.game.lol.dto.req.playerHistory.LolPlayerHistoryRequestDto;
+import com.example.naejeonhajab.domain.game.lol.dto.req.playerResultHistory.LolPlayerResultHistoryRequestDto;
+import com.example.naejeonhajab.domain.game.lol.dto.res.playerHistory.LolPlayerHistoryResponseDetailDto;
+import com.example.naejeonhajab.domain.game.lol.dto.res.playerHistory.LolPlayerHistoryResponseSimpleDto;
+import com.example.naejeonhajab.domain.game.lol.dto.res.playerResultHistory.LolPlayerResultHistoryResponseDetailDto;
+import com.example.naejeonhajab.domain.game.lol.dto.res.playerResultHistory.LolPlayerResultHistoryResponseSimpleDto;
 import com.example.naejeonhajab.domain.game.lol.service.AbyssServiceImpl;
 import com.example.naejeonhajab.security.AuthUser;
 import jakarta.validation.Valid;
@@ -93,6 +95,17 @@ public class AbyssController {
     ){
         Pageable pageable = PageRequest.of(page - 1,3, Sort.Direction.DESC,"createdAt");
         List<LolPlayerHistoryResponseSimpleDto> result = lolService.playerHistorySearch(playerHistoryTitle,authUser,pageable);
+        return ApiResponse.of(BaseApiResponse.SUCCESS, result);
+    }
+
+    @GetMapping("/detailSearch")
+    public ApiResponse<Page<LolPlayerResultHistoryResponseSimpleDto>> playerResultHistorySearch(
+            @RequestParam(required = false) String playerResultHistoryTitle,
+            @RequestParam(required = false) int page,
+            @AuthenticationPrincipal AuthUser authUser
+    ){
+        Pageable pageable = PageRequest.of(page - 1,10, Sort.Direction.DESC,"createdAt");
+        Page<LolPlayerResultHistoryResponseSimpleDto> result = lolService.playerResultHistorySearch(playerResultHistoryTitle,authUser,pageable);
         return ApiResponse.of(BaseApiResponse.SUCCESS, result);
     }
 }

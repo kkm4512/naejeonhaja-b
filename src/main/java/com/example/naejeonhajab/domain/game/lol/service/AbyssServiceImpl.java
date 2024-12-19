@@ -3,14 +3,13 @@ package com.example.naejeonhajab.domain.game.lol.service;
 import com.example.naejeonhajab.common.exception.BaseException;
 import com.example.naejeonhajab.common.exception.LolException;
 import com.example.naejeonhajab.common.response.enums.BaseApiResponse;
-import com.example.naejeonhajab.domain.game.lol.dto.common.LolPlayerDto;
-import com.example.naejeonhajab.domain.game.lol.dto.req.LolPlayerHistoryRequestDto;
-import com.example.naejeonhajab.domain.game.lol.dto.req.LolPlayerResultHistoryRequestDto;
-import com.example.naejeonhajab.domain.game.lol.dto.res.LolPlayerHistoryResponseDetailDto;
-import com.example.naejeonhajab.domain.game.lol.dto.res.LolPlayerResultHistoryResponseDetailDto;
-import com.example.naejeonhajab.domain.game.lol.dto.res.LolTeamResponseDto;
-import com.example.naejeonhajab.domain.game.lol.dto.res.LolPlayerHistoryResponseSimpleDto;
-import com.example.naejeonhajab.domain.game.lol.dto.res.LolPlayerResultHistoryResponseSimpleDto;
+import com.example.naejeonhajab.domain.game.lol.dto.req.playerHistory.LolPlayerHistoryRequestDto;
+import com.example.naejeonhajab.domain.game.lol.dto.req.playerResultHistory.LolPlayerResultHistoryRequestDto;
+import com.example.naejeonhajab.domain.game.lol.dto.res.playerHistory.LolPlayerHistoryResponseDetailDto;
+import com.example.naejeonhajab.domain.game.lol.dto.res.playerResultHistory.LolPlayerResultHistoryResponseDetailDto;
+import com.example.naejeonhajab.domain.game.lol.dto.common.LolTeamResponseDto;
+import com.example.naejeonhajab.domain.game.lol.dto.res.playerHistory.LolPlayerHistoryResponseSimpleDto;
+import com.example.naejeonhajab.domain.game.lol.dto.res.playerResultHistory.LolPlayerResultHistoryResponseSimpleDto;
 import com.example.naejeonhajab.domain.game.lol.entity.playerHistory.LolPlayer;
 import com.example.naejeonhajab.domain.game.lol.entity.playerHistory.LolPlayerHistory;
 import com.example.naejeonhajab.domain.game.lol.entity.resultHistory.LolPlayerResult;
@@ -19,14 +18,8 @@ import com.example.naejeonhajab.domain.game.lol.entity.resultHistory.LolPlayerRe
 import com.example.naejeonhajab.domain.game.lol.enums.LolType;
 import com.example.naejeonhajab.domain.game.lol.mapper.LolMapper;
 import com.example.naejeonhajab.domain.game.lol.repository.playerHistory.LolPlayerHistoryRepository;
-import com.example.naejeonhajab.domain.game.lol.repository.playerHistory.LolPlayerRepository;
 import com.example.naejeonhajab.domain.game.lol.repository.resultHistory.LolPlayerResultHistoryRepository;
-import com.example.naejeonhajab.domain.game.lol.repository.resultHistory.LolPlayerResultOutcomeRepository;
-import com.example.naejeonhajab.domain.game.lol.repository.resultHistory.LolPlayerResultRepository;
-import com.example.naejeonhajab.domain.game.lol.service.balancing.LolAssignServiceImpl;
 import com.example.naejeonhajab.domain.game.lol.service.balancing.LolBalanceServiceImpl;
-import com.example.naejeonhajab.domain.game.lol.service.balancing.LolCheckServiceImpl;
-import com.example.naejeonhajab.domain.game.lol.service.balancing.LolLineSortServiceImpl;
 import com.example.naejeonhajab.domain.game.lol.service.util.LolUtilService;
 import com.example.naejeonhajab.domain.user.entity.User;
 import com.example.naejeonhajab.security.AuthUser;
@@ -37,8 +30,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import static com.example.naejeonhajab.common.response.enums.LolApiResponse.LOL_HISTORY_NOT_FOUND;
@@ -146,6 +137,14 @@ public class AbyssServiceImpl {
         return LolPlayerHistoryResponseSimpleDto.of(listResult);
     }
 
+    // 플레이어 대전결과 히스토리 내역 검색
+    @Transactional(readOnly = true)
+    public Page<LolPlayerResultHistoryResponseSimpleDto> playerResultHistorySearch(String playerResultHistoryTitle, AuthUser authUser, Pageable pageable) {
+        User user = User.of(authUser);
+        Page<LolPlayerResultHistory> pageResult = searchPlayerResultHistoryByTitle(user, pageable, playerResultHistoryTitle);
+        return pageResult.map(LolPlayerResultHistoryResponseSimpleDto::of);
+    }
+
 
     // PlayerHistory
     @Transactional(readOnly = true)
@@ -172,5 +171,10 @@ public class AbyssServiceImpl {
     @Transactional(readOnly = true)
     protected LolPlayerResultHistory findLolPlayerResultHistoryByPlayerHistoryId(Long playerResultistoryId) {
         return lolPlayerResultHistoryRepository.findById(playerResultistoryId).orElseThrow(() -> new LolException(LOL_RESULT_HISTORY_NOT_FOUND));
+    }
+
+    @Transactional(readOnly = true)
+    protected Page<LolPlayerResultHistory> searchPlayerResultHistoryByTitle(User user, Pageable pageable,String playerResultHistoryTitle) {
+        return lolPlayerResultHistoryRepository.searchPlayerResultHistoryByTitle(user, LolType.ABYSS, pageable, playerResultHistoryTitle);
     }
 }

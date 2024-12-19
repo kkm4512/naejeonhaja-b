@@ -3,7 +3,7 @@ package com.example.naejeonhajab.domain.game.lol.service.util;
 import com.example.naejeonhajab.common.exception.BaseException;
 import com.example.naejeonhajab.common.response.enums.BaseApiResponse;
 import com.example.naejeonhajab.domain.game.lol.dto.common.LolPlayerDto;
-import com.example.naejeonhajab.domain.game.lol.dto.res.LolTeamResponseDto;
+import com.example.naejeonhajab.domain.game.lol.dto.common.LolTeamResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

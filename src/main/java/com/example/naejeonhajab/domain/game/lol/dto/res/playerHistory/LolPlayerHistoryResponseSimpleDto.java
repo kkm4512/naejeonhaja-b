@@ -1,6 +1,5 @@
-package com.example.naejeonhajab.domain.game.lol.dto.res;
+package com.example.naejeonhajab.domain.game.lol.dto.res.playerHistory;
 
-import com.example.naejeonhajab.domain.game.lol.entity.playerHistory.LolPlayer;
 import com.example.naejeonhajab.domain.game.lol.entity.playerHistory.LolPlayerHistory;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
