@@ -1,6 +1,5 @@
 package com.example.naejeonhajab.domain.game.lol.dto.common;
 
-import com.example.naejeonhajab.domain.game.lol.dto.res.LolTeamResponseDto;
 import com.example.naejeonhajab.domain.game.lol.entity.resultHistory.LolPlayerResult;
 import com.example.naejeonhajab.domain.game.lol.enums.LolTier;
 import jakarta.validation.constraints.NotBlank;

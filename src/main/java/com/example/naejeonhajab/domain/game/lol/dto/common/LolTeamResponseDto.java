@@ -1,7 +1,5 @@
-package com.example.naejeonhajab.domain.game.lol.dto.res;
+package com.example.naejeonhajab.domain.game.lol.dto.common;
 
-import com.example.naejeonhajab.domain.game.lol.dto.common.LolPlayerDto;
-import com.example.naejeonhajab.domain.game.lol.enums.LolTeam;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
