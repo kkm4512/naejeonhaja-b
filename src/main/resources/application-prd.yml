@@ -20,4 +20,6 @@ jwt:
     key: ${JWT_SECRET_KEY}
 variables:
   domain: "naejeonhaja.com"
+mybatis:
+  mapper-locations: classpath:mapper/*.xml
 
