@@ -33,3 +33,6 @@ mybatis:
     map-underscore-to-camel-case: true
     # MyBatis 쿼리 로깅 확인
 #    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+
+variables:
+  domain: ""

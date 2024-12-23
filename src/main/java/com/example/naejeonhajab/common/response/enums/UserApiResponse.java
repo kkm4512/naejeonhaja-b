@@ -8,6 +8,8 @@ public enum UserApiResponse implements ApiResponseEnum {
 
     // 400
     INVALID_CREDENTIALS(HttpStatus.BAD_REQUEST, "아이디 또는 비밀번호가 일치하지 않습니다"),
+    NOT_MATCH_CODE(HttpStatus.BAD_REQUEST, "인증코드가 상이합니다"),
+    NOT_MATCH_EMAIL(HttpStatus.BAD_REQUEST, "이메일은 kakao,naver,gmail만 가능합니다"),
 
     // 403
     NOT_LOGIN(HttpStatus.FORBIDDEN,"로그인후 이용해 주세요"),

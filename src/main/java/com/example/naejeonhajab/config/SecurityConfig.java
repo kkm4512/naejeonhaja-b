@@ -20,6 +20,7 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import java.util.List;
 
 import static org.springframework.http.HttpMethod.POST;
+import static org.springframework.http.HttpMethod.PUT;
 
 @Configuration
 @RequiredArgsConstructor
@@ -50,6 +51,7 @@ public class SecurityConfig {
 
                         .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll() // Preflight 요청 허용
                         .requestMatchers(POST,"/api/v1/users/**").permitAll() // 유저 API 허용
+                        .requestMatchers(PUT,"/api/v1/users/**").permitAll() // 유저 API 허용
                         .requestMatchers(POST, "/api/v1/game/lol/*").permitAll() // 특정 POST 요청 허용
                         .anyRequest().authenticated() // 나머지 요청은 인증 필요
                 )
