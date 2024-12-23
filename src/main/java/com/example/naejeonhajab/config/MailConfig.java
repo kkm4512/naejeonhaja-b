@@ -59,7 +59,7 @@ public class MailConfig {
         if (useSsl) {
             props.put("mail.smtp.ssl.enable", "true");
         } else {
-            props.put("mail.smtp.starttls.enable", "false");
+            props.put("mail.smtp.starttls.enable", "true");
         }
 
         return mailSender;
