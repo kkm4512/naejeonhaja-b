@@ -56,5 +56,9 @@ public class LolPlayerHistory {
         );
     }
 
+    public void updatePlayerHistoryTitle(String playerHistoryTitle) {
+        this.playerHistoryTitle = playerHistoryTitle;
+    }
+
 }
 

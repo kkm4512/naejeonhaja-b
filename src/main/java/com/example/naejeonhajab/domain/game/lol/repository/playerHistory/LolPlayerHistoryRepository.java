@@ -8,8 +8,11 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
+import java.util.Optional;
+
 public interface LolPlayerHistoryRepository extends JpaRepository<LolPlayerHistory, Long> {
     Page<LolPlayerHistory> findByUserAndType(User user, LolType lolType, Pageable pageable);
+    Optional<LolPlayerHistory> findByUserAndType(User user, LolType lolType);
     @Query("SELECT lph from LolPlayerHistory lph" +
             " WHERE lph.type = :lolType" +
             " AND lph.playerHistoryTitle LIKE %:playerHistoryTitle%"

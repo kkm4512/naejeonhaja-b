@@ -20,6 +20,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static com.example.naejeonhajab.common.response.enums.UserApiResponse.NOT_MATCH_CODE;
+import static com.example.naejeonhajab.common.response.enums.UserApiResponse.NOT_ME;
 
 @Entity
 @Builder
@@ -98,5 +99,11 @@ public class User {
 
     public void updatePassword(String password){
         this.password = password;
+    }
+
+    public void isMe(Long id){
+        if (this.id.longValue() != id){
+            throw new UserException(NOT_ME);
+        }
     }
 }

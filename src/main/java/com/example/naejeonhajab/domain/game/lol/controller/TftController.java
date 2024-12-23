@@ -7,7 +7,7 @@ import com.example.naejeonhajab.domain.game.lol.dto.common.LolTeamResponseDto;
 import com.example.naejeonhajab.domain.game.lol.dto.req.playerHistory.LolPlayerHistoryRequestDto;
 import com.example.naejeonhajab.domain.game.lol.dto.req.playerResultHistory.LolPlayerResultHistoryRequestDto;
 import com.example.naejeonhajab.domain.game.lol.dto.res.playerHistory.LolPlayerHistoryResponseDetailDto;
-import com.example.naejeonhajab.domain.game.lol.dto.res.playerHistory.LolPlayerHistoryResponseSimpleDto;
+import com.example.naejeonhajab.domain.game.lol.dto.res.playerHistory.LolPlayerHistorySimpleDto;
 import com.example.naejeonhajab.domain.game.lol.dto.res.playerResultHistory.LolPlayerResultHistoryResponseDetailDto;
 import com.example.naejeonhajab.domain.game.lol.dto.res.playerResultHistory.LolPlayerResultHistoryResponseSimpleDto;
 import com.example.naejeonhajab.domain.game.lol.service.TftServiceImpl;
@@ -65,9 +65,9 @@ public class TftController {
 
     // id, title만
     @GetMapping("/playerHistory/simple/{page}")
-    public ApiResponse<Page<LolPlayerHistoryResponseSimpleDto>> getPlayerHistorySimpleTeam(@PathVariable int page, @AuthenticationPrincipal AuthUser authUser){
+    public ApiResponse<Page<LolPlayerHistorySimpleDto>> getPlayerHistorySimpleTeam(@PathVariable int page, @AuthenticationPrincipal AuthUser authUser){
         Pageable pageable = PageRequest.of(page - 1, 3, Sort.Direction.DESC,"createdAt");
-        Page<LolPlayerHistoryResponseSimpleDto> result = lolService.getPlayerHistorySimpleTeam(authUser,pageable);
+        Page<LolPlayerHistorySimpleDto> result = lolService.getPlayerHistorySimpleTeam(authUser,pageable);
         return ApiResponse.of(BaseApiResponse.SUCCESS, result);
     }
 
@@ -88,13 +88,13 @@ public class TftController {
 
     //클라이언트로부터 요청받은 제목과 유사한것들을 반환시키기 (10개씩 반환시키면 적당할듯)
     @GetMapping("/simpleSearch")
-    public ApiResponse<List<LolPlayerHistoryResponseSimpleDto>> playerHistorySearch(
+    public ApiResponse<List<LolPlayerHistorySimpleDto>> playerHistorySearch(
             @RequestParam(required = false) String playerHistoryTitle,
             @RequestParam(required = false) int page,
             @AuthenticationPrincipal AuthUser authUser
     ){
         Pageable pageable = PageRequest.of(page - 1,3, Sort.Direction.DESC,"createdAt");
-        List<LolPlayerHistoryResponseSimpleDto> result = lolService.playerHistorySearch(playerHistoryTitle,authUser,pageable);
+        List<LolPlayerHistorySimpleDto> result = lolService.playerHistorySearch(playerHistoryTitle,authUser,pageable);
         return ApiResponse.of(BaseApiResponse.SUCCESS, result);
     }
 
