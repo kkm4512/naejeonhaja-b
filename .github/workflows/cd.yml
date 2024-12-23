@@ -17,16 +17,11 @@ jobs:
           distribution: 'adopt'
           java-version: '17'
 
-      - name: env 파일 생성
+      # 여기서 복사 시킬떄 compose.yml파일이랑 env파일을 둘이 같은 위치에 두게한다음에 해야할듯
+      - name: 로컬 ENV -> 배포 EMV
         run: |
-          echo "${{ secrets.LOCAL_ENV }}" > .env
+          echo "${{ secrets.DEPLOY_ENV }}" > .env
         shell: bash
-
-      - name: MySQL 도커 컨테이너 실행
-        uses: mirromutth/mysql-action@v1.1
-        with:
-          mysql database: ${MYSQL_DB_NAME}
-          mysql root password: ${MYSQL_PASSWORD}
 
       - name: 빌드 및 테스트 코드 돌리는중 ...
         run: |
@@ -38,12 +33,6 @@ jobs:
           docker login -u ${{secrets.DOCKER_ID}} -p ${{secrets.DOCKER_TOKEN}}
           docker build -t ${{secrets.DOCKER_ID}}/${{secrets.DOCKER_REPO}} .
           docker push ${{secrets.DOCKER_ID}}/${{secrets.DOCKER_REPO}}
-
-      # 여기서 복사 시킬떄 compose.yml파일이랑 env파일을 둘이 같은 위치에 두게한다음에 해야할듯
-      - name: 로컬 ENV -> 배포 EMV
-        run: |
-          echo "${{ secrets.DEPLOY_ENV }}" > .env
-        shell: bash
 
       - name: ec2에 docker-compose.yml 파일 복사시키기 (env와 동일한 위치)
         uses: appleboy/scp-action@v0.1.4
