@@ -1,3 +1,16 @@
 server:
   profiles:
     active: dev,prd
+
+spring:
+  mail:
+    naver:
+      email: ${NAVER_EMAIL}
+      password: ${NAVER_PASSWORD} # 또는 앱 비밀번호
+    gmail:
+      email: ${GMAIL_EMAIL}
+      password: ${GMAIL_PASSWORD} # 또는 앱 비밀번호
+    kakao:
+      email: ${KAKAO_EMAIL}
+      password: ${KAKAO_PASSWORD} # 또는 앱 비밀번호
+

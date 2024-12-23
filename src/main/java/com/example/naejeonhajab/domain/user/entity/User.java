@@ -1,5 +1,6 @@
 package com.example.naejeonhajab.domain.user.entity;
 
+import com.example.naejeonhajab.common.exception.UserException;
 import com.example.naejeonhajab.domain.game.lol.entity.playerHistory.LolPlayerHistory;
 import com.example.naejeonhajab.domain.game.lol.entity.resultHistory.LolPlayerResultHistory;
 import com.example.naejeonhajab.domain.user.dto.common.UserRole;
@@ -17,6 +18,8 @@ import org.springframework.security.core.GrantedAuthority;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+
+import static com.example.naejeonhajab.common.response.enums.UserApiResponse.NOT_MATCH_CODE;
 
 @Entity
 @Builder
@@ -42,6 +45,9 @@ public class User {
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private UserRole userRole;
+
+    @Column
+    private String code;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<LolPlayerHistory> playerHistories = new ArrayList<>();
@@ -78,5 +84,19 @@ public class User {
                 authUser.getEmail(),
                 userRole
         );
+    }
+
+    public void updateCode(String code){
+        this.code = code;
+    }
+
+    public void verifyCode(String code){
+        if (!this.code.equals(code)){
+            throw new UserException(NOT_MATCH_CODE);
+        }
+    }
+
+    public void updatePassword(String password){
+        this.password = password;
     }
 }
