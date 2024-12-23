@@ -1,6 +1,8 @@
 package com.example.naejeonhajab.domain.game.lol.dto.res.playerHistory;
 
 import com.example.naejeonhajab.domain.game.lol.entity.playerHistory.LolPlayerHistory;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -11,18 +13,20 @@ import java.util.List;
 @NoArgsConstructor
 @Getter
 // 제목 + id 데이터 전송
-public class LolPlayerHistoryResponseSimpleDto {
+public class LolPlayerHistorySimpleDto {
+    @Size(max = 50, message = "제목은 최대 50글자 까지 기재 가능합니다")
     private String playerHistoryTitle;
+    @NotBlank
     private Long playerHistoryId;
 
-    public static LolPlayerHistoryResponseSimpleDto of(LolPlayerHistory playerHistory) {
-        return new LolPlayerHistoryResponseSimpleDto(
+    public static LolPlayerHistorySimpleDto of(LolPlayerHistory playerHistory) {
+        return new LolPlayerHistorySimpleDto(
                 playerHistory.getPlayerHistoryTitle(),
                 playerHistory.getId()
         );
     }
 
-    public static List<LolPlayerHistoryResponseSimpleDto> of(List<LolPlayerHistory> playerHistorys) {
-        return playerHistorys.stream().map(LolPlayerHistoryResponseSimpleDto::of).toList();
+    public static List<LolPlayerHistorySimpleDto> of(List<LolPlayerHistory> playerHistorys) {
+        return playerHistorys.stream().map(LolPlayerHistorySimpleDto::of).toList();
     }
 }

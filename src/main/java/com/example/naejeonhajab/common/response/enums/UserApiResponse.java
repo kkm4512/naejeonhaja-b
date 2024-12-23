@@ -11,14 +11,16 @@ public enum UserApiResponse implements ApiResponseEnum {
     NOT_MATCH_CODE(HttpStatus.BAD_REQUEST, "인증코드가 상이합니다"),
     NOT_MATCH_EMAIL(HttpStatus.BAD_REQUEST, "이메일은 kakao,naver,gmail만 가능합니다"),
 
-    // 403
-    NOT_LOGIN(HttpStatus.FORBIDDEN,"로그인후 이용해 주세요"),
-
     // 401
     JWT_INVALID(HttpStatus.UNAUTHORIZED, "유효하지 않은 JWT입니다"),
     JWT_EXPIRED(HttpStatus.UNAUTHORIZED, "만료된 JWT 토큰입니다"),
     JWT_UNSUPPORTED(HttpStatus.UNAUTHORIZED, "지원되지 않는 JWT입니다"),
     JWT_NOT_SIGNATURED(HttpStatus.UNAUTHORIZED, "서명되지 않은 JWT입니다"),
+
+    // 403
+    NOT_LOGIN(HttpStatus.FORBIDDEN,"로그인후 이용해 주세요"),
+    // 자신의 것이 아닐떄 권한존재없음
+    NOT_ME(HttpStatus.FORBIDDEN,"권한이 존재 하지 않습니다"),
 
     // 404
     JWT_NOT_FOUND(HttpStatus.NOT_FOUND, "토큰을 찾을 수 없습니다"),

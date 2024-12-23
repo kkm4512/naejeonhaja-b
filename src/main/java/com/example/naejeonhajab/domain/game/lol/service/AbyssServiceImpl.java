@@ -8,7 +8,7 @@ import com.example.naejeonhajab.domain.game.lol.dto.req.playerResultHistory.LolP
 import com.example.naejeonhajab.domain.game.lol.dto.res.playerHistory.LolPlayerHistoryResponseDetailDto;
 import com.example.naejeonhajab.domain.game.lol.dto.res.playerResultHistory.LolPlayerResultHistoryResponseDetailDto;
 import com.example.naejeonhajab.domain.game.lol.dto.common.LolTeamResponseDto;
-import com.example.naejeonhajab.domain.game.lol.dto.res.playerHistory.LolPlayerHistoryResponseSimpleDto;
+import com.example.naejeonhajab.domain.game.lol.dto.res.playerHistory.LolPlayerHistorySimpleDto;
 import com.example.naejeonhajab.domain.game.lol.dto.res.playerResultHistory.LolPlayerResultHistoryResponseSimpleDto;
 import com.example.naejeonhajab.domain.game.lol.entity.playerHistory.LolPlayer;
 import com.example.naejeonhajab.domain.game.lol.entity.playerHistory.LolPlayerHistory;
@@ -114,10 +114,10 @@ public class AbyssServiceImpl {
 
     // 현재 유저가 가지고있는 플레이어 히스토리 내역 조회 (다건)
     @Transactional(readOnly = true)
-    public Page<LolPlayerHistoryResponseSimpleDto> getPlayerHistorySimpleTeam(AuthUser authUser, Pageable pageable) {
+    public Page<LolPlayerHistorySimpleDto> getPlayerHistorySimpleTeam(AuthUser authUser, Pageable pageable) {
         User user = User.of(authUser);
         return findLolPlayerHistoryByUser(user, pageable)
-                .map(LolPlayerHistoryResponseSimpleDto::of);
+                .map(LolPlayerHistorySimpleDto::of);
     }
 
     // 현재 유저가 가지고있는 대전 상세 내역 조회 (다건)
@@ -130,11 +130,11 @@ public class AbyssServiceImpl {
 
     // 플레이어 히스토리 내역 검색
     @Transactional(readOnly = true)
-    public List<LolPlayerHistoryResponseSimpleDto> playerHistorySearch(String playerHistoryTitle, AuthUser authUser, Pageable pageable) {
+    public List<LolPlayerHistorySimpleDto> playerHistorySearch(String playerHistoryTitle, AuthUser authUser, Pageable pageable) {
         User user = User.of(authUser);
         Page<LolPlayerHistory> pageResult = searchPlayerHistoryByTitle(user, pageable, playerHistoryTitle);
         List<LolPlayerHistory> listResult = pageResult.getContent();
-        return LolPlayerHistoryResponseSimpleDto.of(listResult);
+        return LolPlayerHistorySimpleDto.of(listResult);
     }
 
     // 플레이어 대전결과 히스토리 내역 검색

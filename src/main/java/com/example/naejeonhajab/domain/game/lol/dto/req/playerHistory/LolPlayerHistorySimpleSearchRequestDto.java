@@ -10,7 +10,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @Setter
 @Getter
-public class LolPlayerHistorySImpleSearchRequestDto {
+public class LolPlayerHistorySimpleSearchRequestDto {
     @Size(max = 50, message = "제목은 50자 를 초과할 수 없습니다")
     private String playerHistoryTitle;
 
