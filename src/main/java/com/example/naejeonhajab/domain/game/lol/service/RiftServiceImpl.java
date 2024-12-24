@@ -4,7 +4,6 @@ import com.example.naejeonhajab.common.exception.BaseException;
 import com.example.naejeonhajab.common.exception.LolException;
 import com.example.naejeonhajab.common.response.enums.BaseApiResponse;
 import com.example.naejeonhajab.domain.game.lol.dto.common.LolTeamResponseDto;
-import com.example.naejeonhajab.domain.game.lol.dto.req.playerHistory.LolPlayerHistoryDeleteAllRequestDto;
 import com.example.naejeonhajab.domain.game.lol.dto.req.playerHistory.LolPlayerHistoryRequestDto;
 import com.example.naejeonhajab.domain.game.lol.dto.req.playerHistory.LolPlayerHistoryUpdateRequestDto;
 import com.example.naejeonhajab.domain.game.lol.dto.req.playerResultHistory.LolPlayerResultHistoryRequestDto;
@@ -186,10 +185,10 @@ public class RiftServiceImpl {
     }
 
     @Transactional
-    public void deleteAllTeam(@Valid LolPlayerHistoryDeleteAllRequestDto dtos, AuthUser authUser) {
+    public void deleteAllTeam(@Valid List<LolPlayerHistorySimpleDto> dtos, AuthUser authUser) {
         User user = User.of(authUser);
         List<LolPlayerHistory> lolPlayerHistories = new ArrayList<>();
-        for ( LolPlayerHistorySimpleDto dto : dtos.getLolPlayerHistorySimpleDtos() ) {
+        for ( LolPlayerHistorySimpleDto dto : dtos ) {
             LolPlayerHistory lolPlayerHistory = findLolPlayerHistoryById(dto.getPlayerHistoryId());
             user.isMe(lolPlayerHistory.getUser().getId());
             lolPlayerHistories.add(lolPlayerHistory);
