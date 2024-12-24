@@ -2,7 +2,6 @@ package com.example.naejeonhajab.domain.game.lol.controller;
 
 import com.example.naejeonhajab.common.exception.LolException;
 import com.example.naejeonhajab.common.response.ApiResponse;
-import com.example.naejeonhajab.domain.game.lol.dto.req.playerHistory.LolPlayerHistoryDeleteAllRequestDto;
 import com.example.naejeonhajab.domain.game.lol.dto.req.playerHistory.LolPlayerHistoryUpdateRequestDto;
 import com.example.naejeonhajab.domain.game.lol.dto.req.playerResultHistory.LolPlayerResultHistoryDetailSearchRequestDto;
 import com.example.naejeonhajab.domain.game.lol.dto.req.playerHistory.LolPlayerHistoryRequestDto;
@@ -69,7 +68,10 @@ public class RiftController {
     }
 
     @DeleteMapping("/playerHistory")
-    public ApiResponse<Void> deleteTeam(@RequestBody @Valid LolPlayerHistoryDeleteAllRequestDto dtos, @AuthenticationPrincipal AuthUser authUser) {
+    public ApiResponse<Void> deleteAllTeam(@RequestBody @Valid List<LolPlayerHistorySimpleDto> dtos, @AuthenticationPrincipal AuthUser authUser) {
+        for ( LolPlayerHistorySimpleDto dto : dtos ) {
+            System.out.println(dto.getPlayerHistoryId());
+        }
         lolService.deleteAllTeam(dtos,authUser);
         return ApiResponse.of(SUCCESS);
     }
