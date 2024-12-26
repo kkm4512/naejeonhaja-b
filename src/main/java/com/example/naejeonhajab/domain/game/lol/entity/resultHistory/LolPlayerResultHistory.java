@@ -56,5 +56,10 @@ public class LolPlayerResultHistory {
                 type
         );
     }
+
+
+    public void updatePlayerHistoryTitle(String playerResultHistoryTitle) {
+        this.playerResultHistoryTitle = playerResultHistoryTitle;
+    }
 }
 

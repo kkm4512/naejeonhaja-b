@@ -3,6 +3,7 @@ package com.example.naejeonhajab.domain.game.lol.controller;
 import com.example.naejeonhajab.common.exception.LolException;
 import com.example.naejeonhajab.common.response.ApiResponse;
 import com.example.naejeonhajab.domain.game.lol.dto.req.playerHistory.LolPlayerHistoryUpdateRequestDto;
+import com.example.naejeonhajab.domain.game.lol.dto.req.playerHistory.LolPlayerResultHistoryUpdateRequestDto;
 import com.example.naejeonhajab.domain.game.lol.dto.req.playerResultHistory.LolPlayerResultHistoryDetailSearchRequestDto;
 import com.example.naejeonhajab.domain.game.lol.dto.req.playerHistory.LolPlayerHistoryRequestDto;
 import com.example.naejeonhajab.domain.game.lol.dto.req.playerHistory.LolPlayerHistorySimpleSearchRequestDto;
@@ -11,7 +12,7 @@ import com.example.naejeonhajab.domain.game.lol.dto.res.playerHistory.LolPlayerH
 import com.example.naejeonhajab.domain.game.lol.dto.res.playerHistory.LolPlayerHistorySimpleDto;
 import com.example.naejeonhajab.domain.game.lol.dto.common.LolTeamResponseDto;
 import com.example.naejeonhajab.domain.game.lol.dto.res.playerResultHistory.LolPlayerResultHistoryResponseDetailDto;
-import com.example.naejeonhajab.domain.game.lol.dto.res.playerResultHistory.LolPlayerResultHistoryResponseSimpleDto;
+import com.example.naejeonhajab.domain.game.lol.dto.res.playerResultHistory.LolPlayerResultHistorySimpleDto;
 import com.example.naejeonhajab.domain.game.lol.service.RiftServiceImpl;
 import com.example.naejeonhajab.security.AuthUser;
 import jakarta.validation.Valid;
@@ -56,29 +57,44 @@ public class RiftController {
     }
 
     @PutMapping("/playerHistory/{playerHistoryId}")
-    public ApiResponse<Void> updateTeam(@PathVariable Long playerHistoryId, @RequestBody @Valid LolPlayerHistoryUpdateRequestDto dto, @AuthenticationPrincipal AuthUser authUser) {
-        lolService.updateTeam(playerHistoryId,dto,authUser);
+    public ApiResponse<Void> updatePlayerHistory(@PathVariable Long playerHistoryId, @RequestBody @Valid LolPlayerHistoryUpdateRequestDto dto, @AuthenticationPrincipal AuthUser authUser) {
+        lolService.updatePlayerHistory(playerHistoryId,dto,authUser);
         return ApiResponse.of(SUCCESS);
     }
 
     @DeleteMapping("/playerHistory/{playerHistoryId}")
-    public ApiResponse<Void> deleteTeam(@PathVariable Long playerHistoryId, @AuthenticationPrincipal AuthUser authUser) {
-        lolService.deleteTeam(playerHistoryId,authUser);
+    public ApiResponse<Void> deletePlayerHistory(@PathVariable Long playerHistoryId, @AuthenticationPrincipal AuthUser authUser) {
+        lolService.deletePlayerHistory(playerHistoryId,authUser);
         return ApiResponse.of(SUCCESS);
     }
 
     @DeleteMapping("/playerHistory")
-    public ApiResponse<Void> deleteAllTeam(@RequestBody @Valid List<LolPlayerHistorySimpleDto> dtos, @AuthenticationPrincipal AuthUser authUser) {
-        for ( LolPlayerHistorySimpleDto dto : dtos ) {
-            System.out.println(dto.getPlayerHistoryId());
-        }
-        lolService.deleteAllTeam(dtos,authUser);
+    public ApiResponse<Void> deletePlayerHistoryAll(@RequestBody @Valid List<LolPlayerHistorySimpleDto> dtos, @AuthenticationPrincipal AuthUser authUser) {
+        lolService.deletePlayerHistoryAll(dtos,authUser);
         return ApiResponse.of(SUCCESS);
     }
 
     @PostMapping("/playerResultHistory")
-    public ApiResponse<Void> saveResultHistory(@RequestBody @Valid LolPlayerResultHistoryRequestDto dto, @AuthenticationPrincipal AuthUser authUser) {
-        lolService.saveResultHistory(dto,authUser);
+    public ApiResponse<Void> savePlayerResultHistory(@RequestBody @Valid LolPlayerResultHistoryRequestDto dto, @AuthenticationPrincipal AuthUser authUser) {
+        lolService.savePlayerResultHistory(dto,authUser);
+        return ApiResponse.of(SUCCESS);
+    }
+
+    @PutMapping("/playerResultHistory/{playerResultHistoryId}")
+    public ApiResponse<Void> updatePlayerResultHistory(@PathVariable Long playerResultHistoryId, @RequestBody @Valid LolPlayerResultHistoryUpdateRequestDto dto, @AuthenticationPrincipal AuthUser authUser) {
+        lolService.updatePlayerResultHistory(playerResultHistoryId,dto,authUser);
+        return ApiResponse.of(SUCCESS);
+    }
+
+    @DeleteMapping("/playerResultHistory/{playerResultHistoryId}")
+    public ApiResponse<Void> deletePlayerResultHistory(@PathVariable Long playerResultHistoryId, @AuthenticationPrincipal AuthUser authUser) {
+        lolService.deletePlayerResultHistory(playerResultHistoryId,authUser);
+        return ApiResponse.of(SUCCESS);
+    }
+
+    @DeleteMapping("/playerResultHistory")
+    public ApiResponse<Void> deleteAllPlayerResultHistory(@RequestBody @Valid List<LolPlayerResultHistorySimpleDto> dtos, @AuthenticationPrincipal AuthUser authUser) {
+        lolService.deleteAllPlayerResultHistory(dtos,authUser);
         return ApiResponse.of(SUCCESS);
     }
 
@@ -107,9 +123,9 @@ public class RiftController {
 
     // id, title만
     @GetMapping("/playerResultHistory/simple/{page}")
-    public ApiResponse<Page<LolPlayerResultHistoryResponseSimpleDto>> getResultHistorySimpleTeam(@PathVariable int page, @AuthenticationPrincipal AuthUser authUser){
+    public ApiResponse<Page<LolPlayerResultHistorySimpleDto>> getResultHistorySimpleTeam(@PathVariable int page, @AuthenticationPrincipal AuthUser authUser){
         Pageable pageable = PageRequest.of(page - 1, 10, Sort.Direction.DESC,"createdAt");
-        Page<LolPlayerResultHistoryResponseSimpleDto> result = lolService.getResultHistorySimpleTeam(authUser,pageable);
+        Page<LolPlayerResultHistorySimpleDto> result = lolService.getResultHistorySimpleTeam(authUser,pageable);
         return ApiResponse.of(SUCCESS, result);
     }
 
@@ -125,12 +141,12 @@ public class RiftController {
     }
 
     @GetMapping("/detailSearch")
-    public ApiResponse<Page<LolPlayerResultHistoryResponseSimpleDto>> playerResultHistorySearch(
+    public ApiResponse<Page<LolPlayerResultHistorySimpleDto>> playerResultHistorySearch(
             @Valid @ModelAttribute LolPlayerResultHistoryDetailSearchRequestDto dto,
             @AuthenticationPrincipal AuthUser authUser
     ){
         Pageable pageable = PageRequest.of(dto.getPage() - 1,10, Sort.Direction.DESC,"createdAt");
-        Page<LolPlayerResultHistoryResponseSimpleDto> result = lolService.playerResultHistorySearch(dto.getPlayerResultHistoryTitle(),authUser,pageable);
+        Page<LolPlayerResultHistorySimpleDto> result = lolService.playerResultHistorySearch(dto.getPlayerResultHistoryTitle(),authUser,pageable);
         return ApiResponse.of(SUCCESS, result);
     }
 }
