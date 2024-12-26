@@ -5,11 +5,13 @@ import com.example.naejeonhajab.common.exception.LolException;
 import com.example.naejeonhajab.common.response.enums.BaseApiResponse;
 import com.example.naejeonhajab.domain.game.lol.dto.common.LolTeamResponseDto;
 import com.example.naejeonhajab.domain.game.lol.dto.req.playerHistory.LolPlayerHistoryRequestDto;
+import com.example.naejeonhajab.domain.game.lol.dto.req.playerHistory.LolPlayerHistoryUpdateRequestDto;
+import com.example.naejeonhajab.domain.game.lol.dto.req.playerHistory.LolPlayerResultHistoryUpdateRequestDto;
 import com.example.naejeonhajab.domain.game.lol.dto.req.playerResultHistory.LolPlayerResultHistoryRequestDto;
 import com.example.naejeonhajab.domain.game.lol.dto.res.playerHistory.LolPlayerHistoryResponseDetailDto;
 import com.example.naejeonhajab.domain.game.lol.dto.res.playerHistory.LolPlayerHistorySimpleDto;
 import com.example.naejeonhajab.domain.game.lol.dto.res.playerResultHistory.LolPlayerResultHistoryResponseDetailDto;
-import com.example.naejeonhajab.domain.game.lol.dto.res.playerResultHistory.LolPlayerResultHistoryResponseSimpleDto;
+import com.example.naejeonhajab.domain.game.lol.dto.res.playerResultHistory.LolPlayerResultHistorySimpleDto;
 import com.example.naejeonhajab.domain.game.lol.entity.playerHistory.LolPlayer;
 import com.example.naejeonhajab.domain.game.lol.entity.playerHistory.LolPlayerHistory;
 import com.example.naejeonhajab.domain.game.lol.entity.resultHistory.LolPlayerResult;
@@ -23,6 +25,7 @@ import com.example.naejeonhajab.domain.game.lol.service.balancing.LolBalanceServ
 import com.example.naejeonhajab.domain.game.lol.service.util.LolUtilService;
 import com.example.naejeonhajab.domain.user.entity.User;
 import com.example.naejeonhajab.security.AuthUser;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -30,6 +33,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static com.example.naejeonhajab.common.response.enums.LolApiResponse.LOL_HISTORY_NOT_FOUND;
@@ -122,10 +126,10 @@ public class TftServiceImpl {
 
     // 현재 유저가 가지고있는 대전 상세 내역 조회 (다건)
     @Transactional(readOnly = true)
-    public Page<LolPlayerResultHistoryResponseSimpleDto> getResultHistorySimpleTeam(AuthUser authUser, Pageable pageable) {
+    public Page<LolPlayerResultHistorySimpleDto> getResultHistorySimpleTeam(AuthUser authUser, Pageable pageable) {
         User user = User.of(authUser);
         return findLolPlayerResultHistoryByUser(user, pageable)
-                .map(LolPlayerResultHistoryResponseSimpleDto::of);
+                .map(LolPlayerResultHistorySimpleDto::of);
     }
 
     // 플레이어 히스토리 내역 검색
@@ -139,16 +143,77 @@ public class TftServiceImpl {
 
     // 플레이어 대전결과 히스토리 내역 검색
     @Transactional(readOnly = true)
-    public Page<LolPlayerResultHistoryResponseSimpleDto> playerResultHistorySearch(String playerResultHistoryTitle, AuthUser authUser, Pageable pageable) {
+    public Page<LolPlayerResultHistorySimpleDto> playerResultHistorySearch(String playerResultHistoryTitle, AuthUser authUser, Pageable pageable) {
         User user = User.of(authUser);
         Page<LolPlayerResultHistory> pageResult = searchPlayerResultHistoryByTitle(user, pageable, playerResultHistoryTitle);
-        return pageResult.map(LolPlayerResultHistoryResponseSimpleDto::of);
+        return pageResult.map(LolPlayerResultHistorySimpleDto::of);
+    }
+
+    @Transactional
+    public void updatePlayerHistory(Long playerHistoryId, LolPlayerHistoryUpdateRequestDto dto, AuthUser authUser) {
+        User user = User.of(authUser);
+        LolPlayerHistory lolPlayerHistory = findLolPlayerHistoryById(playerHistoryId);
+        user.isMe(lolPlayerHistory.getUser().getId());
+        lolPlayerHistory.updatePlayerHistoryTitle(dto.getPlayerHistoryTitle());
+    }
+
+    @Transactional
+    public void deletePlayerHistory(Long playerHistoryId, AuthUser authUser) {
+        User user = User.of(authUser);
+        LolPlayerHistory lolPlayerHistory = findLolPlayerHistoryById(playerHistoryId);
+        user.isMe(lolPlayerHistory.getUser().getId());
+        lolPlayerHistoryRepository.delete(lolPlayerHistory);
+    }
+
+    @Transactional
+    public void deletePlayerHistoryAll(@Valid List<LolPlayerHistorySimpleDto> dtos, AuthUser authUser) {
+        User user = User.of(authUser);
+        List<LolPlayerHistory> lolPlayerHistories = new ArrayList<>();
+        for ( LolPlayerHistorySimpleDto dto : dtos ) {
+            LolPlayerHistory lolPlayerHistory = findLolPlayerHistoryById(dto.getPlayerHistoryId());
+            user.isMe(lolPlayerHistory.getUser().getId());
+            lolPlayerHistories.add(lolPlayerHistory);
+        }
+        lolPlayerHistoryRepository.deleteAll(lolPlayerHistories);
+    }
+
+    @Transactional
+    public void updatePlayerResultHistory(Long playerResultHistoryId, @Valid LolPlayerResultHistoryUpdateRequestDto dto, AuthUser authUser) {
+        User user = User.of(authUser);
+        LolPlayerResultHistory lolPlayerResultHistory = findLolPlayerResultHistoryById(playerResultHistoryId);
+        user.isMe(lolPlayerResultHistory.getUser().getId());
+        lolPlayerResultHistory.updatePlayerHistoryTitle(dto.getPlayerResultHistoryTitle());
+    }
+
+    @Transactional
+    public void deletePlayerResultHistory(Long playerResultHistoryId, AuthUser authUser) {
+        User user = User.of(authUser);
+        LolPlayerResultHistory lolPlayerResultHistory = findLolPlayerResultHistoryById(playerResultHistoryId);
+        user.isMe(lolPlayerResultHistory.getUser().getId());
+        lolPlayerResultHistoryRepository.delete(lolPlayerResultHistory);
+    }
+
+    @Transactional
+    public void deleteAllPlayerResultHistory(@Valid List<LolPlayerResultHistorySimpleDto> dtos, AuthUser authUser) {
+        User user = User.of(authUser);
+        List<LolPlayerResultHistory> lolPlayerResultHistories = new ArrayList<>();
+        for ( LolPlayerResultHistorySimpleDto dto : dtos ) {
+            LolPlayerResultHistory lolPlayerResultHistory = findLolPlayerResultHistoryById(dto.getPlayerResultHistoryId());
+            user.isMe(lolPlayerResultHistory.getUser().getId());
+            lolPlayerResultHistories.add(lolPlayerResultHistory);
+        }
+        lolPlayerResultHistoryRepository.deleteAll(lolPlayerResultHistories);
     }
 
     // PlayerHistory
     @Transactional(readOnly = true)
     protected Page<LolPlayerHistory> findLolPlayerHistoryByUser(User user, Pageable pageable) {
         return lolPlayerHistoryRepository.findByUserAndType(user, LolType.TFT,pageable);
+    }
+
+    @Transactional(readOnly = true)
+    protected LolPlayerHistory findLolPlayerHistoryById(Long playerHistoryId) {
+        return lolPlayerHistoryRepository.findById(playerHistoryId).orElseThrow(() -> new LolException(LOL_HISTORY_NOT_FOUND));
     }
 
     @Transactional(readOnly = true)
@@ -165,6 +230,11 @@ public class TftServiceImpl {
     @Transactional(readOnly = true)
     protected LolPlayerResultHistory findLolPlayerResultHistoryByPlayerHistoryId(Long playerResultistoryId) {
         return lolPlayerResultHistoryRepository.findById(playerResultistoryId).orElseThrow(() -> new LolException(LOL_RESULT_HISTORY_NOT_FOUND));
+    }
+
+    @Transactional(readOnly = true)
+    protected LolPlayerResultHistory findLolPlayerResultHistoryById(Long playerResultHistoryId) {
+        return lolPlayerResultHistoryRepository.findById(playerResultHistoryId).orElseThrow(() -> new LolException(LOL_RESULT_HISTORY_NOT_FOUND));
     }
 
     @Transactional(readOnly = true)

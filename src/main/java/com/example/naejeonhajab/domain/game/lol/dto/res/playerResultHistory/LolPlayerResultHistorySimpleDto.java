@@ -11,18 +11,18 @@ import java.util.List;
 @NoArgsConstructor
 @Getter
 // 제목 + id 데이터 전송
-public class LolPlayerResultHistoryResponseSimpleDto {
+public class LolPlayerResultHistorySimpleDto {
     private String playerResultHistoryTitle;
     private Long playerResultHistoryId;
 
-    public static LolPlayerResultHistoryResponseSimpleDto of(LolPlayerResultHistory playerResultHistory) {
-        return new LolPlayerResultHistoryResponseSimpleDto(
+    public static LolPlayerResultHistorySimpleDto of(LolPlayerResultHistory playerResultHistory) {
+        return new LolPlayerResultHistorySimpleDto(
                 playerResultHistory.getPlayerResultHistoryTitle(),
                 playerResultHistory.getId()
         );
     }
 
-    public static List<LolPlayerResultHistoryResponseSimpleDto> of(List<LolPlayerResultHistory> playerHistorys) {
-        return playerHistorys.stream().map(LolPlayerResultHistoryResponseSimpleDto::of).toList();
+    public static List<LolPlayerResultHistorySimpleDto> of(List<LolPlayerResultHistory> playerHistorys) {
+        return playerHistorys.stream().map(LolPlayerResultHistorySimpleDto::of).toList();
     }
 }

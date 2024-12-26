@@ -6,11 +6,12 @@ import com.example.naejeonhajab.common.response.enums.BaseApiResponse;
 import com.example.naejeonhajab.domain.game.lol.dto.common.LolTeamResponseDto;
 import com.example.naejeonhajab.domain.game.lol.dto.req.playerHistory.LolPlayerHistoryRequestDto;
 import com.example.naejeonhajab.domain.game.lol.dto.req.playerHistory.LolPlayerHistoryUpdateRequestDto;
+import com.example.naejeonhajab.domain.game.lol.dto.req.playerHistory.LolPlayerResultHistoryUpdateRequestDto;
 import com.example.naejeonhajab.domain.game.lol.dto.req.playerResultHistory.LolPlayerResultHistoryRequestDto;
 import com.example.naejeonhajab.domain.game.lol.dto.res.playerHistory.LolPlayerHistoryResponseDetailDto;
 import com.example.naejeonhajab.domain.game.lol.dto.res.playerHistory.LolPlayerHistorySimpleDto;
 import com.example.naejeonhajab.domain.game.lol.dto.res.playerResultHistory.LolPlayerResultHistoryResponseDetailDto;
-import com.example.naejeonhajab.domain.game.lol.dto.res.playerResultHistory.LolPlayerResultHistoryResponseSimpleDto;
+import com.example.naejeonhajab.domain.game.lol.dto.res.playerResultHistory.LolPlayerResultHistorySimpleDto;
 import com.example.naejeonhajab.domain.game.lol.entity.playerHistory.LolLines;
 import com.example.naejeonhajab.domain.game.lol.entity.playerHistory.LolPlayer;
 import com.example.naejeonhajab.domain.game.lol.entity.playerHistory.LolPlayerHistory;
@@ -83,7 +84,7 @@ public class RiftServiceImpl {
 
     // 내전 결과 저장 메서드
     @Transactional
-    public void saveResultHistory(LolPlayerResultHistoryRequestDto dto, AuthUser authUser) {
+    public void savePlayerResultHistory(LolPlayerResultHistoryRequestDto dto, AuthUser authUser) {
         User user = User.of(authUser);
         LolPlayerResultHistory playerResultHistory = LolPlayerResultHistory.from(dto,user, LolType.RIFT);
         LolPlayerResultOutcome playerResultOutcomeA = LolPlayerResultOutcome.from(dto.getTeamA(),playerResultHistory);
@@ -146,10 +147,10 @@ public class RiftServiceImpl {
 
     // 현재 유저가 가지고있는 대전 상세 내역 조회 (다건)
     @Transactional(readOnly = true)
-    public Page<LolPlayerResultHistoryResponseSimpleDto> getResultHistorySimpleTeam(AuthUser authUser, Pageable pageable) {
+    public Page<LolPlayerResultHistorySimpleDto> getResultHistorySimpleTeam(AuthUser authUser, Pageable pageable) {
         User user = User.of(authUser);
         return findLolPlayerResultHistoryByUser(user, pageable)
-                .map(LolPlayerResultHistoryResponseSimpleDto::of);
+                .map(LolPlayerResultHistorySimpleDto::of);
     }
 
     // 플레이어 히스토리 내역 검색
@@ -162,14 +163,14 @@ public class RiftServiceImpl {
 
     // 플레이어 대전결과 히스토리 내역 검색
     @Transactional(readOnly = true)
-    public Page<LolPlayerResultHistoryResponseSimpleDto> playerResultHistorySearch(String playerResultHistoryTitle, AuthUser authUser, Pageable pageable) {
+    public Page<LolPlayerResultHistorySimpleDto> playerResultHistorySearch(String playerResultHistoryTitle, AuthUser authUser, Pageable pageable) {
         User user = User.of(authUser);
         Page<LolPlayerResultHistory> pageResult = searchPlayerResultHistoryByTitle(user, pageable, playerResultHistoryTitle);
-        return pageResult.map(LolPlayerResultHistoryResponseSimpleDto::of);
+        return pageResult.map(LolPlayerResultHistorySimpleDto::of);
     }
 
     @Transactional
-    public void updateTeam(Long playerHistoryId, LolPlayerHistoryUpdateRequestDto dto, AuthUser authUser) {
+    public void updatePlayerHistory(Long playerHistoryId, LolPlayerHistoryUpdateRequestDto dto, AuthUser authUser) {
         User user = User.of(authUser);
         LolPlayerHistory lolPlayerHistory = findLolPlayerHistoryById(playerHistoryId);
         user.isMe(lolPlayerHistory.getUser().getId());
@@ -177,7 +178,7 @@ public class RiftServiceImpl {
     }
 
     @Transactional
-    public void deleteTeam(Long playerHistoryId, AuthUser authUser) {
+    public void deletePlayerHistory(Long playerHistoryId, AuthUser authUser) {
         User user = User.of(authUser);
         LolPlayerHistory lolPlayerHistory = findLolPlayerHistoryById(playerHistoryId);
         user.isMe(lolPlayerHistory.getUser().getId());
@@ -185,7 +186,7 @@ public class RiftServiceImpl {
     }
 
     @Transactional
-    public void deleteAllTeam(@Valid List<LolPlayerHistorySimpleDto> dtos, AuthUser authUser) {
+    public void deletePlayerHistoryAll(@Valid List<LolPlayerHistorySimpleDto> dtos, AuthUser authUser) {
         User user = User.of(authUser);
         List<LolPlayerHistory> lolPlayerHistories = new ArrayList<>();
         for ( LolPlayerHistorySimpleDto dto : dtos ) {
@@ -196,6 +197,33 @@ public class RiftServiceImpl {
         lolPlayerHistoryRepository.deleteAll(lolPlayerHistories);
     }
 
+    @Transactional
+    public void updatePlayerResultHistory(Long playerResultHistoryId, @Valid LolPlayerResultHistoryUpdateRequestDto dto, AuthUser authUser) {
+        User user = User.of(authUser);
+        LolPlayerResultHistory lolPlayerResultHistory = findLolPlayerResultHistoryById(playerResultHistoryId);
+        user.isMe(lolPlayerResultHistory.getUser().getId());
+        lolPlayerResultHistory.updatePlayerHistoryTitle(dto.getPlayerResultHistoryTitle());
+    }
+
+    @Transactional
+    public void deletePlayerResultHistory(Long playerResultHistoryId, AuthUser authUser) {
+        User user = User.of(authUser);
+        LolPlayerResultHistory lolPlayerResultHistory = findLolPlayerResultHistoryById(playerResultHistoryId);
+        user.isMe(lolPlayerResultHistory.getUser().getId());
+        lolPlayerResultHistoryRepository.delete(lolPlayerResultHistory);
+    }
+
+    @Transactional
+    public void deleteAllPlayerResultHistory(@Valid List<LolPlayerResultHistorySimpleDto> dtos, AuthUser authUser) {
+        User user = User.of(authUser);
+        List<LolPlayerResultHistory> lolPlayerResultHistories = new ArrayList<>();
+        for ( LolPlayerResultHistorySimpleDto dto : dtos ) {
+            LolPlayerResultHistory lolPlayerResultHistory = findLolPlayerResultHistoryById(dto.getPlayerResultHistoryId());
+            user.isMe(lolPlayerResultHistory.getUser().getId());
+            lolPlayerResultHistories.add(lolPlayerResultHistory);
+        }
+        lolPlayerResultHistoryRepository.deleteAll(lolPlayerResultHistories);
+    }
 
     // PlayerHistory
     @Transactional(readOnly = true)
@@ -204,7 +232,7 @@ public class RiftServiceImpl {
     }
 
     @Transactional(readOnly = true)
-    public LolPlayerHistory findLolPlayerHistoryById(Long playerHistoryId) {
+    protected LolPlayerHistory findLolPlayerHistoryById(Long playerHistoryId) {
         return lolPlayerHistoryRepository.findById(playerHistoryId).orElseThrow(() -> new LolException(LOL_HISTORY_NOT_FOUND));
     }
 
@@ -225,6 +253,11 @@ public class RiftServiceImpl {
     }
 
     @Transactional(readOnly = true)
+    protected LolPlayerResultHistory findLolPlayerResultHistoryById(Long playerResultHistoryId) {
+        return lolPlayerResultHistoryRepository.findById(playerResultHistoryId).orElseThrow(() -> new LolException(LOL_RESULT_HISTORY_NOT_FOUND));
+    }
+
+    @Transactional(readOnly = true)
     protected LolPlayerResultHistory findLolPlayerResultHistoryByPlayerHistoryId(Long playerResultistoryId) {
         return lolPlayerResultHistoryRepository.findById(playerResultistoryId).orElseThrow(() -> new LolException(LOL_RESULT_HISTORY_NOT_FOUND));
     }
@@ -233,6 +266,4 @@ public class RiftServiceImpl {
     protected Page<LolPlayerResultHistory> searchPlayerResultHistoryByTitle(User user, Pageable pageable,String playerResultHistoryTitle) {
         return lolPlayerResultHistoryRepository.searchPlayerResultHistoryByTitle(user, LolType.RIFT, pageable, playerResultHistoryTitle);
     }
-
-
 }
