@@ -18,9 +18,9 @@ jobs:
           java-version: '17'
 
       # 여기서 복사 시킬떄 compose.yml파일이랑 env파일을 둘이 같은 위치에 두게한다음에  해야할듯
-      - name: 로컬 ENV -> 배포 EMV
+      - name: ENV 복사
         run: |
-          echo "${{ secrets.DEPLOY_ENV }}" > .env
+          echo "${{ secrets.ENV }}" > .env
         shell: bash
 
       - name: 빌드 및 테스트 코드 돌리는중 ...

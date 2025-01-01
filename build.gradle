@@ -33,6 +33,9 @@ dependencies {
     // Spring Security
     implementation 'org.springframework.boot:spring-boot-starter-security'
 
+    // Redis
+    implementation 'org.springframework.boot:spring-boot-starter-data-redis'
+
     // Spring Security Test
     testImplementation 'org.springframework.security:spring-security-test'
 

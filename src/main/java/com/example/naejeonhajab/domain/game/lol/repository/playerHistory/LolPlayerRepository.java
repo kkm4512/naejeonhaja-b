@@ -8,4 +8,5 @@ import java.util.List;
 
 public interface LolPlayerRepository extends JpaRepository<LolPlayer, Long> {
     List<LolPlayer> findAllByPlayerHistory(LolPlayerHistory playerHistory);
+
 }
