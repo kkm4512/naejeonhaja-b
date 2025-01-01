@@ -14,3 +14,8 @@ spring:
       email: ${KAKAO_EMAIL}
       password: ${KAKAO_PASSWORD} # 또는 앱 비밀번호
 
+# JWT
+jwt:
+  secret:
+    key: ${JWT_SECRET_KEY}
+

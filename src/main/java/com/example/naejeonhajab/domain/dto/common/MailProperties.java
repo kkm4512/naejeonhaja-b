@@ -1,4 +1,4 @@
-package com.example.naejeonhajab.config;
+package com.example.naejeonhajab.domain.dto.common;
 
 import lombok.Getter;
 import lombok.Setter;

@@ -1,5 +1,5 @@
 server:
-  port: 8082
+  port: ${SERVER_DEPLOY_PORT}
 
 # DB config
 spring:
@@ -7,19 +7,22 @@ spring:
     import: optional:file:.env[.properties]
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://${MYSQL_HOST}:${MYSQL_PORT}/${MYSQL_DB_NAME}?serverTimezone=Asia/Seoul
+    url: jdbc:mysql://${MYSQL_DEPLOY_HOST}:${MYSQL_DEPLOY_PORT}/${MYSQL_DEPLOY_DB_NAME}?serverTimezone=Asia/Seoul
     username: ${MYSQL_NAME}
     password: ${MYSQL_PASSWORD}
   # DB update
   jpa:
     hibernate:
       ddl-auto: update
-# JWT
-jwt:
-  secret:
-    key: ${JWT_SECRET_KEY}
+  data:
+    redis:
+      host: ${REDIS_DEPLOY_HOST}
+      port: ${REDIS_DEPLOY_PORT}
+  cache:
+    redis:
+      cache-null-values: true
+      time-to-live: 360
 variables:
   domain: "naejeonhaja.com"
 mybatis:
   mapper-locations: classpath:mapper/*.xml
-

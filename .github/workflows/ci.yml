@@ -19,7 +19,7 @@ jobs:
 
       - name: env 파일 생성
         run: |
-          echo "${{ secrets.LOCAL_ENV }}" > .env
+          echo "${{ secrets.ENV }}" > .env
         shell: bash
 
       - name: MySQL 도커 컨테이너 실행

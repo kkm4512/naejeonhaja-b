@@ -19,4 +19,6 @@ public interface LolPlayerHistoryRepository extends JpaRepository<LolPlayerHisto
     )
     Page<LolPlayerHistory> searchPlayerHistoryByTitle(User user, LolType lolType, Pageable pageable, String playerHistoryTitle);
 
+
+
 }

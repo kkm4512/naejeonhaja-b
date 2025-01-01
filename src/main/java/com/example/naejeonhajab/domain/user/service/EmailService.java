@@ -1,7 +1,7 @@
 package com.example.naejeonhajab.domain.user.service;
 
 import com.example.naejeonhajab.common.exception.UserException;
-import com.example.naejeonhajab.config.MailProperties;
+import com.example.naejeonhajab.domain.dto.common.MailProperties;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
