@@ -122,7 +122,6 @@ public class RiftServiceImpl {
             }
         }
         throw new BaseException(BaseApiResponse.TEAM_MISMATCH);
-
     }
 
     @Transactional(readOnly = true)
