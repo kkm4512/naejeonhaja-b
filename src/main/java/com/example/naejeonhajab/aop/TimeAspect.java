@@ -15,7 +15,7 @@ public class TimeAspect {
 
     @Around("trackTimeAnnotation()")
     public Object timeAround(ProceedingJoinPoint pjp) throws Throwable {
-        log.info("AOP applied to method: {}", pjp.getSignature().toShortString());
+        log.debug("AOP 실행 메서드: {}", pjp.getSignature().toShortString());
         Long startTime = System.nanoTime();
         String methodName = pjp.getSignature().toShortString();
         try {
