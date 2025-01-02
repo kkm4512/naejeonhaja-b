@@ -30,6 +30,12 @@ spring:
     redis:
       time-to-live: 360
 
+logging:
+  level:
+    com:
+      example:
+        naejeonhajab:
+          DEBUG
 
 
 
