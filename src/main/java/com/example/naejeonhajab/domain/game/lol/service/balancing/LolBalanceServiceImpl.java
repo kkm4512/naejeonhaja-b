@@ -1,8 +1,5 @@
 package com.example.naejeonhajab.domain.game.lol.service.balancing;
 
-import com.example.naejeonhajab.annotation.TrackingTime;
-import com.example.naejeonhajab.common.exception.BaseException;
-import com.example.naejeonhajab.common.response.enums.BaseApiResponse;
 import com.example.naejeonhajab.domain.game.lol.dto.common.LolPlayerDto;
 import com.example.naejeonhajab.domain.game.lol.dto.common.LolTeamResponseDto;
 import com.example.naejeonhajab.domain.game.lol.service.util.LolUtilService;
@@ -18,7 +15,6 @@ public class LolBalanceServiceImpl {
     private final LolUtilService lolUtilService;
     // 티어를 기준으로 5:5 팀 나누기
     // 일단 5:5일 모든 경우의 수를 구해야하네
-    @TrackingTime
     public LolTeamResponseDto generateBalanceByTier(LolTeamResponseDto dto) {
         Integer compareInt = Integer.MAX_VALUE;
         List<LolPlayerDto> bestTeamA = new ArrayList<>();
@@ -56,14 +52,16 @@ public class LolBalanceServiceImpl {
             int difference = Math.abs(teamAScore - teamBScore);
 
             // 가지치기: 중간에 점수 차이가 이미 최소값보다 크다면 종료
-            if (difference >= compareInt) {
-                break;
-            }
+//            if (difference >= compareInt) {
+//                break;
+//            }
 
             // 최소 점수 차이를 업데이트
-            compareInt = difference;
-            bestTeamA = new ArrayList<>(teamA);
-            bestTeamB = new ArrayList<>(teamB);
+            if (difference < compareInt) {
+                compareInt = difference;
+                bestTeamA = new ArrayList<>(teamA);
+                bestTeamB = new ArrayList<>(teamB);
+            }
         }
 
         return new LolTeamResponseDto(bestTeamA, bestTeamB);

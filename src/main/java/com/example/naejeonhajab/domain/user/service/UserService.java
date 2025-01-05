@@ -9,7 +9,6 @@ import com.example.naejeonhajab.domain.user.repository.UserRepository;
 import com.example.naejeonhajab.security.JwtDto;
 import com.example.naejeonhajab.security.JwtManager;
 import jakarta.servlet.http.HttpServletResponse;
-import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseCookie;
@@ -94,27 +93,23 @@ public class UserService {
         emailService.sendEmail(dto.getEmail(), "내전 하자 비밀번호 찾기, 이메일 인증 코드 입니다", "인증 코드 : " + code);
     }
 
-    @Transactional
     public void verifyCode(VerificationCodeDto dto){
         User user = findByEmail(dto.getEmail());
         user.verifyCode(dto.getCode());
     }
 
 
-    @Transactional
     public void updatePassword(UpdatePasswordDto dto) {
         User user = findByEmail(dto.getEmail());
         String encodedPassword = pe.encode(dto.getPassword());
         user.updatePassword(encodedPassword);
     }
 
-    @Transactional(readOnly = true)
     public User findByEmail(String email) {
         return userRepository.findByEmail(email)
                 .orElseThrow(() -> new UserException(USER_NOT_FOUND));
     }
 
-    @Transactional(readOnly = true)
     public void existsByEmail(String email){
         if (userRepository.existsByEmail(email)) {
             throw new UserException(UserApiResponse.EMAIL_ALREADY_EXISTS);

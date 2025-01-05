@@ -49,4 +49,5 @@ public class LolRedisUtilService {
         redisTemplate.opsForValue().set(REDIS_NAME_PLAYER_RESULT_HISTORY + lolPlayerResultHistory.getId(), LolPlayerResultHistoryResponseDetailDto.of(lolPlayerResultHistory));
     }
 
+
 }

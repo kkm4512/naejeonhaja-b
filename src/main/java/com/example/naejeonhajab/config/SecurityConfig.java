@@ -19,8 +19,7 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import java.util.List;
 
-import static org.springframework.http.HttpMethod.POST;
-import static org.springframework.http.HttpMethod.PUT;
+import static org.springframework.http.HttpMethod.*;
 
 @Configuration
 @RequiredArgsConstructor
@@ -53,6 +52,7 @@ public class SecurityConfig {
                         .requestMatchers(POST,"/api/v1/users/**").permitAll() // 유저 API 허용
                         .requestMatchers(PUT,"/api/v1/users/**").permitAll() // 유저 API 허용
                         .requestMatchers(POST, "/api/v1/game/lol/*").permitAll() // 특정 POST 요청 허용
+                        .requestMatchers(GET, "/api/v1/game/lol/riot/*").permitAll()
                         .anyRequest().authenticated() // 나머지 요청은 인증 필요
                 )
                 .addFilterBefore(jwtSecurityFilter, SecurityContextHolderAwareRequestFilter.class) // JWT 필터 추가
