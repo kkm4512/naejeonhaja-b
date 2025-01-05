@@ -124,7 +124,6 @@ public class RiftServiceImpl {
         throw new BaseException(BaseApiResponse.TEAM_MISMATCH);
     }
 
-    @Transactional(readOnly = true)
     public LolPlayerHistoryResponseDetailDto getPlayerHistoryDetailTeam(Long playerHistoryId) {
         return lolRedisUtilService.getPlayerHistoryDetailTeam(playerHistoryId)
                 .orElseGet(() -> {
@@ -184,6 +183,7 @@ public class RiftServiceImpl {
         LolPlayerHistory lolPlayerHistory = findLolPlayerHistoryByPlayerHistoryId(playerHistoryId);
         user.isMe(lolPlayerHistory.getUser().getId());
         lolPlayerHistory.updatePlayerHistoryTitle(dto.getPlayerHistoryTitle());
+
     }
 
     @Transactional
@@ -235,38 +235,31 @@ public class RiftServiceImpl {
     }
 
     // PlayerHistory
-    @Transactional(readOnly = true)
     protected Page<LolPlayerHistory> findLolPlayerHistoryByUser(User user, Pageable pageable) {
         return lolPlayerHistoryRepository.findByUserAndType(user, LolType.RIFT, pageable);
     }
 
-    @Transactional(readOnly = true)
     protected LolPlayerHistory findLolPlayerHistoryByPlayerHistoryId(Long playerHistoryId) {
         return lolPlayerHistoryRepository.findById(playerHistoryId).orElseThrow(() -> new LolException(LOL_HISTORY_NOT_FOUND));
     }
 
-    @Transactional(readOnly = true)
     protected Page<LolPlayerHistory> findPlayerHistoryByTitle(User user, Pageable pageable, String playerHistoryTitle) {
         return lolPlayerHistoryRepository.searchPlayerHistoryByTitle(user, LolType.RIFT, pageable, playerHistoryTitle);
     }
 
     // PlayerResultHistory
-    @Transactional(readOnly = true)
     protected Page<LolPlayerResultHistory> findLolPlayerResultHistoryByUser(User user, Pageable pageable) {
         return lolPlayerResultHistoryRepository.findByUserAndType(user, LolType.RIFT,pageable);
     }
 
-    @Transactional(readOnly = true)
     protected LolPlayerResultHistory findLolPlayerResultHistoryById(Long playerResultHistoryId) {
         return lolPlayerResultHistoryRepository.findById(playerResultHistoryId).orElseThrow(() -> new LolException(LOL_RESULT_HISTORY_NOT_FOUND));
     }
 
-    @Transactional(readOnly = true)
     protected LolPlayerResultHistory findLolPlayerResultHistoryByPlayerResultHistoryId(Long playerResultistoryId) {
         return lolPlayerResultHistoryRepository.findById(playerResultistoryId).orElseThrow(() -> new LolException(LOL_RESULT_HISTORY_NOT_FOUND));
     }
 
-    @Transactional(readOnly = true)
     protected Page<LolPlayerResultHistory> searchPlayerResultHistoryByTitle(User user, Pageable pageable,String playerResultHistoryTitle) {
         return lolPlayerResultHistoryRepository.searchPlayerResultHistoryByTitle(user, LolType.RIFT, pageable, playerResultHistoryTitle);
     }
