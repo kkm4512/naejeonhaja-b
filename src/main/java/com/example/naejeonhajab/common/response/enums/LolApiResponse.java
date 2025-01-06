@@ -7,7 +7,7 @@ import org.springframework.http.HttpStatus;
 public enum LolApiResponse implements ApiResponseEnum {
 
     // 302
-    LOL_PLAYER_FOUND(HttpStatus.FOUND, "검증된 플레이어"),
+    LOL_PLAYER_FOUND(HttpStatus.OK, "검증된 플레이어"),
 
     // 400
     LOL_TITLE_NOT_NULL(HttpStatus.BAD_REQUEST, "제목은 공란 일 수 없습니다"),
