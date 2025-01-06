@@ -12,7 +12,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 
-import java.util.Comparator;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -58,8 +57,6 @@ class RiotApiTest {
         ObjectMapper objectMapper = new ObjectMapper();
         String response = riotApiService.getChampionMasteryByPuuid(PUUID);
         List<RiotChampionMasteryDto> actual = objectMapper.readValue(response, new TypeReference<>() {});
-        actual.sort(Comparator.comparingInt(RiotChampionMasteryDto::getChampionPoints).reversed());
         assertFalse(actual.isEmpty(), "리스트가 비어 있으면 안 됩니다");
-
     }
 }
