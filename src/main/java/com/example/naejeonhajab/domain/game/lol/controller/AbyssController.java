@@ -8,9 +8,9 @@ import com.example.naejeonhajab.domain.game.lol.dto.req.playerHistory.LolPlayerH
 import com.example.naejeonhajab.domain.game.lol.dto.req.playerHistory.LolPlayerHistoryUpdateRequestDto;
 import com.example.naejeonhajab.domain.game.lol.dto.req.playerHistory.LolPlayerResultHistoryUpdateRequestDto;
 import com.example.naejeonhajab.domain.game.lol.dto.req.playerResultHistory.LolPlayerResultHistoryRequestDto;
-import com.example.naejeonhajab.domain.game.lol.dto.res.playerHistory.LolPlayerHistoryResponseDetailDto;
+import com.example.naejeonhajab.domain.game.lol.dto.res.playerHistory.LolPlayerHistoryDto;
 import com.example.naejeonhajab.domain.game.lol.dto.res.playerHistory.LolPlayerHistorySimpleDto;
-import com.example.naejeonhajab.domain.game.lol.dto.res.playerResultHistory.LolPlayerResultHistoryResponseDetailDto;
+import com.example.naejeonhajab.domain.game.lol.dto.res.playerResultHistory.LolPlayerResultHistoryDto;
 import com.example.naejeonhajab.domain.game.lol.dto.res.playerResultHistory.LolPlayerResultHistorySimpleDto;
 import com.example.naejeonhajab.domain.game.lol.service.AbyssServiceImpl;
 import com.example.naejeonhajab.security.AuthUser;
@@ -96,8 +96,8 @@ public class AbyssController {
 
     // title, 10명의 유저 정보
     @GetMapping("/playerHistory/detail/{playerHistoryId}")
-    public ApiResponse<LolPlayerHistoryResponseDetailDto> getPlayerHistoryDetailTeam(@PathVariable Long playerHistoryId){
-        LolPlayerHistoryResponseDetailDto result = lolService.getPlayerHistoryDetailTeam(playerHistoryId);
+    public ApiResponse<LolPlayerHistoryDto> getPlayerHistoryDetailTeam(@PathVariable Long playerHistoryId){
+        LolPlayerHistoryDto result = lolService.getPlayerHistoryDetailTeam(playerHistoryId);
         return ApiResponse.of(BaseApiResponse.SUCCESS, result);
     }
 
@@ -112,8 +112,8 @@ public class AbyssController {
 
     // title, 10명의 유저 정보
     @GetMapping("/playerResultHistory/detail/{playerResultHistoryId}")
-    public ApiResponse<LolPlayerResultHistoryResponseDetailDto> getResultHistoryDetailTeam(@PathVariable Long playerResultHistoryId){
-        LolPlayerResultHistoryResponseDetailDto result = lolService.getResultHistoryDetailTeam(playerResultHistoryId);
+    public ApiResponse<LolPlayerResultHistoryDto> getResultHistoryDetailTeam(@PathVariable Long playerResultHistoryId){
+        LolPlayerResultHistoryDto result = lolService.getResultHistoryDetailTeam(playerResultHistoryId);
         return ApiResponse.of(BaseApiResponse.SUCCESS, result);
     }
 

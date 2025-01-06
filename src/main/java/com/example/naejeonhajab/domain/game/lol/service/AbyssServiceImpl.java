@@ -7,8 +7,8 @@ import com.example.naejeonhajab.domain.game.lol.dto.req.playerHistory.LolPlayerH
 import com.example.naejeonhajab.domain.game.lol.dto.req.playerHistory.LolPlayerHistoryUpdateRequestDto;
 import com.example.naejeonhajab.domain.game.lol.dto.req.playerHistory.LolPlayerResultHistoryUpdateRequestDto;
 import com.example.naejeonhajab.domain.game.lol.dto.req.playerResultHistory.LolPlayerResultHistoryRequestDto;
-import com.example.naejeonhajab.domain.game.lol.dto.res.playerHistory.LolPlayerHistoryResponseDetailDto;
-import com.example.naejeonhajab.domain.game.lol.dto.res.playerResultHistory.LolPlayerResultHistoryResponseDetailDto;
+import com.example.naejeonhajab.domain.game.lol.dto.res.playerHistory.LolPlayerHistoryDto;
+import com.example.naejeonhajab.domain.game.lol.dto.res.playerResultHistory.LolPlayerResultHistoryDto;
 import com.example.naejeonhajab.domain.game.lol.dto.common.LolTeamResponseDto;
 import com.example.naejeonhajab.domain.game.lol.dto.res.playerHistory.LolPlayerHistorySimpleDto;
 import com.example.naejeonhajab.domain.game.lol.dto.res.playerResultHistory.LolPlayerResultHistorySimpleDto;
@@ -104,16 +104,16 @@ public class AbyssServiceImpl {
 
     // 특정 ID의 플레이어 상세 히스토리 반환 (단일)
     @Transactional(readOnly = true)
-    public LolPlayerHistoryResponseDetailDto getPlayerHistoryDetailTeam(Long playerHistoryId) {
+    public LolPlayerHistoryDto getPlayerHistoryDetailTeam(Long playerHistoryId) {
         LolPlayerHistory lolPlayerHistory = findLolPlayerHistoryByPlayerHistoryId(playerHistoryId);
-        return LolPlayerHistoryResponseDetailDto.of(lolPlayerHistory);
+        return LolPlayerHistoryDto.of(lolPlayerHistory);
     }
 
     // 특정 ID의 플레이어 대전 상세 내역 반환 (단일)
     @Transactional(readOnly = true)
-    public LolPlayerResultHistoryResponseDetailDto getResultHistoryDetailTeam(Long playerResultHistoryId) {
+    public LolPlayerResultHistoryDto getResultHistoryDetailTeam(Long playerResultHistoryId) {
         LolPlayerResultHistory lolPlayerResultHistory = findLolPlayerResultHistoryByPlayerHistoryId(playerResultHistoryId);
-        return LolPlayerResultHistoryResponseDetailDto.of(lolPlayerResultHistory);
+        return LolPlayerResultHistoryDto.of(lolPlayerResultHistory);
     }
 
     // 현재 유저가 가지고있는 플레이어 히스토리 내역 조회 (다건)

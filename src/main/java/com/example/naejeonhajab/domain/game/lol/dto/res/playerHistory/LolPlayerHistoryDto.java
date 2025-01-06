@@ -15,16 +15,16 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 // 제목 + 10명의 유저 의 정보 전부있음
-public class LolPlayerHistoryResponseDetailDto {
+public class LolPlayerHistoryDto {
     private String playerHistoryTitle;
     @Valid
     @Size
     private List<LolPlayerDto> playerDtos;
 
-    public static LolPlayerHistoryResponseDetailDto of(LolPlayerHistory lolPlayerHistory){
+    public static LolPlayerHistoryDto of(LolPlayerHistory lolPlayerHistory){
         List<LolPlayer> players = lolPlayerHistory.getPlayers();
         List<LolPlayerDto> playerDtos = LolPlayer.to(players);
-        return new LolPlayerHistoryResponseDetailDto(
+        return new LolPlayerHistoryDto(
                 lolPlayerHistory.getPlayerHistoryTitle(),
                 playerDtos
         );
