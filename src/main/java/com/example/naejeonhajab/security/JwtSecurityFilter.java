@@ -28,7 +28,7 @@ public class JwtSecurityFilter extends OncePerRequestFilter {
     private final JwtManager jm;
 
     @Override
-    protected boolean shouldNotFilter(HttpServletRequest request) throws ServletException {
+    protected boolean shouldNotFilter(HttpServletRequest request) {
         String requestURI = request.getRequestURI();
 
         // 인증이 필요 없는 경로 설정 (SecurityConfig의 permitAll과 일치시켜야 함)
