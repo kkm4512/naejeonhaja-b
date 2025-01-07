@@ -1,5 +1,7 @@
 package com.example.naejeonhajab;
 
+import com.example.naejeonhajab.common.response.ApiResponse;
+import com.example.naejeonhajab.domain.game.riot.dto.RiotAccountDto;
 import com.example.naejeonhajab.domain.game.riot.dto.RiotChampionMasteryDto;
 import com.example.naejeonhajab.domain.game.riot.dto.RiotLeagueDto;
 import com.example.naejeonhajab.domain.game.riot.dto.RiotSummonerDto;
@@ -15,8 +17,7 @@ import org.springframework.test.context.ActiveProfiles;
 import java.util.Comparator;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.*;
 
 
 @SpringBootTest
@@ -26,8 +27,14 @@ class RiotApiTest {
     @Autowired
     RiotService riotApiService;
 
-    private static final String PUUID = "JwLOCeKRBJg2PUFr6LKTuGyBFlTW7JyLUXasOjGTQeZzjNeFMusWK10ozXkio76nXBbZiE5LgQOEjA";
+    private static final String PUUID = "py2n4Hgjkwq-jwLe1Fz3nQFDSBfKaWXNSAvFyy924quxAgm0SMeHGePTkKo56jD__aDn8qlyY-pVWA";
     private static final String ID = "8YHvK0okEqXqa128F5r_L6_Op55dD5hiJgAI3Ofz0tgNow";
+
+    @Test
+    void test1() throws JsonProcessingException {
+        ApiResponse<RiotAccountDto> response = riotApiService.getAccountByRiotId("hide on bush");
+        assertNotNull(response);
+    }
 
 //    @Test
 //    void test2() throws JsonProcessingException {
@@ -45,21 +52,11 @@ class RiotApiTest {
 //        assertFalse(actual.isEmpty(), "리스트가 비어 있으면 안 됩니다");
 //    }
 
-    @Test
-    void test4() throws JsonProcessingException {
-        ObjectMapper objectMapper = new ObjectMapper();
-        String response = riotApiService.getMatchIdsByPuuid(PUUID);
-        List<String> matchIds = objectMapper.readValue(response, new TypeReference<>() {});
-        assertFalse(matchIds.isEmpty(), "리스트가 비어 있으면 안 됩니다");
-    }
 
     @Test
     void test5() throws JsonProcessingException {
-        ObjectMapper objectMapper = new ObjectMapper();
-        String response = riotApiService.getChampionMasteryByPuuid(PUUID);
-        List<RiotChampionMasteryDto> actual = objectMapper.readValue(response, new TypeReference<>() {});
-        actual.sort(Comparator.comparingInt(RiotChampionMasteryDto::getChampionPoints).reversed());
-        assertFalse(actual.isEmpty(), "리스트가 비어 있으면 안 됩니다");
-
+        ApiResponse<List<RiotChampionMasteryDto>> actual = riotApiService.getChampionMasteryByPuuid(PUUID);
+        actual.getData().sort(Comparator.comparingInt(RiotChampionMasteryDto::getChampionPoints).reversed());
+        assertFalse(actual.getData().isEmpty(), "리스트가 비어 있으면 안 됩니다");
     }
 }

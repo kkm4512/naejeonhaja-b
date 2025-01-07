@@ -2,6 +2,7 @@ package com.example.naejeonhajab.domain.game.riot.controller;
 
 import com.example.naejeonhajab.common.response.ApiResponse;
 import com.example.naejeonhajab.domain.game.riot.dto.RiotAccountDto;
+import com.example.naejeonhajab.domain.game.riot.dto.RiotChampionMasteryDto;
 import com.example.naejeonhajab.domain.game.riot.dto.RiotLeagueDto;
 import com.example.naejeonhajab.domain.game.riot.dto.RiotSummonerDto;
 import com.example.naejeonhajab.domain.game.riot.service.RiotService;
@@ -21,10 +22,9 @@ public class RiotController {
 
     @GetMapping("/playerName/{playerName}")
     public ApiResponse<RiotAccountDto> getAccountByRiotId(
-            @PathVariable("playerName") String playerName,
-            @RequestParam(name = "includeData", defaultValue = "false") boolean includeData
+            @PathVariable("playerName") String playerName
     ) {
-        return riotService.getAccountByRiotId(playerName,includeData);
+        return riotService.getAccountByRiotId(playerName);
     }
 
     @GetMapping("/puuid/{puuid}")
@@ -35,11 +35,20 @@ public class RiotController {
     }
 
     @GetMapping("/leagueId/{leagueId}")
-    public ApiResponse<List<RiotLeagueDto>> getLeagueByLeagueId(
+    public ApiResponse<RiotLeagueDto> getLeagueByLeagueId(
             @PathVariable("leagueId") String leagueId
     ) {
         return riotService.getLeagueByid(leagueId);
     }
+
+    @GetMapping("/puuid/{puuid}/champion")
+    public ApiResponse<List<RiotChampionMasteryDto>> getChampionByPuuid(
+            @PathVariable("puuid") String puuid
+    ) {
+        return riotService.getChampionMasteryByPuuid(puuid);
+    }
+
+
 
 
 }

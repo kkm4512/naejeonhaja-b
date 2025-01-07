@@ -27,7 +27,7 @@ import com.example.naejeonhajab.domain.game.lol.service.balancing.LolAssignServi
 import com.example.naejeonhajab.domain.game.lol.service.balancing.LolBalanceServiceImpl;
 import com.example.naejeonhajab.domain.game.lol.service.balancing.LolCheckServiceImpl;
 import com.example.naejeonhajab.domain.game.lol.service.balancing.LolLineSortServiceImpl;
-import com.example.naejeonhajab.domain.game.lol.service.util.LolRedisUtilService;
+import com.example.naejeonhajab.domain.game.lol.service.redis.LolRedisService;
 import com.example.naejeonhajab.domain.game.lol.service.util.LolUtilService;
 import com.example.naejeonhajab.domain.user.entity.User;
 import com.example.naejeonhajab.security.AuthUser;
@@ -57,7 +57,7 @@ public class RiftServiceImpl {
     private final LolMapper lolMapper;
 
     // Redis
-    private final LolRedisUtilService lolRedisUtilService;
+    private final LolRedisService lolRedisUtilService;
 
     // Balance
     private final LolBalanceServiceImpl lolBalanceService;

@@ -11,11 +11,11 @@ public enum LolTier {
     PLATINUM_IV, PLATINUM_III, PLATINUM_II, PLATINUM_I,
     EMERALD_IV, EMERALD_III, EMERALD_II, EMERALD_I,
     DIAMOND_IV, DIAMOND_III, DIAMOND_II, DIAMOND_I,
-    MASTER,
-    GRANDMASTER,
-    CHALLENGER;
+    MASTER_I,
+    GRANDMASTER_I,
+    CHALLENGER_I;
 
-    // 점수 맵 정의
+    // 티어별 점수를 저장하는 EnumMap
     private static final EnumMap<LolTier, Integer> tierScoreMap = new EnumMap<>(LolTier.class);
 
     static {
@@ -23,20 +23,21 @@ public enum LolTier {
         int currentScore = 0; // UNRANKED는 0점부터 시작
 
         for (LolTier tier : LolTier.values()) {
-            switch (tier) {
-                case UNRANKED -> currentScore += 0; // UNRANKED는 0점
-                case IRON_I, BRONZE_I, SILVER_I, GOLD_I, PLATINUM_I, EMERALD_I, DIAMOND_I ->
-                        currentScore += 100; // 주요 티어 전환 시 점수 증가
-                case MASTER -> currentScore += 200; // DIAMOND -> MASTER
-                case GRANDMASTER -> currentScore += 500; // MASTER -> GRANDMASTER
-                case CHALLENGER -> currentScore += 1000; // GRANDMASTER -> CHALLENGER
-                default -> currentScore += baseScore; // 기본적으로 50점씩 증가
+            if (tier == UNRANKED) {
+                currentScore = 0; // UNRANKED는 0점
+            } else if (tier == MASTER_I) {
+                currentScore += 200; // DIAMOND -> MASTER
+            } else if (tier == GRANDMASTER_I) {
+                currentScore += 500; // MASTER -> GRANDMASTER
+            } else if (tier == CHALLENGER_I) {
+                currentScore += 1000; // GRANDMASTER -> CHALLENGER
+            } else {
+                currentScore += baseScore; // 나머지는 50점씩 증가
             }
-            tierScoreMap.put(tier, currentScore); // 각 티어에 점수 매핑
+            tierScoreMap.put(tier, currentScore);
         }
     }
 
-    // 현재 티어의 점수를 반환하는 메서드
     public Integer getScore() {
         return tierScoreMap.getOrDefault(this, 0);
     }
