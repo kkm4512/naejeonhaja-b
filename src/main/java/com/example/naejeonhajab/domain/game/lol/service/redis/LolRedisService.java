@@ -1,4 +1,4 @@
-package com.example.naejeonhajab.domain.game.lol.service.util;
+package com.example.naejeonhajab.domain.game.lol.service.redis;
 
 import com.example.naejeonhajab.domain.game.lol.dto.res.playerHistory.LolPlayerHistoryDto;
 import com.example.naejeonhajab.domain.game.lol.dto.res.playerResultHistory.LolPlayerResultHistoryDto;
@@ -13,7 +13,7 @@ import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
-public class LolRedisUtilService {
+public class LolRedisService {
 
     // Redis
     private final RedisTemplate<String, Object> redisTemplate;

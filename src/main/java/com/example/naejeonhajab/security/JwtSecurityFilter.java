@@ -32,7 +32,7 @@ public class JwtSecurityFilter extends OncePerRequestFilter {
         String requestURI = request.getRequestURI();
 
         // 인증이 필요 없는 경로 설정 (SecurityConfig의 permitAll과 일치시켜야 함)
-        return requestURI.matches("^/api/v1/game/lol/(riot).*") ||
+        return requestURI.matches("^/api/v1/game/lol/(riot|dataDragon).*") ||
                 requestURI.startsWith("/api/v1/users") ||
                 requestURI.equals("/api/v1/game/lol/rift") ||
                 requestURI.equals("/api/v1/game/lol/abyss") ||
