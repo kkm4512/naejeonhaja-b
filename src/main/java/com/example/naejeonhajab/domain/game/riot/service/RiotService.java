@@ -1,6 +1,7 @@
 package com.example.naejeonhajab.domain.game.riot.service;
 
 import com.example.naejeonhajab.common.exception.LolException;
+import com.example.naejeonhajab.common.exception.RiotException;
 import com.example.naejeonhajab.common.response.ApiResponse;
 import com.example.naejeonhajab.common.response.enums.LolApiResponse;
 import com.example.naejeonhajab.domain.game.riot.dto.RiotAccountDto;
@@ -29,6 +30,7 @@ import static com.example.naejeonhajab.common.response.enums.BaseApiResponse.FAI
 import static com.example.naejeonhajab.common.response.enums.BaseApiResponse.SUCCESS;
 import static com.example.naejeonhajab.common.response.enums.LolApiResponse.LOL_PLAYER_FOUND;
 import static com.example.naejeonhajab.common.response.enums.LolApiResponse.LOL_PLAYER_NOT_FOUND;
+import static com.example.naejeonhajab.common.response.enums.RiotApiResponse.RIOT_API_BAD_REQUEST;
 
 @Slf4j(topic = "RiotService")
 @Service
@@ -90,6 +92,7 @@ public class RiotService {
                     .findFirst();
             return ApiResponse.of(SUCCESS,findSoloRankType.orElseThrow(() -> new Exception(FAIL.getMessage())));
         } catch (Exception e) {
+            log.error(e.getMessage());
             return ApiResponse.of(FAIL);
         }
     }
@@ -103,6 +106,7 @@ public class RiotService {
             result.sort(Comparator.comparingInt(RiotChampionMasteryDto::getChampionPoints).reversed());
             return ApiResponse.of(SUCCESS,result.stream().limit(3).toList());
         } catch (Exception e) {
+            log.error(e.getMessage());
             return ApiResponse.of(FAIL);
         }
     }
@@ -125,7 +129,8 @@ public class RiotService {
             );
             return response.getBody();
         } catch (Exception e) {
-            throw new RuntimeException("Failed to fetch account information from Riot API: " + e.getMessage(), e);
+            log.error(e.getMessage());
+            throw new RiotException(RIOT_API_BAD_REQUEST);
         }
     }
 }

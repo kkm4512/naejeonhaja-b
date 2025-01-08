@@ -1,5 +1,6 @@
 package com.example.naejeonhajab.domain.game.dataDragon.service;
 
+import com.example.naejeonhajab.common.exception.DataDragonException;
 import com.example.naejeonhajab.common.response.ApiResponse;
 import com.example.naejeonhajab.domain.game.dataDragon.dto.DataDragonChampionDto;
 import com.example.naejeonhajab.domain.game.dataDragon.service.redis.DataDragonRedisService;
@@ -16,6 +17,7 @@ import org.springframework.web.client.RestTemplate;
 import java.util.Map;
 
 import static com.example.naejeonhajab.common.response.enums.BaseApiResponse.SUCCESS;
+import static com.example.naejeonhajab.common.response.enums.DataDragonApiResponse.DATA_DRAGON_API_BAD_REQUEST;
 
 @Slf4j(topic = "DataDragonService")
 @Service
@@ -38,7 +40,8 @@ public class DataDragonService {
                 dataDragonRedisService.setChampionDto(entry.getValue().getKey(),entry.getValue());
             }
         } catch (Exception e) {
-            throw new RuntimeException("Failed to fetch account information from Riot API: " + e.getMessage(), e);
+            log.error(e.getMessage());
+            throw new DataDragonException(DATA_DRAGON_API_BAD_REQUEST);
         }
     }
 
@@ -63,7 +66,8 @@ public class DataDragonService {
             );
             return response.getBody();
         } catch (Exception e) {
-            throw new RuntimeException("Failed to fetch account information from Riot API: " + e.getMessage(), e);
+            log.error(e.getMessage());
+            throw new DataDragonException(DATA_DRAGON_API_BAD_REQUEST);
         }
     }
 }
