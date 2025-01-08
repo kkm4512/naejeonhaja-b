@@ -1,8 +1,6 @@
 package com.example.naejeonhajab.domain.game.dataDragon.service;
 
 import com.example.naejeonhajab.common.response.ApiResponse;
-import com.example.naejeonhajab.common.response.enums.ApiResponseEnum;
-import com.example.naejeonhajab.common.response.enums.BaseApiResponse;
 import com.example.naejeonhajab.domain.game.dataDragon.dto.DataDragonChampionDto;
 import com.example.naejeonhajab.domain.game.dataDragon.service.redis.DataDragonRedisService;
 import com.fasterxml.jackson.databind.ObjectMapper;
