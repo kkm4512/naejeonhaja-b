@@ -23,7 +23,7 @@ import static com.example.naejeonhajab.common.response.enums.BaseApiResponse.SUC
 public class DataDragonService {
     private final DataDragonRedisService dataDragonRedisService;
     private final RestTemplate restTemplate;
-    private static final String DATA_DRAGON_API_BASE_URL = "https://ddragon.leagueoflegends.com/cdn/13.1.1/data/ko_KR";
+    private static final String DATA_DRAGON_API_BASE_URL = "https://ddragon.leagueoflegends.com/cdn/14.24.1/data/ko_KR";
 
     public void initChampionRedis(){
         try {

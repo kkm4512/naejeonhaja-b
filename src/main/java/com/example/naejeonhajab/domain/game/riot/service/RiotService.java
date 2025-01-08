@@ -39,6 +39,7 @@ public class RiotService {
     private String riotApiKey;
 
     private final RiotUtilService riotUtilService;
+    private final ObjectMapper objectMapper;
 
     private static final String RIOT_API_ASIA_BASE_URL = "https://asia.api.riotgames.com";
     private static final String RIOT_API_KR_BASE_URL = "https://kr.api.riotgames.com";
@@ -48,7 +49,6 @@ public class RiotService {
 
     public ApiResponse<RiotAccountDto> getAccountByRiotId(String playerName) {
         try {
-                ObjectMapper objectMapper = new ObjectMapper();
                 String[] split = riotUtilService.splitByShop(playerName);
                 String gameName = split[0];
                 String tagLine = split[1];
@@ -67,7 +67,6 @@ public class RiotService {
 
     public ApiResponse<RiotSummonerDto> getSummonersByPuuid(String puuid) {
         try {
-            ObjectMapper objectMapper = new ObjectMapper();
             String url = RIOT_API_KR_BASE_URL + "/lol/summoner/v4/summoners/by-puuid/" + puuid;
             String response = getRiotApiBaseMethod(url);
             RiotSummonerDto result = objectMapper.readValue(response, RiotSummonerDto.class);
@@ -83,7 +82,6 @@ public class RiotService {
     public ApiResponse<RiotLeagueDto> getLeagueByid(String id) {
         // Riot API Endpoint
         try {
-            ObjectMapper objectMapper = new ObjectMapper();
             String url = RIOT_API_KR_BASE_URL + "/lol/league/v4/entries/by-summoner/" + id;
             String response = getRiotApiBaseMethod(url);
             List<RiotLeagueDto> result = objectMapper.readValue(response, new TypeReference<>() {});
@@ -99,7 +97,6 @@ public class RiotService {
     // /lol/champion-mastery/v4/champion-masteries/by-puuid/{encryptedPUUID}
     public ApiResponse<List<RiotChampionMasteryDto>> getChampionMasteryByPuuid(String puuid) {
         try {
-            ObjectMapper objectMapper = new ObjectMapper();
             String url = RIOT_API_KR_BASE_URL + "/lol/champion-mastery/v4/champion-masteries/by-puuid/" + puuid;
             String response = getRiotApiBaseMethod(url);
             List<RiotChampionMasteryDto> result = objectMapper.readValue(response, new TypeReference<>() {});
