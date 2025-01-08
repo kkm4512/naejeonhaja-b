@@ -1,10 +1,7 @@
 package com.example.naejeonhajab.domain.game.riot.controller;
 
 import com.example.naejeonhajab.common.response.ApiResponse;
-import com.example.naejeonhajab.domain.game.riot.dto.RiotAccountDto;
-import com.example.naejeonhajab.domain.game.riot.dto.RiotChampionMasteryDto;
-import com.example.naejeonhajab.domain.game.riot.dto.RiotLeagueDto;
-import com.example.naejeonhajab.domain.game.riot.dto.RiotSummonerDto;
+import com.example.naejeonhajab.domain.game.riot.dto.*;
 import com.example.naejeonhajab.domain.game.riot.service.RiotService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -20,11 +17,18 @@ public class RiotController {
 
     private final RiotService riotService;
 
+    @GetMapping("/riotPlayer/{playerName}")
+    public ApiResponse<RiotPlayerDto> getRiotPlayerByPlayerName(
+            @PathVariable("playerName") String playerName
+    ) {
+        return riotService.getRiotPlayerByPlayerName(playerName);
+    }
+
     @GetMapping("/playerName/{playerName}")
     public ApiResponse<RiotAccountDto> getAccountByRiotId(
             @PathVariable("playerName") String playerName
     ) {
-        return riotService.getAccountByRiotId(playerName);
+        return riotService.getAccountByPlayerName(playerName);
     }
 
     @GetMapping("/puuid/{puuid}")

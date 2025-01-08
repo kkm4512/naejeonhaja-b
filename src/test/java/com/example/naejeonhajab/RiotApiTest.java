@@ -3,12 +3,8 @@ package com.example.naejeonhajab;
 import com.example.naejeonhajab.common.response.ApiResponse;
 import com.example.naejeonhajab.domain.game.riot.dto.RiotAccountDto;
 import com.example.naejeonhajab.domain.game.riot.dto.RiotChampionMasteryDto;
-import com.example.naejeonhajab.domain.game.riot.dto.RiotLeagueDto;
-import com.example.naejeonhajab.domain.game.riot.dto.RiotSummonerDto;
 import com.example.naejeonhajab.domain.game.riot.service.RiotService;
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -32,7 +28,7 @@ class RiotApiTest {
 
     @Test
     void test1() throws JsonProcessingException {
-        ApiResponse<RiotAccountDto> response = riotApiService.getAccountByRiotId("hide on bush");
+        ApiResponse<RiotAccountDto> response = riotApiService.getAccountByPlayerName("hide on bush");
         assertNotNull(response);
     }
 
