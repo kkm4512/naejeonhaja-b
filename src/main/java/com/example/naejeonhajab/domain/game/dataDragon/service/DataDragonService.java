@@ -17,7 +17,7 @@ import org.springframework.web.client.RestTemplate;
 import java.util.Map;
 
 import static com.example.naejeonhajab.common.response.enums.BaseApiResponse.SUCCESS;
-import static com.example.naejeonhajab.common.response.enums.DataDragonApiResponse.DATA_DRAGON_API_BAD_REQUEST;
+import static com.example.naejeonhajab.common.response.enums.DataDragonApiResponse.*;
 
 @Slf4j(topic = "DataDragonService")
 @Service
@@ -25,23 +25,20 @@ import static com.example.naejeonhajab.common.response.enums.DataDragonApiRespon
 public class DataDragonService {
     private final DataDragonRedisService dataDragonRedisService;
     private final RestTemplate restTemplate;
+    private final ObjectMapper objectMapper;
     private static final String DATA_DRAGON_API_BASE_URL = "https://ddragon.leagueoflegends.com/cdn/14.24.1/data/ko_KR";
+    private static final String GET_CHAMPION_JSON_ENDPOINT = "/champion.json";
 
+
+    // 챔피언의 고유 ID를 key에 저장하고, 그 데이터를 Redis에 저장함
     public void initChampionRedis(){
-        try {
-            if (dataDragonRedisService.existsChampionDto()) {
-                return;
-            }
-            ObjectMapper objectMapper = new ObjectMapper();
-            String url = DATA_DRAGON_API_BASE_URL + "/champion.json";
-            String response = getDataDragonApiBaseMethod(url);
-            DataDragonChampionDto championData = objectMapper.readValue(response, DataDragonChampionDto.class);
-            for (Map.Entry<String, DataDragonChampionDto.ChampionDto> entry : championData.getData().entrySet()) {
-                dataDragonRedisService.setChampionDto(entry.getValue().getKey(),entry.getValue());
-            }
-        } catch (Exception e) {
-            log.error(e.getMessage());
-            throw new DataDragonException(DATA_DRAGON_API_BAD_REQUEST);
+        if (dataDragonRedisService.existsChampionDto()) {
+            return;
+        }
+        String url = DATA_DRAGON_API_BASE_URL + GET_CHAMPION_JSON_ENDPOINT;
+        DataDragonChampionDto response = getDataDragonApiBaseMethod(url,DataDragonChampionDto.class);
+        for (Map.Entry<String, DataDragonChampionDto.ChampionDto> entry : response.getData().entrySet()) {
+            dataDragonRedisService.setChampionDto(entry.getValue().getKey(),entry.getValue());
         }
     }
 
@@ -51,7 +48,8 @@ public class DataDragonService {
 
     }
 
-    private String getDataDragonApiBaseMethod(String url){
+    // 단일 객체에 대해 클래스에 따른 타입 반환
+    private <T> T getDataDragonApiBaseMethod(String url, Class<T> clazz){
         // 헤더 설정
         HttpHeaders headers = new HttpHeaders();
         HttpEntity<String> entity = new HttpEntity<>(headers);
@@ -64,10 +62,11 @@ public class DataDragonService {
                     entity,
                     String.class
             );
-            return response.getBody();
+            return objectMapper.readValue(response.getBody(),clazz);
         } catch (Exception e) {
             log.error(e.getMessage());
             throw new DataDragonException(DATA_DRAGON_API_BAD_REQUEST);
         }
     }
+
 }

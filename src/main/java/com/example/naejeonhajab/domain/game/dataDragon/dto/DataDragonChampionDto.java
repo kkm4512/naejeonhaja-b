@@ -20,7 +20,6 @@ public class DataDragonChampionDto {
     @Getter
     @AllArgsConstructor
     @NoArgsConstructor
-    @JsonIgnoreProperties(ignoreUnknown = true)
     public static class ChampionDto {
         private String version;
         private String id;
@@ -36,7 +35,6 @@ public class DataDragonChampionDto {
     @Getter
     @AllArgsConstructor
     @NoArgsConstructor
-    @JsonIgnoreProperties(ignoreUnknown = true)
     public static class ImageDto {
         private String full;
         private String sprite;
