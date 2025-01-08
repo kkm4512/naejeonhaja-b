@@ -2,6 +2,7 @@ package com.example.naejeonhajab.domain.game.lol.dto.common;
 
 import com.example.naejeonhajab.domain.game.lol.entity.resultHistory.LolPlayerResult;
 import com.example.naejeonhajab.domain.game.lol.enums.LolTier;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -15,6 +16,7 @@ import java.util.List;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class LolPlayerDto {
     @NotBlank(message = "이름은 공란 일 수 없습니다")
     String name;
