@@ -6,6 +6,7 @@ import com.example.naejeonhajab.domain.game.dataDragon.dto.DataDragonChampionDto
 import com.example.naejeonhajab.domain.game.dataDragon.service.DataDragonService;
 import com.example.naejeonhajab.domain.game.riot.dto.*;
 import com.example.naejeonhajab.domain.game.riot.enums.LolRankType;
+import com.example.naejeonhajab.domain.game.riot.service.redis.RiotRedisService;
 import com.example.naejeonhajab.domain.game.riot.service.util.RiotUtilService;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -41,6 +42,8 @@ public class RiotService {
 
     private final DataDragonService dataDragonService;
 
+    private final RiotRedisService riotRedisService;
+
     private static final String RIOT_API_ASIA_BASE_URL = "https://asia.api.riotgames.com";
     private static final String RIOT_API_KR_BASE_URL = "https://kr.api.riotgames.com";
     private static final String GET_ACCOUNT_BY_RIOT_ID_ENDPOINT = "/riot/account/v1/accounts/by-riot-id";
@@ -51,6 +54,10 @@ public class RiotService {
     private final RestTemplate restTemplate;
 
     public ApiResponse<RiotPlayerDto> getRiotPlayerByPlayerName(String playerName) {
+        if (riotRedisService.getRiotPlayerDto(playerName) != null) {
+            RiotPlayerDto riotPlayerDto = riotRedisService.getRiotPlayerDto(playerName);
+            return ApiResponse.of(LOL_PLAYER_FOUND,riotPlayerDto);
+        }
         RiotAccountDto riotAccountDto = getAccountByPlayerName(playerName).getData();
         RiotSummonerDto riotSummonerDto = getSummonersByPuuid(riotAccountDto.getPuuid()).getData();
         RiotLeagueDto riotLeagueDto = getLeagueByid(riotSummonerDto.getId()).getData();
@@ -65,7 +72,25 @@ public class RiotService {
                 riotLeagueDto,
                 championDtos
         );
+        riotRedisService.setRiotPlayerDto(playerName, riotPlayerDto);
         return ApiResponse.of(LOL_PLAYER_FOUND,riotPlayerDto);
+    }
+
+    public ApiResponse<RiotPlayerBasicDto> getRiotPlayerBasicByPlayerName(String playerName) {
+        if (riotRedisService.getRiotPlayerBasicDto(playerName) != null) {
+            RiotPlayerBasicDto riotPlayerDto = riotRedisService.getRiotPlayerBasicDto(playerName);
+            return ApiResponse.of(LOL_PLAYER_FOUND,riotPlayerDto);
+        }
+        RiotAccountDto riotAccountDto = getAccountByPlayerName(playerName).getData();
+        RiotSummonerDto riotSummonerDto = getSummonersByPuuid(riotAccountDto.getPuuid()).getData();
+        RiotLeagueDto riotLeagueDto = getLeagueByid(riotSummonerDto.getId()).getData();
+        RiotPlayerBasicDto riotPlayerBasicDto = new RiotPlayerBasicDto(
+                riotAccountDto,
+                riotSummonerDto,
+                riotLeagueDto
+        );
+        riotRedisService.setRiotPlayerBasicDto(playerName, riotPlayerBasicDto);
+        return ApiResponse.of(LOL_PLAYER_FOUND,riotPlayerBasicDto);
     }
 
     public ApiResponse<RiotAccountDto> getAccountByPlayerName(String playerName) {
@@ -125,7 +150,7 @@ public class RiotService {
             return objectMapper.readValue(response.getBody(),clazz) ;
         } catch (Exception e) {
             log.error(e.getMessage());
-            throw new RiotException(RIOT_API_BAD_REQUEST);
+            return null;
         }
     }
 
@@ -149,7 +174,7 @@ public class RiotService {
             return objectMapper.readValue(response.getBody(),typeReference) ;
         } catch (Exception e) {
             log.error(e.getMessage());
-            throw new RiotException(RIOT_API_BAD_REQUEST);
+            return null;
         }
     }
 }
