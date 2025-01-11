@@ -16,11 +16,4 @@ public class RiotChampionMasteryDto {
     private int championId;
     private int championLevel;
     private int championPoints;
-    private long lastPlayTime;
-    private int championPointsSinceLastLevel;
-    private int championPointsUntilNextLevel;
-    private int markRequiredForNextLevel;
-    private int tokensEarned;
-    private int championSeasonMilestone;
-    private List<String> milestoneGrades;
 }

@@ -20,16 +20,13 @@ public class DataDragonChampionDto {
     @Getter
     @AllArgsConstructor
     @NoArgsConstructor
+    @JsonIgnoreProperties(ignoreUnknown = true)
     public static class ChampionDto {
         private String version;
         private String id;
         private String key;
         private String name;
-        private String title;
-        private String blurb;
         private ImageDto image;
-        private String[] tags;
-        private String partype;
     }
 
     @Getter
