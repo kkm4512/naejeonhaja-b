@@ -1,6 +1,5 @@
 package com.example.naejeonhajab.domain.game.riot.service;
 
-import com.example.naejeonhajab.common.exception.RiotException;
 import com.example.naejeonhajab.common.response.ApiResponse;
 import com.example.naejeonhajab.domain.game.dataDragon.dto.DataDragonChampionDto;
 import com.example.naejeonhajab.domain.game.dataDragon.service.DataDragonService;
@@ -26,8 +25,6 @@ import java.util.Optional;
 
 import static com.example.naejeonhajab.common.response.enums.BaseApiResponse.SUCCESS;
 import static com.example.naejeonhajab.common.response.enums.LolApiResponse.LOL_PLAYER_FOUND;
-import static com.example.naejeonhajab.common.response.enums.RiotApiResponse.RIOT_API_BAD_REQUEST;
-import static java.util.stream.Collectors.toList;
 
 @Slf4j(topic = "RiotService")
 @Service
