@@ -1,6 +1,7 @@
 package com.example.naejeonhajab.domain.game.dataDragon.service.redis;
 
 import com.example.naejeonhajab.domain.game.dataDragon.dto.DataDragonChampionDto;
+import com.example.naejeonhajab.domain.game.riot.dto.RiotChampionDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
@@ -12,7 +13,7 @@ public class DataDragonRedisService {
     private static final String REDIS_NAME_DATA_DRAGON_CHAMPION = "dataDragonChampion::";
     private static final String REDIS_KEY_CHAMPION_ID = "championId:";
 
-    public void setChampionDto(String key, DataDragonChampionDto.ChampionDto value) {
+    public void setChampionDto(String key, RiotChampionDto value) {
         redisTemplate.opsForValue().set(
                 REDIS_NAME_DATA_DRAGON_CHAMPION +
                         REDIS_KEY_CHAMPION_ID + key,
@@ -20,8 +21,8 @@ public class DataDragonRedisService {
         );
     }
 
-    public DataDragonChampionDto.ChampionDto getChampionDto(String key) {
-        return (DataDragonChampionDto.ChampionDto) redisTemplate.opsForValue().get(
+    public RiotChampionDto getChampionDto(String key) {
+        return (RiotChampionDto) redisTemplate.opsForValue().get(
                 REDIS_NAME_DATA_DRAGON_CHAMPION +
                         REDIS_KEY_CHAMPION_ID + key
         );
