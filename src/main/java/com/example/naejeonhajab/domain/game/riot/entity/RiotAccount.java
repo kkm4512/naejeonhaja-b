@@ -16,11 +16,8 @@ public class RiotAccount {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false)
     private String puuid;
-    @Column(nullable = false)
     private String gameName;
-    @Column(nullable = false)
     private String tagLine;
 
     public RiotAccount(String puuid, String gameName, String tagLine) {
