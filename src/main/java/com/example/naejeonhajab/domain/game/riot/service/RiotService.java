@@ -56,6 +56,7 @@ public class RiotService {
 
     private final RestTemplate restTemplate;
 
+    // TODO: 배포환경에서 puuid null이라고 안됨 왜안되는거지
     @Transactional
     @GetRiotPlayerStore
     public ApiResponse<RiotPlayerDto> getRiotPlayerByPlayerName(String playerName) {
