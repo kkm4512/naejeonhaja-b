@@ -1,5 +1,6 @@
 package com.example.naejeonhajab.domain.game.riot.dto;
 
+import com.example.naejeonhajab.domain.game.riot.entity.RiotLeague;
 import com.example.naejeonhajab.domain.game.riot.enums.LolRankType;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AllArgsConstructor;
@@ -19,4 +20,17 @@ public class RiotLeagueDto {
     private int leaguePoints;
     private int wins;
     private int losses;
+
+    public static RiotLeagueDto of(RiotLeague riotLeague) {
+        return new RiotLeagueDto(
+                riotLeague.getLeagueId(),
+                riotLeague.getQueueType(),
+                riotLeague.getTier(),
+                riotLeague.getRank(),
+                riotLeague.getSummonerId(),
+                riotLeague.getLeaguePoints(),
+                riotLeague.getWins(),
+                riotLeague.getLosses()
+        );
+    }
 }

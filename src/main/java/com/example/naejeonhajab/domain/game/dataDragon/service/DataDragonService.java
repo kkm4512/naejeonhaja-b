@@ -4,6 +4,7 @@ import com.example.naejeonhajab.common.exception.DataDragonException;
 import com.example.naejeonhajab.common.response.ApiResponse;
 import com.example.naejeonhajab.domain.game.dataDragon.dto.DataDragonChampionDto;
 import com.example.naejeonhajab.domain.game.dataDragon.service.redis.DataDragonRedisService;
+import com.example.naejeonhajab.domain.game.riot.dto.RiotChampionDto;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -37,13 +38,13 @@ public class DataDragonService {
         }
         String url = DATA_DRAGON_API_BASE_URL + GET_CHAMPION_JSON_ENDPOINT;
         DataDragonChampionDto response = getDataDragonApiBaseMethod(url,DataDragonChampionDto.class);
-        for (Map.Entry<String, DataDragonChampionDto.ChampionDto> entry : response.getData().entrySet()) {
+        for (Map.Entry<String, RiotChampionDto> entry : response.getData().entrySet()) {
             dataDragonRedisService.setChampionDto(entry.getValue().getKey(),entry.getValue());
         }
     }
 
-    public ApiResponse<DataDragonChampionDto.ChampionDto> getChampionDtoByChampionId(String championId){
-        DataDragonChampionDto.ChampionDto response = dataDragonRedisService.getChampionDto(championId);
+    public ApiResponse<RiotChampionDto> getChampionDtoByChampionId(String championId){
+        RiotChampionDto response = dataDragonRedisService.getChampionDto(championId);
         return ApiResponse.of(SUCCESS,response);
 
     }

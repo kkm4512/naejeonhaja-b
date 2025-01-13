@@ -19,6 +19,8 @@ services:
       - mysql
       - redis  # Redis에 대한 의존성 추가
     restart: always
+    volumes:
+      - ./logs:/logs  # 호스트의 logs 디렉터리와 컨테이너의 /logs 디렉터리 연결
     env_file:
       - .env  # .env 파일을 읽어서 환경 변수로 전달
     environment:

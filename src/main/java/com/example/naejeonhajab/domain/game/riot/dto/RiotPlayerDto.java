@@ -1,6 +1,5 @@
 package com.example.naejeonhajab.domain.game.riot.dto;
 
-import com.example.naejeonhajab.domain.game.dataDragon.dto.DataDragonChampionDto;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -15,5 +14,5 @@ public class RiotPlayerDto {
     private RiotSummonerDto riotSummonerDto;
     private List<RiotChampionMasteryDto> riotChampionMasteryDtos;
     private RiotLeagueDto riotLeagueDto;
-    private List<DataDragonChampionDto.ChampionDto> championDtos;
+    private List<RiotChampionDto> championDtos;
 }

@@ -3,6 +3,7 @@ package com.example.naejeonhajab.domain.game.dataDragon.controller;
 import com.example.naejeonhajab.common.response.ApiResponse;
 import com.example.naejeonhajab.domain.game.dataDragon.dto.DataDragonChampionDto;
 import com.example.naejeonhajab.domain.game.dataDragon.service.DataDragonService;
+import com.example.naejeonhajab.domain.game.riot.dto.RiotChampionDto;
 import com.example.naejeonhajab.domain.game.riot.service.RiotService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -20,7 +21,7 @@ public class DataDragonController {
     private final DataDragonService dataDragonService;
 
     @GetMapping("/championId/{championId}")
-    public ApiResponse<DataDragonChampionDto.ChampionDto> getChampionByChampionId(
+    public ApiResponse<RiotChampionDto> getChampionByChampionId(
             @PathVariable("championId") String championId
     ) {
         return dataDragonService.getChampionDtoByChampionId(championId);
