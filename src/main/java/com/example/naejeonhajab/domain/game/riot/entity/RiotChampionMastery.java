@@ -17,13 +17,9 @@ public class RiotChampionMastery {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(nullable = false)
     private String puuid;
-    @Column(nullable = false)
     private int championId;
-    @Column(nullable = false)
     private int championLevel;
-    @Column(nullable = false)
     private int championPoints;
 
     @ManyToOne(fetch = FetchType.LAZY)

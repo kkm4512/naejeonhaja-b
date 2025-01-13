@@ -15,17 +15,11 @@ public class RiotSummoner {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long riotSummonerId;
 
-    @Column(nullable = false)
     private String id;
-    @Column(nullable = false)
     private String puuid;
-    @Column(nullable = false)
     private String accountId;
-    @Column(nullable = false)
     private int profileIconId;
-    @Column(nullable = false)
     private long revisionDate;
-    @Column(nullable = false)
     private int summonerLevel;
 
     public RiotSummoner(String id, String accountId, int profileIconId, long revisionDate, int summonerLevel) {
