@@ -2,8 +2,6 @@ package com.example.naejeonhajab.aop;
 
 import com.example.naejeonhajab.common.response.ApiResponse;
 import com.example.naejeonhajab.domain.game.riot.dto.RiotPlayerDto;
-import com.example.naejeonhajab.domain.game.riot.entity.RiotPlayer;
-import com.example.naejeonhajab.domain.game.riot.repository.RiotRepository;
 import com.example.naejeonhajab.domain.game.riot.service.redis.RiotRedisService;
 import lombok.RequiredArgsConstructor;
 import org.aspectj.lang.ProceedingJoinPoint;
@@ -20,12 +18,11 @@ import static com.example.naejeonhajab.common.response.enums.LolApiResponse.LOL_
 public class GetRiotPlayerStoreAspect {
 
     private final RiotRedisService riotRedisService;
-    private final RiotRepository riotRepository;
 
     @Pointcut("@annotation(com.example.naejeonhajab.annotation.GetRiotPlayerStore)")
-    private void getStoreAnnotation() {}
+    private void getRiotPlayerStoreAnnotation() {}
 
-    @Around("getStoreAnnotation()")
+    @Around("getRiotPlayerStoreAnnotation()")
     public Object findStoreByPlayerName(ProceedingJoinPoint pjp) throws Throwable {
         Object[] args = pjp.getArgs();
         String playerName = (String) args[0];  // 첫 번째 인자 추출
@@ -33,10 +30,6 @@ public class GetRiotPlayerStoreAspect {
 
         if (riotRedisService.existsByPlayerName(playerName)) {
             riotPlayerDto = riotRedisService.getRiotPlayerDto(playerName);
-            return ApiResponse.of(LOL_PLAYER_FOUND, riotPlayerDto);
-        }
-        else if (riotRepository.existsByPlayerName(playerName)) {
-            riotPlayerDto = RiotPlayer.toRiotPlayerDto(riotRepository.findByPlayerName(playerName));
             return ApiResponse.of(LOL_PLAYER_FOUND, riotPlayerDto);
         }
 

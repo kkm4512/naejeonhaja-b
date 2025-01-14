@@ -2,13 +2,10 @@ package com.example.naejeonhajab.domain.game.riot.service;
 
 import com.example.naejeonhajab.annotation.GetRiotPlayerBasicStore;
 import com.example.naejeonhajab.annotation.GetRiotPlayerStore;
-import com.example.naejeonhajab.aop.GetRiotPlayerStoreAspect;
 import com.example.naejeonhajab.common.response.ApiResponse;
 import com.example.naejeonhajab.domain.game.dataDragon.service.DataDragonService;
 import com.example.naejeonhajab.domain.game.riot.dto.*;
-import com.example.naejeonhajab.domain.game.riot.entity.*;
 import com.example.naejeonhajab.domain.game.riot.enums.LolRankType;
-import com.example.naejeonhajab.domain.game.riot.repository.RiotRepository;
 import com.example.naejeonhajab.domain.game.riot.service.redis.RiotRedisService;
 import com.example.naejeonhajab.domain.game.riot.service.util.RiotUtilService;
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -41,7 +38,6 @@ public class RiotService {
 
     private final ObjectMapper objectMapper;
 
-    private final RiotRepository riotRepository;
 
     private final RiotUtilService riotUtilService;
     private final DataDragonService dataDragonService;
@@ -56,7 +52,6 @@ public class RiotService {
 
     private final RestTemplate restTemplate;
 
-    // TODO: 배포환경에서 puuid null이라고 안됨 왜안되는거지
     @Transactional
     @GetRiotPlayerStore
     public ApiResponse<RiotPlayerDto> getRiotPlayerByPlayerName(String playerName) {
@@ -75,24 +70,7 @@ public class RiotService {
                 championDtos
         );
 
-        RiotPlayer riotPlayer = new RiotPlayer(
-                null,
-                playerName,
-                RiotAccount.of(riotAccountDto),
-                RiotSummoner.of(riotSummonerDto),
-                RiotLeague.of(riotLeagueDto),
-                null,
-                null
-        );
-
-        List<RiotChampionMastery> riotChampionMasteries = RiotChampionMastery.from(riotChampionMasteryDtos, riotPlayer);
-        List<RiotChampion> riotChampions = RiotChampion.from(championDtos, riotPlayer);
-
-        riotPlayer.updateRiotChampionMastery(riotChampionMasteries);
-        riotPlayer.updateRiotChampion(riotChampions);
-
         riotRedisService.setRiotPlayerDto(playerName, riotPlayerDto);
-        riotRepository.save(riotPlayer);
         return ApiResponse.of(LOL_PLAYER_FOUND,riotPlayerDto);
     }
 
