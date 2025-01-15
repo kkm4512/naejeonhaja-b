@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
+// 여기가 문제인가
 public class RiotImageDto {
     private String full;
     private String sprite;
