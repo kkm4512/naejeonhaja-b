@@ -2,7 +2,6 @@ package com.example.naejeonhajab.domain.game.lol.dto.req.playerResultHistory;
 
 import com.example.naejeonhajab.domain.game.lol.dto.common.LolTeamResultDto;
 import jakarta.validation.Valid;
-import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Getter;

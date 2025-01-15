@@ -14,20 +14,6 @@ public class RiotChampionDto {
     private String id;
     private String key;
     private String name;
-    private ImageDto image;
-
-
-    @Getter
-    @AllArgsConstructor
-    @NoArgsConstructor
-    public static class ImageDto {
-        private String full;
-        private String sprite;
-        private String group;
-        private int x;
-        private int y;
-        private int w;
-        private int h;
-    }
+    private RiotImageDto image;
 }
 
