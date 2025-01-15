@@ -7,8 +7,12 @@ import lombok.NoArgsConstructor;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-public class RiotAccountDto {
-    private String puuid;
-    private String gameName;
-    private String tagLine;
+public class RiotImageDto {
+    private String full;
+    private String sprite;
+    private String group;
+    private int x;
+    private int y;
+    private int w;
+    private int h;
 }

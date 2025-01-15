@@ -1,5 +1,7 @@
 package com.example.naejeonhajab.domain.game.lol.service;
 
+import com.example.naejeonhajab.annotation.GetLolPlayerHistoryStore;
+import com.example.naejeonhajab.annotation.GetLolPlayerResultHistoryStore;
 import com.example.naejeonhajab.common.exception.BaseException;
 import com.example.naejeonhajab.common.exception.LolException;
 import com.example.naejeonhajab.common.response.enums.BaseApiResponse;
@@ -124,25 +126,22 @@ public class RiftServiceImpl {
         throw new BaseException(BaseApiResponse.TEAM_MISMATCH);
     }
 
+    @GetLolPlayerHistoryStore
+    @Transactional(readOnly = true)
     public LolPlayerHistoryDto getPlayerHistoryDetailTeam(Long playerHistoryId) {
-        return lolRedisUtilService.getPlayerHistoryDto(playerHistoryId)
-                .orElseGet(() -> {
-                    LolPlayerHistory lolPlayerHistory = findLolPlayerHistoryByPlayerHistoryId(playerHistoryId);
-                    lolRedisUtilService.setPlayerHistoryDto(lolPlayerHistory);
-                    return LolPlayerHistoryDto.of(lolPlayerHistory);
-                });
+        LolPlayerHistory lolPlayerHistory = findLolPlayerHistoryByPlayerHistoryId(playerHistoryId);
+        lolRedisUtilService.setPlayerHistoryDto(lolPlayerHistory);
+        return LolPlayerHistoryDto.of(lolPlayerHistory);
     }
 
 
     // 특정 ID의 플레이어 대전 상세 내역 반환 (단일)
+    @GetLolPlayerResultHistoryStore
     @Transactional(readOnly = true)
     public LolPlayerResultHistoryDto getResultHistoryDetailTeam(Long playerResultHistoryId) {
-        return lolRedisUtilService.getPlayerResultHistoryDto(playerResultHistoryId)
-                .orElseGet(() -> {
-                    LolPlayerResultHistory lolPlayerResultHistory = findLolPlayerResultHistoryByPlayerResultHistoryId(playerResultHistoryId);
-                    lolRedisUtilService.setPlayerResultHistoryDto(lolPlayerResultHistory);
-                    return LolPlayerResultHistoryDto.of(lolPlayerResultHistory);
-                });
+        LolPlayerResultHistory lolPlayerResultHistory = findLolPlayerResultHistoryByPlayerResultHistoryId(playerResultHistoryId);
+        lolRedisUtilService.setPlayerResultHistoryDto(lolPlayerResultHistory);
+        return LolPlayerResultHistoryDto.of(lolPlayerResultHistory);
     }
 
     // 현재 유저가 가지고있는 플레이어 히스토리 내역 조회 (다건)

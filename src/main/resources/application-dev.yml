@@ -25,6 +25,7 @@ spring:
     redis:
       host: ${REDIS_LOCAL_HOST}
       port: ${REDIS_LOCAL_PORT}
+      client-name: ${REDIS_LOCAL_NAME}
   cache:
     type: redis
     redis:

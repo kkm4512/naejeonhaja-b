@@ -1,6 +1,5 @@
 package com.example.naejeonhajab.domain.game.dataDragon.service.redis;
 
-import com.example.naejeonhajab.domain.game.dataDragon.dto.DataDragonChampionDto;
 import com.example.naejeonhajab.domain.game.riot.dto.RiotChampionDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.redis.core.RedisTemplate;

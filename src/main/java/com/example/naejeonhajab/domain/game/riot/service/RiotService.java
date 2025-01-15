@@ -2,7 +2,9 @@ package com.example.naejeonhajab.domain.game.riot.service;
 
 import com.example.naejeonhajab.annotation.GetRiotPlayerBasicStore;
 import com.example.naejeonhajab.annotation.GetRiotPlayerStore;
+import com.example.naejeonhajab.common.exception.DataDragonException;
 import com.example.naejeonhajab.common.response.ApiResponse;
+import com.example.naejeonhajab.common.response.enums.DataDragonApiResponse;
 import com.example.naejeonhajab.domain.game.dataDragon.service.DataDragonService;
 import com.example.naejeonhajab.domain.game.riot.dto.*;
 import com.example.naejeonhajab.domain.game.riot.enums.LolRankType;
@@ -27,6 +29,7 @@ import java.util.Optional;
 
 import static com.example.naejeonhajab.common.response.enums.BaseApiResponse.SUCCESS;
 import static com.example.naejeonhajab.common.response.enums.LolApiResponse.LOL_PLAYER_FOUND;
+import static com.example.naejeonhajab.common.response.enums.LolApiResponse.LOL_PLAYER_NOT_FOUND;
 
 @Slf4j(topic = "RiotService")
 @Service
@@ -76,16 +79,21 @@ public class RiotService {
 
     @GetRiotPlayerBasicStore
     public ApiResponse<RiotPlayerBasicDto> getRiotPlayerBasicByPlayerName(String playerName) {
-        RiotAccountDto riotAccountDto = getAccountByPlayerName(playerName).getData();
-        RiotSummonerDto riotSummonerDto = getSummonersByPuuid(riotAccountDto.getPuuid()).getData();
-        RiotLeagueDto riotLeagueDto = getLeagueByid(riotSummonerDto.getId()).getData();
-        RiotPlayerBasicDto riotPlayerBasicDto = new RiotPlayerBasicDto(
-                riotAccountDto,
-                riotSummonerDto,
-                riotLeagueDto
-        );
-        riotRedisService.setRiotPlayerBasicDto(playerName, riotPlayerBasicDto);
-        return ApiResponse.of(LOL_PLAYER_FOUND,riotPlayerBasicDto);
+        try {
+            RiotAccountDto riotAccountDto = getAccountByPlayerName(playerName).getData();
+            RiotSummonerDto riotSummonerDto = getSummonersByPuuid(riotAccountDto.getPuuid()).getData();
+            RiotLeagueDto riotLeagueDto = getLeagueByid(riotSummonerDto.getId()).getData();
+            RiotPlayerBasicDto riotPlayerBasicDto = new RiotPlayerBasicDto(
+                    riotAccountDto,
+                    riotSummonerDto,
+                    riotLeagueDto
+            );
+            riotRedisService.setRiotPlayerBasicDto(playerName, riotPlayerBasicDto);
+            return ApiResponse.of(LOL_PLAYER_FOUND,riotPlayerBasicDto);
+        } catch (Exception e) {
+            log.error(e.getMessage(), e);
+            return ApiResponse.of(LOL_PLAYER_NOT_FOUND);
+        }
     }
 
     public ApiResponse<RiotAccountDto> getAccountByPlayerName(String playerName) {

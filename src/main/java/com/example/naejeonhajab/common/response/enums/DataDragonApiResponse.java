@@ -13,7 +13,7 @@ public enum DataDragonApiResponse implements ApiResponseEnum {
     // 401
 
     // 404
-    ;
+    DATA_DRAGON_API_NOT_FOUND(HttpStatus.BAD_REQUEST, "DATA_DRAGON API 요청한 데이터는 조회되지 않습니다"),
 
     // 409
 

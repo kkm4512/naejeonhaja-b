@@ -27,7 +27,8 @@ public class DataDragonService {
     private final DataDragonRedisService dataDragonRedisService;
     private final RestTemplate restTemplate;
     private final ObjectMapper objectMapper;
-    private static final String DATA_DRAGON_API_BASE_URL = "https://ddragon.leagueoflegends.com/cdn/14.24.1/data/ko_KR";
+    private static final String DATA_DARGON_API_BASE_VERSION = "15.1.1";
+    private static final String DATA_DRAGON_API_BASE_URL = "https://ddragon.leagueoflegends.com/cdn/"+ DATA_DARGON_API_BASE_VERSION + "/data/ko_KR";
     private static final String GET_CHAMPION_JSON_ENDPOINT = "/champion.json";
 
 
