@@ -4,13 +4,11 @@ import com.example.naejeonhajab.domain.game.lol.dto.res.playerHistory.LolPlayerH
 import com.example.naejeonhajab.domain.game.lol.dto.res.playerResultHistory.LolPlayerResultHistoryDto;
 import com.example.naejeonhajab.domain.game.lol.entity.playerHistory.LolPlayerHistory;
 import com.example.naejeonhajab.domain.game.lol.entity.resultHistory.LolPlayerResultHistory;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
 import java.time.Duration;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -49,8 +47,8 @@ public class LolRedisService {
     public void setPlayerHistoryDto(LolPlayerHistory lolPlayerHistory){
         redisTemplate.opsForValue().set(
                 REDIS_NAME_PLAYER_HISTORY + REDIS_KEY_PLAYER_HISTORY_ID + lolPlayerHistory.getId(),
-                LolPlayerHistoryDto.of(lolPlayerHistory)
-                ,Duration.ofMinutes(5)
+                LolPlayerHistoryDto.of(lolPlayerHistory),
+                Duration.ofHours(24)
         );
     }
 
@@ -71,7 +69,7 @@ public class LolRedisService {
             redisTemplate.opsForValue().set(
                     REDIS_NAME_PLAYER_HISTORY + REDIS_KEY_PLAYER_HISTORY_ID + lolPlayerHistory.getId(),
                     LolPlayerHistoryDto.of(lolPlayerHistory),
-                    Duration.ofMinutes(5)
+                    Duration.ofHours(24)
             );
         }
     }
@@ -95,14 +93,16 @@ public class LolRedisService {
                         REDIS_KEY_PLAYER_RESULT_HISTORY_ID +
                         playerResultHistoryId
         ));
+
     }
 
 
     public void setPlayerResultHistoryDto(LolPlayerResultHistory lolPlayerResultHistory){
         redisTemplate.opsForValue().set(
                 REDIS_NAME_PLAYER_RESULT_HISTORY + REDIS_KEY_PLAYER_RESULT_HISTORY_ID + lolPlayerResultHistory.getId(),
-                LolPlayerResultHistoryDto.of(lolPlayerResultHistory)
-                ,Duration.ofMinutes(5));
+                LolPlayerResultHistoryDto.of(lolPlayerResultHistory),
+                Duration.ofHours(24)
+        );
     }
 
     public void deletePlayerResultHistoryDto(LolPlayerResultHistory lolPlayerResultHistory){
@@ -122,7 +122,7 @@ public class LolRedisService {
             redisTemplate.opsForValue().set(
                     REDIS_NAME_PLAYER_RESULT_HISTORY + REDIS_KEY_PLAYER_RESULT_HISTORY_ID + lolPlayerResultHistory.getId(),
                     LolPlayerResultHistoryDto.of(lolPlayerResultHistory),
-                    Duration.ofMinutes(5)
+                    Duration.ofHours(24)
             );
         }
     }
