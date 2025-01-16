@@ -9,10 +9,11 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class RiotChampionMasteryDto {
-    private String puuid;
-    private int championId;
-    private int championLevel;
-    private int championPoints;
-    private Long lastPlayTime;
+public class RiotChampionDto {
+    private String version;
+    private String id;
+    private String key;
+    private String name;
+    private RiotImageDto image;
 }
+

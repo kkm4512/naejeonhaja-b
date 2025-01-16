@@ -36,6 +36,22 @@ public class RiotRedisService {
         );
     }
 
+    public boolean existsByPlayerName(String key) {
+        return redisTemplate.opsForValue().get(
+                REDIS_NAME_RIOT_PLAYER +
+                        REDIS_KEY_PLAYER_NAME +
+                        key
+        ) != null;
+    }
+
+    public boolean existsByPlayerBasicName(String key) {
+        return redisTemplate.opsForValue().get(
+                REDIS_NAME_RIOT_BASIC_PLAYER +
+                        REDIS_KEY_PLAYER_NAME +
+                        key
+        ) != null;
+    }
+
     public RiotPlayerDto getRiotPlayerDto(String key) {
         return (RiotPlayerDto) redisTemplate.opsForValue().get(
                 REDIS_NAME_RIOT_PLAYER +

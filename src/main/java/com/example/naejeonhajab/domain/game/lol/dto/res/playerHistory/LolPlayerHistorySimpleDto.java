@@ -1,7 +1,6 @@
 package com.example.naejeonhajab.domain.game.lol.dto.res.playerHistory;
 
 import com.example.naejeonhajab.domain.game.lol.entity.playerHistory.LolPlayerHistory;
-import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;

@@ -9,7 +9,6 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
 import java.time.Duration;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -21,37 +20,41 @@ public class LolRedisService {
     // Constant
     private static final String REDIS_NAME_PLAYER_HISTORY = "playerhistory::";
     private static final String REDIS_KEY_PLAYER_HISTORY_ID = "playerHistoryId:";
-    private static final String REDIS_USER_ID = "userId:";
     private static final String REDIS_KEY_PLAYER_RESULT_HISTORY_ID = "playerResultHistoryId:";
     private static final String REDIS_NAME_PLAYER_RESULT_HISTORY = "playerResultHistory::";
 
 
     // PlayerHistory
-    public Optional<LolPlayerHistoryDto> getPlayerHistoryDto(Long playerHistoryId) {
+    public LolPlayerHistoryDto getPlayerHistoryDto(Long playerHistoryId) {
         // Redis에서 데이터 가져오기
-        return Optional.ofNullable((LolPlayerHistoryDto) redisTemplate.opsForValue().get(
+        return (LolPlayerHistoryDto) redisTemplate.opsForValue().get(
                 REDIS_NAME_PLAYER_HISTORY +
                         REDIS_KEY_PLAYER_HISTORY_ID +
                         playerHistoryId
-                )
         );
     }
+
+    // PlayerHistory
+    public boolean existPlayerHistoryDto(Long playerHistoryId) {
+        return Boolean.TRUE.equals(redisTemplate.hasKey(
+                REDIS_NAME_PLAYER_HISTORY +
+                        REDIS_KEY_PLAYER_HISTORY_ID +
+                        playerHistoryId
+        ));
+    }
+
 
     public void setPlayerHistoryDto(LolPlayerHistory lolPlayerHistory){
         redisTemplate.opsForValue().set(
                 REDIS_NAME_PLAYER_HISTORY + REDIS_KEY_PLAYER_HISTORY_ID + lolPlayerHistory.getId(),
-                LolPlayerHistoryDto.of(lolPlayerHistory)
-                ,Duration.ofMinutes(5)
+                LolPlayerHistoryDto.of(lolPlayerHistory),
+                Duration.ofHours(24)
         );
     }
 
     public void deletePlayerHistoryDto(LolPlayerHistory lolPlayerHistory){
-        Object result = redisTemplate.opsForValue().get(
-                REDIS_NAME_PLAYER_HISTORY +
-                        REDIS_KEY_PLAYER_HISTORY_ID +
-                        lolPlayerHistory.getId()
-        );
-        if (result != null){
+        boolean flag = existPlayerHistoryDto(lolPlayerHistory.getId());
+        if (flag){
             redisTemplate.delete(
                     REDIS_NAME_PLAYER_HISTORY +
                             REDIS_KEY_PLAYER_HISTORY_ID +
@@ -61,49 +64,50 @@ public class LolRedisService {
     }
 
     public void updatePlayerHistoryDto(LolPlayerHistory lolPlayerHistory){
-        Object result = redisTemplate.opsForValue().get(
-                REDIS_NAME_PLAYER_HISTORY +
-                        REDIS_KEY_PLAYER_HISTORY_ID +
-                        lolPlayerHistory.getId()
-        );
-        if (result != null){
+        boolean flag = existPlayerHistoryDto(lolPlayerHistory.getId());
+        if (flag){
             redisTemplate.opsForValue().set(
                     REDIS_NAME_PLAYER_HISTORY + REDIS_KEY_PLAYER_HISTORY_ID + lolPlayerHistory.getId(),
                     LolPlayerHistoryDto.of(lolPlayerHistory),
-                    Duration.ofMinutes(5)
+                    Duration.ofHours(24)
             );
         }
     }
 
     // PlayerResultHistory
-    public Optional<LolPlayerResultHistoryDto> getPlayerResultHistoryDto(Long playerResultHistoryId) {
+    public LolPlayerResultHistoryDto getPlayerResultHistoryDto(Long playerResultHistoryId) {
         // Redis에서 데이터 가져오기
-        LolPlayerResultHistoryDto cachedData = (LolPlayerResultHistoryDto) redisTemplate.opsForValue()
+        // Redis에서 데이터 가져오기
+        return (LolPlayerResultHistoryDto) redisTemplate.opsForValue()
                 .get(
                         REDIS_NAME_PLAYER_RESULT_HISTORY +
                                 REDIS_KEY_PLAYER_RESULT_HISTORY_ID +
                                 playerResultHistoryId
                 );
+    }
 
-        // Optional로 반환
-        return Optional.ofNullable(cachedData);
+    // PlayerHistory
+    public boolean existPlayerResultHistoryDto(Long playerResultHistoryId) {
+        return Boolean.TRUE.equals(redisTemplate.hasKey(
+                REDIS_NAME_PLAYER_RESULT_HISTORY +
+                        REDIS_KEY_PLAYER_RESULT_HISTORY_ID +
+                        playerResultHistoryId
+        ));
+
     }
 
 
     public void setPlayerResultHistoryDto(LolPlayerResultHistory lolPlayerResultHistory){
         redisTemplate.opsForValue().set(
                 REDIS_NAME_PLAYER_RESULT_HISTORY + REDIS_KEY_PLAYER_RESULT_HISTORY_ID + lolPlayerResultHistory.getId(),
-                LolPlayerResultHistoryDto.of(lolPlayerResultHistory)
-                ,Duration.ofMinutes(5));
+                LolPlayerResultHistoryDto.of(lolPlayerResultHistory),
+                Duration.ofHours(24)
+        );
     }
 
     public void deletePlayerResultHistoryDto(LolPlayerResultHistory lolPlayerResultHistory){
-        Object result = redisTemplate.opsForValue().get(
-                REDIS_NAME_PLAYER_RESULT_HISTORY +
-                        REDIS_KEY_PLAYER_RESULT_HISTORY_ID +
-                        lolPlayerResultHistory.getId()
-        );
-        if (result != null){
+        boolean flag = existPlayerResultHistoryDto(lolPlayerResultHistory.getId());
+        if (flag){
             redisTemplate.delete(
                     REDIS_NAME_PLAYER_RESULT_HISTORY +
                             REDIS_KEY_PLAYER_RESULT_HISTORY_ID +
@@ -113,16 +117,12 @@ public class LolRedisService {
     }
 
     public void updatePlayerResultHistoryDto(LolPlayerResultHistory lolPlayerResultHistory){
-        Object result = redisTemplate.opsForValue().get(
-                REDIS_NAME_PLAYER_RESULT_HISTORY +
-                        REDIS_KEY_PLAYER_RESULT_HISTORY_ID +
-                        lolPlayerResultHistory.getId()
-        );
-        if (result != null){
+        boolean flag = existPlayerResultHistoryDto(lolPlayerResultHistory.getId());
+        if (flag){
             redisTemplate.opsForValue().set(
                     REDIS_NAME_PLAYER_RESULT_HISTORY + REDIS_KEY_PLAYER_RESULT_HISTORY_ID + lolPlayerResultHistory.getId(),
                     LolPlayerResultHistoryDto.of(lolPlayerResultHistory),
-                    Duration.ofMinutes(5)
+                    Duration.ofHours(24)
             );
         }
     }

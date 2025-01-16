@@ -16,4 +16,5 @@ public class RiotSummonerDto {
     private int profileIconId;
     private long revisionDate;
     private int summonerLevel;
+
 }

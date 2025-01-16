@@ -19,4 +19,5 @@ public class RiotLeagueDto {
     private int leaguePoints;
     private int wins;
     private int losses;
+
 }
