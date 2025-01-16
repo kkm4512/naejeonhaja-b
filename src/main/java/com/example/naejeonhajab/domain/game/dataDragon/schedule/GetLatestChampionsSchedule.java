@@ -1,18 +1,18 @@
-package com.example.naejeonhajab.domain.game.dataDragon.init;
+package com.example.naejeonhajab.domain.game.dataDragon.schedule;
 
 import com.example.naejeonhajab.domain.game.dataDragon.service.DataDragonService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.boot.context.event.ApplicationReadyEvent;
-import org.springframework.context.event.EventListener;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
-public class DataDragonInitializer {
+public class GetLatestChampionsSchedule {
     private final DataDragonService dataDragonService;
 
-    @EventListener(ApplicationReadyEvent.class)
-    public void initializeChampions() {
+    // 매일 새벽 3시에 실행
+    @Scheduled(cron = "0 0 3 * * ?")
+    public void getLatestChampions() {
         String version = dataDragonService.getLatestVersion();
         dataDragonService.initChampionRedis(version);
     }
