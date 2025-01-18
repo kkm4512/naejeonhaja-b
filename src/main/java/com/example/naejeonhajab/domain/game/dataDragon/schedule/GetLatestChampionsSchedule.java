@@ -5,6 +5,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
+// 배포환경에서의 챔피언 정보 미적용 문제
 @Component
 @RequiredArgsConstructor
 public class GetLatestChampionsSchedule {
@@ -17,3 +18,4 @@ public class GetLatestChampionsSchedule {
         dataDragonService.initChampionRedis(version);
     }
 }
+
