@@ -12,6 +12,7 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
+// 왜 배포환경에서 Redis 저장 안되지
 public class LolBalanceServiceImpl {
     private final LolUtilService lolUtilService;
     // 티어를 기준으로 5:5 팀 나누기
