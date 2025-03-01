@@ -6,7 +6,7 @@ on:
 
 jobs:
   cd:
-    runs-on: [ ubuntu-latest ]
+    runs-on: self-hosted
     steps:
       - name: 깃헙 코드를 VM으로 복사
         uses: actions/checkout@v4
