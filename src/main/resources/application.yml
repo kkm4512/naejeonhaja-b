@@ -1,7 +1,6 @@
 server:
   profiles:
     active: dev,prd
-  address: 0.0.0.0
   port: 9000
 
 spring:

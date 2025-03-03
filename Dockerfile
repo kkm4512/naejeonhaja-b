@@ -9,7 +9,7 @@ RUN mkdir /logs
 RUN chmod 777 /logs  # 권한 설정 (필수)
 
 # 애플리케이션 기본 포트
-EXPOSE 8080
+EXPOSE 9000
 
 # 애플리케이션 실행
 ENTRYPOINT ["java", "-jar", "app.jar"]
