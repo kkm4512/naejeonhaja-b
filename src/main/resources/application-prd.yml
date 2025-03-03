@@ -1,5 +1,5 @@
 server:
-  port: ${SERVER_DEPLOY_PORT}
+  port: 9000
 
 # DB config
 spring:
