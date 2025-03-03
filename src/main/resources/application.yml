@@ -1,7 +1,6 @@
 server:
   profiles:
     active: dev,prd
-  port: 9000
 
 spring:
   mail:
