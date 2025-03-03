@@ -25,4 +25,3 @@ jwt:
 riot:
   api:
     key: ${RIOT_API_KEY}
-
