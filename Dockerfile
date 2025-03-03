@@ -2,7 +2,7 @@
 FROM openjdk:17-jdk-alpine
 
 # 애플리케이션 JAR 파일 복사
-COPY build/libs/*.jar app.jar
+COPY build/libs/naejeonhaja-b-0.0.1-SNAPSHOT.jar /app.jar
 
 # 로그 디렉터리 생성
 RUN mkdir /logs
