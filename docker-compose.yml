@@ -14,7 +14,7 @@ services:
     container_name: server_container
     image: nayoun340/naejeonhaja
     ports:
-      - 8080:8080
+      - 9000:9000
     depends_on:
       - mysql
       - redis  # Redis에 대한 의존성 추가
