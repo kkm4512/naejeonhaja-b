@@ -61,6 +61,7 @@ jobs:
           script: |            
             cd ~/
             docker-compose down
+            docker cp .env server_container:/app/.env
             docker-compose pull 
             docker-compose up --build -d
             docker image prune -f          
