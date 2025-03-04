@@ -67,7 +67,7 @@ public class UserService {
             cookie = ResponseCookie.from(AUTHORIZATION_HEADER, jwt)
                     .path("/")
                     .secure(true)
-                    .domain("naejeonhaja.com")
+                    .domain("www.naejeonhaja.com")
                     .sameSite("None")
                     .httpOnly(false)
                     .maxAge(7 * 24 * 60 * 60)
