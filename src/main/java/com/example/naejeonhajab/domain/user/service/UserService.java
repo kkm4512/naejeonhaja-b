@@ -12,6 +12,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseCookie;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -52,7 +53,7 @@ public class UserService {
 
 
     @Transactional
-    public void signin(SigninRequestDto dto, HttpServletResponse response) {
+    public ResponseEntity<?> signin(SigninRequestDto dto, HttpServletResponse response) {
         User user = findByEmail(dto.getEmail());
 
         if (!pe.matches(dto.getPassword(), user.getPassword())) {
@@ -60,29 +61,7 @@ public class UserService {
         }
 
         String jwt = jm.generateJwt(JwtDto.of(user));
-
-        // prd 환경이라면
-        ResponseCookie cookie;
-        if (domain != null && !domain.isEmpty()) {
-            cookie = ResponseCookie.from(AUTHORIZATION_HEADER, jwt)
-                    .path("/")
-                    .secure(true)
-                    .domain("www.naejeonhaja.com")
-                    .sameSite("None")
-                    .httpOnly(false)
-                    .maxAge(7 * 24 * 60 * 60)
-                    .build();
-        }
-        else {
-            cookie = ResponseCookie.from(AUTHORIZATION_HEADER, jwt)
-                    .path("/")
-                    .httpOnly(false)
-                    .maxAge(7 * 24 * 60 * 60)
-                    .build();
-        }
-
-
-        response.addHeader("Set-Cookie", cookie.toString());
+        return ResponseEntity.ok().header(AUTHORIZATION_HEADER, "Bearer " + jwt).build();
     }
 
     @Transactional

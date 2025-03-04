@@ -7,7 +7,10 @@ import com.example.naejeonhajab.domain.user.service.UserService;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import static com.example.naejeonhajab.security.JwtManager.AUTHORIZATION_HEADER;
 
 @RestController
 @RequestMapping("/api/v1/users")
@@ -22,9 +25,8 @@ public class UserController {
     }
 
     @PostMapping("/signin")
-    public ApiResponse<Void> signin(@RequestBody @Valid SigninRequestDto dto, HttpServletResponse response){
-        userService.signin(dto,response);
-        return ApiResponse.of(BaseApiResponse.SUCCESS);
+    public ResponseEntity<?> signin(@RequestBody @Valid SigninRequestDto dto, HttpServletResponse response){
+        return userService.signin(dto, response);
     }
 
     // 비밀번호 잊었을시 유저의 이메일을 사용자로부터 받고, 그 이메일이 있는지 찾고 해당 이메일로 인증코드 보냄
