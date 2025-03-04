@@ -71,8 +71,7 @@ public class SecurityConfig {
         config.setAllowedOrigins(List.of(
                 "http://localhost:3000",      // 로컬 개발용
                 "https://naejeonhaja.com",    // 메인 도메인
-                "https://www.naejeonhaja.com", // www 서브도메인
-                "https://server.naejeonhaja.com" // 서버 서브도메인
+                "https://www.naejeonhaja.com" // www 서브도메인
         ));
         config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS")); // 허용된 HTTP 메서드
         config.setAllowedHeaders(List.of("Content-Type", "Authorization")); // 허용된 헤더
