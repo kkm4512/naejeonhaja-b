@@ -10,6 +10,7 @@ import com.example.naejeonhajab.security.JwtDto;
 import com.example.naejeonhajab.security.JwtManager;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
@@ -24,6 +25,7 @@ import static com.example.naejeonhajab.common.response.enums.UserApiResponse.USE
 import static com.example.naejeonhajab.security.JwtManager.AUTHORIZATION_HEADER;
 
 @Service
+@Slf4j(topic = "UserService")
 @RequiredArgsConstructor
 public class UserService {
     private final UserRepository userRepository;
@@ -53,15 +55,14 @@ public class UserService {
 
 
     @Transactional
-    public ResponseEntity<?> signin(SigninRequestDto dto, HttpServletResponse response) {
+    public String signin(SigninRequestDto dto, HttpServletResponse response) {
         User user = findByEmail(dto.getEmail());
 
         if (!pe.matches(dto.getPassword(), user.getPassword())) {
             throw new UserException(INVALID_CREDENTIALS);
         }
 
-        String jwt = jm.generateJwt(JwtDto.of(user));
-        return ResponseEntity.ok().header(AUTHORIZATION_HEADER, "Bearer " + jwt).build();
+        return jm.generateJwt(JwtDto.of(user));
     }
 
     @Transactional

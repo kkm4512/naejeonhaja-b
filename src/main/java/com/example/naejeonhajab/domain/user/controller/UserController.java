@@ -25,8 +25,9 @@ public class UserController {
     }
 
     @PostMapping("/signin")
-    public ResponseEntity<?> signin(@RequestBody @Valid SigninRequestDto dto, HttpServletResponse response){
-        return userService.signin(dto, response);
+    public ApiResponse<String> signin(@RequestBody @Valid SigninRequestDto dto, HttpServletResponse response){
+        String result = userService.signin(dto, response);
+        return ApiResponse.of(BaseApiResponse.SUCCESS, result);
     }
 
     // 비밀번호 잊었을시 유저의 이메일을 사용자로부터 받고, 그 이메일이 있는지 찾고 해당 이메일로 인증코드 보냄
