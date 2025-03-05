@@ -25,8 +25,8 @@ public class UserController {
     }
 
     @PostMapping("/signin")
-    public ApiResponse<String> signin(@RequestBody @Valid SigninRequestDto dto, HttpServletResponse response){
-        String result = userService.signin(dto, response);
+    public ApiResponse<String> signin(@RequestBody @Valid SigninRequestDto dto){
+        String result = userService.signin(dto);
         return ApiResponse.of(BaseApiResponse.SUCCESS, result);
     }
 
