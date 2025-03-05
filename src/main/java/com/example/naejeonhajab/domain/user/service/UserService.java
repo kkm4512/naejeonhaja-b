@@ -55,7 +55,7 @@ public class UserService {
 
 
     @Transactional
-    public String signin(SigninRequestDto dto, HttpServletResponse response) {
+    public String signin(SigninRequestDto dto) {
         User user = findByEmail(dto.getEmail());
 
         if (!pe.matches(dto.getPassword(), user.getPassword())) {
