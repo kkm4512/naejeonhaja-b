@@ -54,7 +54,7 @@ public class JwtManager {
                     .parseClaimsJws(jwt)
                     .getBody();
         } catch (SecurityException | MalformedJwtException | IllegalArgumentException e) {
-            throw new UserException(JWT_INVALID);
+            throw new UserException(JWT_INVALID,e);
         } catch (ExpiredJwtException e) {
             throw new UserException(JWT_EXPIRED);
         } catch (UnsupportedJwtException e) {

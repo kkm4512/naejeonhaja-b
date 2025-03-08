@@ -45,27 +45,32 @@ public class InquiryController {
         Page<InquiryResponseDto> result = inquiryService.getAllInquiries(pageable);
         return ApiResponse.of(SUCCESS,result);
     }
-//
-//    // 특정 문의글 조회
-//    @GetMapping("/{id}")
-//    public ResponseEntity<InquiryResponseDto> getInquiryById(@PathVariable Long id) {
-//        InquiryResponseDto responseDto = inquiryService.getInquiryById(id);
-//        return ResponseEntity.ok(responseDto);
-//    }
-//
-//    // 문의글 수정
-//    @PutMapping("/{id}")
-//    public ResponseEntity<InquiryResponseDto> updateInquiry(
-//            @PathVariable Long id,
-//            @Valid @RequestBody InquiryRequestDto dto) {
-//        InquiryResponseDto responseDto = inquiryService.updateInquiry(id, dto);
-//        return ResponseEntity.ok(responseDto);
-//    }
-//
-//    // 문의글 삭제
-//    @DeleteMapping("/{id}")
-//    public ResponseEntity<Void> deleteInquiry(@PathVariable Long id) {
-//        inquiryService.deleteInquiry(id);
-//        return ResponseEntity.noContent().build();
-//    }
+
+    // 상세 문의글 조회
+    @GetMapping("/{id}")
+    public ApiResponse<InquiryResponseDto> getInquiryById(@PathVariable Long id) {
+        InquiryResponseDto result = inquiryService.getInquiryById(id);
+        return ApiResponse.of(SUCCESS,result);
+    }
+
+    // 문의글 수정
+    @PutMapping("/{id}")
+    public ApiResponse<Void> updateInquiry(
+            @PathVariable Long id,
+            @Valid @RequestBody InquiryRequestDto dto,
+            @AuthenticationPrincipal AuthUser authuser
+    ) {
+        inquiryService.updateInquiry(id, dto,authuser);
+        return ApiResponse.of(SUCCESS);
+    }
+
+    // 문의글 삭제
+    @DeleteMapping("/{id}")
+    public ApiResponse<Void> deleteInquiry(
+            @PathVariable Long id,
+            @AuthenticationPrincipal AuthUser authuser
+    ) {
+        inquiryService.deleteInquiry(id,authuser);
+        return ApiResponse.of(SUCCESS);
+    }
 }

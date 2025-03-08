@@ -54,5 +54,11 @@ public class Inquiry {
                 .user(user)
                 .build();
     }
+
+    public void update(InquiryRequestDto dto){
+        this.title = dto.getTitle();
+        this.content = dto.getContent();
+        this.tags.clear();
+    }
 }
 

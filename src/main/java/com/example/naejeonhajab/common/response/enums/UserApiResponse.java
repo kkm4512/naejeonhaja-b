@@ -16,10 +16,9 @@ public enum UserApiResponse implements ApiResponseEnum {
     JWT_EXPIRED(HttpStatus.UNAUTHORIZED, "만료된 JWT 토큰입니다"),
     JWT_UNSUPPORTED(HttpStatus.UNAUTHORIZED, "지원되지 않는 JWT입니다"),
     JWT_NOT_SIGNATURED(HttpStatus.UNAUTHORIZED, "서명되지 않은 JWT입니다"),
+    NOT_LOGIN(HttpStatus.UNAUTHORIZED,"로그인후 이용해 주세요"),
 
     // 403
-    NOT_LOGIN(HttpStatus.FORBIDDEN,"로그인후 이용해 주세요"),
-    // 자신의 것이 아닐떄 권한존재없음
     NOT_ME(HttpStatus.FORBIDDEN,"권한이 존재 하지 않습니다"),
 
     // 404
