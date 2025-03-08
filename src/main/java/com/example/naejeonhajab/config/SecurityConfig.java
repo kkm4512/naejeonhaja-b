@@ -36,26 +36,17 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http
-                .cors(cors -> cors.configurationSource(corsConfigurationSource())) // CORS 설정 활성화
+                .cors(cors -> cors.configurationSource(corsConfigurationSource())) // CORS 설정
                 .csrf(AbstractHttpConfigurer::disable) // CSRF 비활성화
-                .sessionManagement(session -> session
-                        .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-                )
-                .authorizeHttpRequests(auth -> auth
-                        // method 상관없이 요청 허용
-                        .requestMatchers(
-                                "/health"
-                        ).permitAll()
-
-
-                        .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll() // Preflight 요청 허용
-                        .requestMatchers(POST,"/api/v1/users/**").permitAll() // 유저 API 허용
-                        .requestMatchers(PUT,"/api/v1/users/**").permitAll() // 유저 API 허용
-                        .requestMatchers(POST, "/api/v1/game/lol/*").permitAll() // 특정 POST 요청 허용
-                        .requestMatchers(GET, "/api/v1/game/lol/riot/**").permitAll()
-                        .requestMatchers(GET, "/api/v1/game/lol/dataDragon/**").permitAll()
-                        .anyRequest().authenticated() // 나머지 요청은 인증 필요
-                )
+                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .authorizeHttpRequests(auth -> {
+                    // 공통 허용 경로 적용
+                    SecurityWhitelistConfig.PERMIT_METHODS.forEach((method, urls) ->
+                            urls.forEach(url -> auth.requestMatchers(method, url).permitAll())
+                    );
+                    // 그 외 요청은 인증 필요
+                    auth.anyRequest().authenticated();
+                })
                 .addFilterBefore(jwtSecurityFilter, SecurityContextHolderAwareRequestFilter.class) // JWT 필터 추가
                 .formLogin(AbstractHttpConfigurer::disable) // Form Login 비활성화
                 .httpBasic(AbstractHttpConfigurer::disable) // HTTP Basic 인증 비활성화

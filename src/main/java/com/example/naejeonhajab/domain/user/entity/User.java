@@ -10,6 +10,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -27,6 +28,7 @@ import static com.example.naejeonhajab.common.response.enums.UserApiResponse.NOT
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
+@Slf4j(topic = "User")
 @EntityListeners(AuditingEntityListener.class)
 public class User {
 
@@ -102,7 +104,7 @@ public class User {
     }
 
     public void isMe(Long id){
-        if (this.id.longValue() != id){
+        if (this.id.longValue() != id) {
             throw new UserException(NOT_ME);
         }
     }
