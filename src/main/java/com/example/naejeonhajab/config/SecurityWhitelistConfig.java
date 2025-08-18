@@ -22,7 +22,11 @@ public class SecurityWhitelistConfig {
                     "/api/v1/game/lol/riot/**",
                     "/api/v1/game/lol/dataDragon/**",
                     "/api/v1/inquiry/**",
-                    "/health"
+                    "/health",
+                    "/docs",
+                    "/swagger-ui/**",
+                    "/api-docs/**"
+
             ),
             HttpMethod.OPTIONS, List.of("/**") // Preflight 요청 허용
     );

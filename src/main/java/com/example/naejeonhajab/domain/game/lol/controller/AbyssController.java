@@ -3,6 +3,7 @@ package com.example.naejeonhajab.domain.game.lol.controller;
 import com.example.naejeonhajab.common.exception.LolException;
 import com.example.naejeonhajab.common.response.ApiResponse;
 import com.example.naejeonhajab.common.response.enums.BaseApiResponse;
+import com.example.naejeonhajab.domain.dto.common.Ids;
 import com.example.naejeonhajab.domain.game.lol.dto.common.LolTeamResponseDto;
 import com.example.naejeonhajab.domain.game.lol.dto.req.playerHistory.LolPlayerHistoryRequestDto;
 import com.example.naejeonhajab.domain.game.lol.dto.req.playerHistory.LolPlayerHistoryUpdateRequestDto;
@@ -14,6 +15,11 @@ import com.example.naejeonhajab.domain.game.lol.dto.res.playerResultHistory.LolP
 import com.example.naejeonhajab.domain.game.lol.dto.res.playerResultHistory.LolPlayerResultHistorySimpleDto;
 import com.example.naejeonhajab.domain.game.lol.service.AbyssServiceImpl;
 import com.example.naejeonhajab.security.AuthUser;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.parameters.RequestBody;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -37,12 +43,28 @@ public class AbyssController {
 
     private final AbyssServiceImpl lolService;
 
+    @Operation(
+            summary = "리그오브레전드 칼바람 팀 생성",
+            requestBody = @RequestBody(
+                    required = true,
+                    description = "팀 생성에 필요한 플레이어 정보",
+                    content = @Content(schema = @Schema(implementation = LolPlayerHistoryRequestDto.class))
+            )
+    )
     @PostMapping
     public ApiResponse<LolTeamResponseDto> createTeam(@RequestBody @Valid LolPlayerHistoryRequestDto dto) {
         LolTeamResponseDto result = lolService.createTeam(dto);
         return ApiResponse.of(BaseApiResponse.SUCCESS, result);
     }
 
+    @Operation(
+            summary = "리그오브레전드 칼바람 팀 생성 후 히스토리 저장",
+            requestBody = @RequestBody(
+                    required = true,
+                    description = "팀 생성에 필요한 플레이어 정보",
+                    content = @Content(schema = @Schema(implementation = LolPlayerHistoryRequestDto.class))
+            )
+    )
     @PostMapping("/playerHistory")
     public ApiResponse<LolTeamResponseDto> createTeamAndSavePlayerHistory(@RequestBody @Valid LolPlayerHistoryRequestDto dto, @AuthenticationPrincipal AuthUser authUser) {
         if (dto.getPlayerHistoryTitle() == null || dto.getPlayerHistoryTitle().isBlank()) {
@@ -52,23 +74,72 @@ public class AbyssController {
         return ApiResponse.of(BaseApiResponse.SUCCESS, result);
     }
 
+    @Operation(
+            summary = "리그오브레전드 칼바람 팀 히스토리 수정",
+            description = "플레이어 히스토리 ID를 기반으로 해당 팀 히스토리의 제목을 수정합니다.",
+            parameters = {
+                    @Parameter(
+                            name = "playerHistoryId",
+                            description = "수정할 히스토리의 ID",
+                            required = true
+                    )
+            },
+            requestBody = @RequestBody(
+                    required = true,
+                    description = "수정할 히스토리의 제목",
+                    content = @Content(
+                            schema = @Schema(implementation = LolPlayerHistoryUpdateRequestDto.class)
+                    )
+            )
+    )
     @PutMapping("/playerHistory/{playerHistoryId}")
-    public ApiResponse<Void> updatePlayerHistory(@PathVariable Long playerHistoryId, @RequestBody @Valid LolPlayerHistoryUpdateRequestDto dto, @AuthenticationPrincipal AuthUser authUser) {
-        lolService.updatePlayerHistory(playerHistoryId,dto,authUser);
+    public ApiResponse<Void> updatePlayerHistory(
+            @PathVariable Long playerHistoryId,
+            @RequestBody @Valid LolPlayerHistoryUpdateRequestDto dto,
+            @AuthenticationPrincipal AuthUser authUser) {
+
+        lolService.updatePlayerHistory(playerHistoryId, dto, authUser);
         return ApiResponse.of(SUCCESS);
     }
 
+    @Operation(
+            summary = "리그오브레전드 칼바람 팀 히스토리 삭제",
+            description = "플레이어 히스토리 ID를 기반으로 해당 팀 히스토리를 삭제합니다.",
+            parameters = {
+                    @Parameter(
+                            name = "playerHistoryId",
+                            description = "삭제할 히스토리의 ID",
+                            required = true
+                    )
+            }
+    )
     @DeleteMapping("/playerHistory/{playerHistoryId}")
-    public ApiResponse<Void> deletePlayerHistory(@PathVariable Long playerHistoryId, @AuthenticationPrincipal AuthUser authUser) {
-        lolService.deletePlayerHistory(playerHistoryId,authUser);
+    public ApiResponse<Void> deletePlayerHistory(
+            @PathVariable Long playerHistoryId,
+            @AuthenticationPrincipal AuthUser authUser) {
+        lolService.deletePlayerHistory(playerHistoryId, authUser);
         return ApiResponse.of(SUCCESS);
     }
 
-    @DeleteMapping("/playerHistory")
-    public ApiResponse<Void> deletePlayerHistoryAll(@RequestBody @Valid List<LolPlayerHistorySimpleDto> dtos, @AuthenticationPrincipal AuthUser authUser) {
-        lolService.deletePlayerHistoryAll(dtos,authUser);
+    @Operation(
+            summary = "리그오브레전드 칼바람 팀 히스토리 삭제 (여러 개)",
+            description = "여러 개의 플레이어 히스토리 ID를 전달받아 해당 히스토리들을 삭제합니다.",
+            requestBody = @io.swagger.v3.oas.annotations.parameters.RequestBody(
+                    required = true,
+                    description = "삭제할 히스토리 ID 리스트 (예: { \"ids\": [1, 2, 3] })",
+                    content = @Content(
+                            mediaType = "application/json",
+                            schema = @Schema(implementation = Ids.class)
+                    )
+            )
+    )
+
+    @PostMapping("/playerHistory1")
+    public ApiResponse<Void> deletePlayerHistoryAll(@RequestBody @Valid Ids ids, @AuthenticationPrincipal AuthUser authUser) {
+        // lolService.deletePlayerHistoryAll(ids, authUser);
         return ApiResponse.of(SUCCESS);
     }
+
 
     @PostMapping("/playerResultHistory")
     public ApiResponse<Void> saveResultHistory(@RequestBody @Valid LolPlayerResultHistoryRequestDto dto, @AuthenticationPrincipal AuthUser authUser) {

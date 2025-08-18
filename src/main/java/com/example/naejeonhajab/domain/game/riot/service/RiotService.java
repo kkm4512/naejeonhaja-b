@@ -3,6 +3,7 @@ package com.example.naejeonhajab.domain.game.riot.service;
 import com.example.naejeonhajab.annotation.GetRiotPlayerBasicStore;
 import com.example.naejeonhajab.annotation.GetRiotPlayerStore;
 import com.example.naejeonhajab.common.exception.DataDragonException;
+import com.example.naejeonhajab.common.helper.UrlEncodingHelper;
 import com.example.naejeonhajab.common.response.ApiResponse;
 import com.example.naejeonhajab.common.response.enums.DataDragonApiResponse;
 import com.example.naejeonhajab.domain.game.dataDragon.service.DataDragonService;
@@ -22,7 +23,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.util.UriComponentsBuilder;
 
+import java.net.URI;
+import java.text.Normalizer;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
@@ -50,7 +54,7 @@ public class RiotService {
     private static final String RIOT_API_KR_BASE_URL = "https://kr.api.riotgames.com";
     private static final String GET_ACCOUNT_BY_RIOT_ID_ENDPOINT = "/riot/account/v1/accounts/by-riot-id";
     private static final String GET_SUMMONER_BY_PUUID_ENDPOINT = "/lol/summoner/v4/summoners/by-puuid";
-    private static final String GET_LEAGUE_BY_SUMMONER_ENDPOINT = "/lol/league/v4/entries/by-summoner";
+    private static final String GET_LEAGUE_BY_LEAGUE_ENDPOINT = "/lol/league/v4/entries/by-puuid";
     private static final String GET_CHAMPION_MASTERY_BY_PUUID_ENDPOINT = "/lol/champion-mastery/v4/champion-masteries/by-puuid";
 
     private final RestTemplate restTemplate;
@@ -60,7 +64,7 @@ public class RiotService {
     public ApiResponse<RiotPlayerDto> getRiotPlayerByPlayerName(String playerName) {
         RiotAccountDto riotAccountDto = getAccountByPlayerName(playerName).getData();
         RiotSummonerDto riotSummonerDto = getSummonersByPuuid(riotAccountDto.getPuuid()).getData();
-        RiotLeagueDto riotLeagueDto = getLeagueByid(riotSummonerDto.getId()).getData();
+        RiotLeagueDto riotLeagueDto = getLeagueByid(riotAccountDto.getPuuid()).getData();
         List<RiotChampionMasteryDto> riotChampionMasteryDtos = getChampionMasteryByPuuid(riotSummonerDto.getPuuid()).getData();
         List<RiotChampionDto> championDtos = riotChampionMasteryDtos.stream()
                 .map(r -> dataDragonService.getChampionDtoByChampionId(String.valueOf(r.getChampionId())).getData())
@@ -82,7 +86,7 @@ public class RiotService {
         try {
             RiotAccountDto riotAccountDto = getAccountByPlayerName(playerName).getData();
             RiotSummonerDto riotSummonerDto = getSummonersByPuuid(riotAccountDto.getPuuid()).getData();
-            RiotLeagueDto riotLeagueDto = getLeagueByid(riotSummonerDto.getId()).getData();
+            RiotLeagueDto riotLeagueDto = getLeagueByid(riotAccountDto.getPuuid()).getData();
             RiotPlayerBasicDto riotPlayerBasicDto = new RiotPlayerBasicDto(
                     riotAccountDto,
                     riotSummonerDto,
@@ -98,27 +102,48 @@ public class RiotService {
 
     public ApiResponse<RiotAccountDto> getAccountByPlayerName(String playerName) {
         String[] split = riotUtilService.splitByShop(playerName);
-        String gameName = split[0];
+        String cleanGameNameRaw =  split[0].replaceAll("\\s+", "");
+        String gameName = UrlEncodingHelper.encodeToUrl(cleanGameNameRaw);
         String tagLine = split[1];
-        String url = RIOT_API_ASIA_BASE_URL + GET_ACCOUNT_BY_RIOT_ID_ENDPOINT + "/" + gameName + "/" + tagLine;
-        RiotAccountDto response = getRiotApiBaseMethod(url, RiotAccountDto.class);
+        String url = RIOT_API_ASIA_BASE_URL + GET_ACCOUNT_BY_RIOT_ID_ENDPOINT;
+
+        // 2) 경로 세그먼트로 안전하게 조립 (자동 %인코딩)
+        URI uri = UriComponentsBuilder
+                .fromHttpUrl(url)
+                .pathSegment(gameName, tagLine)   // ‘#’ 포함 금지. 둘로 분리!
+                .build(true)                      // 이미 세그먼트 단위로 안전
+                .toUri();
+
+        RiotAccountDto response = getRiotApiBaseMethod(uri, RiotAccountDto.class);
         return ApiResponse.of(LOL_PLAYER_FOUND,response);
     }
 
     // /lol/summoner/v4/summoners/by-puuid/{encryptedPUUID}
 
     public ApiResponse<RiotSummonerDto> getSummonersByPuuid(String puuid) {
-        String url = RIOT_API_KR_BASE_URL + GET_SUMMONER_BY_PUUID_ENDPOINT + "/" + puuid;
-        RiotSummonerDto response = getRiotApiBaseMethod(url,RiotSummonerDto.class);
+        String url = RIOT_API_KR_BASE_URL + GET_SUMMONER_BY_PUUID_ENDPOINT;
+        URI uri = UriComponentsBuilder
+                .fromHttpUrl(url)
+                .pathSegment(puuid)   // ‘#’ 포함 금지. 둘로 분리!
+                .build(true)                      // 이미 세그먼트 단위로 안전
+                .toUri();
+        RiotSummonerDto response = getRiotApiBaseMethod(uri,RiotSummonerDto.class);
         return ApiResponse.of(SUCCESS,response);
     }
 
     // /lol/league/v4/entries/by-summoner/{encryptedSummonerId}
 
-    public ApiResponse<RiotLeagueDto> getLeagueByid(String id) {
+    public ApiResponse<RiotLeagueDto> getLeagueByid(String puuid) {
         // Riot API Endpoint
-        String url = RIOT_API_KR_BASE_URL + GET_LEAGUE_BY_SUMMONER_ENDPOINT + "/" + id;
-        List<RiotLeagueDto> response = getRiotApiBaseMethod(url,new TypeReference<>() {});
+        String url = RIOT_API_KR_BASE_URL + GET_LEAGUE_BY_LEAGUE_ENDPOINT;
+
+        URI uri = UriComponentsBuilder
+                .fromHttpUrl(url)
+                .pathSegment(puuid)   // ‘#’ 포함 금지. 둘로 분리!
+                .build(true)                      // 이미 세그먼트 단위로 안전
+                .toUri();
+
+        List<RiotLeagueDto> response = getRiotApiBaseMethod(uri,new TypeReference<>() {});
         Optional<RiotLeagueDto> findSoloRankType = response.stream()
                 .filter(r -> r.getQueueType().equals(LolRankType.RANKED_SOLO_5x5))
                 .findFirst();
@@ -127,14 +152,21 @@ public class RiotService {
 
     // /lol/champion-mastery/v4/champion-masteries/by-puuid/{encryptedPUUID}
     public ApiResponse<List<RiotChampionMasteryDto>> getChampionMasteryByPuuid(String puuid) {
-        String url = RIOT_API_KR_BASE_URL + GET_CHAMPION_MASTERY_BY_PUUID_ENDPOINT + "/" + puuid;
-        List<RiotChampionMasteryDto> response = getRiotApiBaseMethod(url,new TypeReference<>() {});
+        String url = RIOT_API_KR_BASE_URL + GET_CHAMPION_MASTERY_BY_PUUID_ENDPOINT;
+
+        URI uri = UriComponentsBuilder
+                .fromHttpUrl(url)
+                .pathSegment(puuid)   // ‘#’ 포함 금지. 둘로 분리!
+                .build(true)                      // 이미 세그먼트 단위로 안전
+                .toUri();
+
+        List<RiotChampionMasteryDto> response = getRiotApiBaseMethod(uri,new TypeReference<>() {});
         response.sort(Comparator.comparingInt(RiotChampionMasteryDto::getChampionPoints).reversed());
         return ApiResponse.of(SUCCESS,response.stream().limit(3).toList());
     }
 
     // 단일 객체에 대해 클래스에 따른 타입 반환
-    private <T> T getRiotApiBaseMethod(String url, Class<T> clazz){
+    private <T> T getRiotApiBaseMethod(URI uri, Class<T> clazz){
         // 헤더 설정
         HttpHeaders headers = new HttpHeaders();
         headers.set("X-Riot-Token", riotApiKey); // Riot API 키를 헤더에 추가
@@ -145,7 +177,7 @@ public class RiotService {
         // API 호출
         try {
             ResponseEntity<String> response = restTemplate.exchange(
-                    url,
+                    uri,
                     HttpMethod.GET,
                     entity,
                     String.class
@@ -158,7 +190,7 @@ public class RiotService {
     }
 
     // 리스트 타입에 대한 데이터 반환
-    private <T> T getRiotApiBaseMethod(String url, TypeReference<T> typeReference){
+    private <T> T getRiotApiBaseMethod(URI uri, TypeReference<T> typeReference){
         // 헤더 설정
         HttpHeaders headers = new HttpHeaders();
         headers.set("X-Riot-Token", riotApiKey); // Riot API 키를 헤더에 추가
@@ -169,7 +201,7 @@ public class RiotService {
         // API 호출
         try {
             ResponseEntity<String> response = restTemplate.exchange(
-                    url,
+                    uri,
                     HttpMethod.GET,
                     entity,
                     String.class

@@ -3,6 +3,7 @@ package com.example.naejeonhajab.domain.game.lol.service;
 import com.example.naejeonhajab.common.exception.BaseException;
 import com.example.naejeonhajab.common.exception.LolException;
 import com.example.naejeonhajab.common.response.enums.BaseApiResponse;
+import com.example.naejeonhajab.domain.dto.common.Ids;
 import com.example.naejeonhajab.domain.game.lol.dto.req.playerHistory.LolPlayerHistoryRequestDto;
 import com.example.naejeonhajab.domain.game.lol.dto.req.playerHistory.LolPlayerHistoryUpdateRequestDto;
 import com.example.naejeonhajab.domain.game.lol.dto.req.playerHistory.LolPlayerResultHistoryUpdateRequestDto;
@@ -135,8 +136,7 @@ public class AbyssServiceImpl {
     // 플레이어 히스토리 내역 검색
     @Transactional(readOnly = true)
     public List<LolPlayerHistorySimpleDto> playerHistorySearch(String playerHistoryTitle, AuthUser authUser, Pageable pageable) {
-        User user = User.of(authUser);
-        Page<LolPlayerHistory> pageResult = searchPlayerHistoryByTitle(user, pageable, playerHistoryTitle);
+        Page<LolPlayerHistory> pageResult = searchPlayerHistoryByTitle(pageable, playerHistoryTitle);
         List<LolPlayerHistory> listResult = pageResult.getContent();
         return LolPlayerHistorySimpleDto.of(listResult);
     }
@@ -144,8 +144,7 @@ public class AbyssServiceImpl {
     // 플레이어 대전결과 히스토리 내역 검색
     @Transactional(readOnly = true)
     public Page<LolPlayerResultHistorySimpleDto> playerResultHistorySearch(String playerResultHistoryTitle, AuthUser authUser, Pageable pageable) {
-        User user = User.of(authUser);
-        Page<LolPlayerResultHistory> pageResult = searchPlayerResultHistoryByTitle(user, pageable, playerResultHistoryTitle);
+        Page<LolPlayerResultHistory> pageResult = searchPlayerResultHistoryByTitle(pageable, playerResultHistoryTitle);
         return pageResult.map(LolPlayerResultHistorySimpleDto::of);
     }
 
@@ -166,11 +165,11 @@ public class AbyssServiceImpl {
     }
 
     @Transactional
-    public void deletePlayerHistoryAll(@Valid List<LolPlayerHistorySimpleDto> dtos, AuthUser authUser) {
+    public void deletePlayerHistoryAll(@Valid List<Long> ids, AuthUser authUser) {
         User user = User.of(authUser);
         List<LolPlayerHistory> lolPlayerHistories = new ArrayList<>();
-        for ( LolPlayerHistorySimpleDto dto : dtos ) {
-            LolPlayerHistory lolPlayerHistory = findLolPlayerHistoryById(dto.getPlayerHistoryId());
+        for ( Long id : ids ) {
+            LolPlayerHistory lolPlayerHistory = findLolPlayerHistoryById(id);
             user.isMe(lolPlayerHistory.getUser().getId());
             lolPlayerHistories.add(lolPlayerHistory);
         }
@@ -223,8 +222,8 @@ public class AbyssServiceImpl {
     }
 
     @Transactional(readOnly = true)
-    protected Page<LolPlayerHistory> searchPlayerHistoryByTitle(User user, Pageable pageable, String playerHistoryTitle) {
-        return lolPlayerHistoryRepository.searchPlayerHistoryByTitle(user, LolType.ABYSS, pageable, playerHistoryTitle);
+    protected Page<LolPlayerHistory> searchPlayerHistoryByTitle(Pageable pageable, String playerHistoryTitle) {
+        return lolPlayerHistoryRepository.searchPlayerHistoryByTitle(LolType.ABYSS, pageable, playerHistoryTitle);
     }
 
     // PlayerResultHistory
@@ -244,7 +243,7 @@ public class AbyssServiceImpl {
     }
 
     @Transactional(readOnly = true)
-    protected Page<LolPlayerResultHistory> searchPlayerResultHistoryByTitle(User user, Pageable pageable,String playerResultHistoryTitle) {
-        return lolPlayerResultHistoryRepository.searchPlayerResultHistoryByTitle(user, LolType.ABYSS, pageable, playerResultHistoryTitle);
+    protected Page<LolPlayerResultHistory> searchPlayerResultHistoryByTitle(Pageable pageable,String playerResultHistoryTitle) {
+        return lolPlayerResultHistoryRepository.searchPlayerResultHistoryByTitle(LolType.ABYSS, pageable, playerResultHistoryTitle);
     }
 }

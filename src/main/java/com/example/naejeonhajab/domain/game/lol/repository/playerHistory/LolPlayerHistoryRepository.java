@@ -17,7 +17,7 @@ public interface LolPlayerHistoryRepository extends JpaRepository<LolPlayerHisto
             " WHERE lph.type = :lolType" +
             " AND lph.playerHistoryTitle LIKE %:playerHistoryTitle%"
     )
-    Page<LolPlayerHistory> searchPlayerHistoryByTitle(User user, LolType lolType, Pageable pageable, String playerHistoryTitle);
+    Page<LolPlayerHistory> searchPlayerHistoryByTitle(LolType lolType, Pageable pageable, String playerHistoryTitle);
 
 
 

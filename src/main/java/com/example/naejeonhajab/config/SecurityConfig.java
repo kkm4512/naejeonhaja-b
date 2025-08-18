@@ -64,6 +64,7 @@ public class SecurityConfig {
                 "https://naejeonhaja.com",    // 메인 도메인
                 "https://www.naejeonhaja.com" // www 서브도메인
         ));
+
         config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS")); // 허용된 HTTP 메서드
         config.setAllowedHeaders(List.of("Content-Type", "Authorization")); // 허용된 헤더
         config.setAllowCredentials(true); // 인증 정보 허용

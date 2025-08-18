@@ -163,16 +163,14 @@ public class RiftServiceImpl {
     // 플레이어 히스토리 내역 검색
     @Transactional(readOnly = true)
     public Page<LolPlayerHistorySimpleDto> playerHistorySearch(String playerHistoryTitle, AuthUser authUser, Pageable pageable) {
-        User user = User.of(authUser);
-        Page<LolPlayerHistory> pageResult = findPlayerHistoryByTitle(user, pageable, playerHistoryTitle);
+        Page<LolPlayerHistory> pageResult = findPlayerHistoryByTitle(pageable, playerHistoryTitle);
         return pageResult.map(LolPlayerHistorySimpleDto::of);
     }
 
     // 플레이어 대전결과 히스토리 내역 검색
     @Transactional(readOnly = true)
     public Page<LolPlayerResultHistorySimpleDto> playerResultHistorySearch(String playerResultHistoryTitle, AuthUser authUser, Pageable pageable) {
-        User user = User.of(authUser);
-        Page<LolPlayerResultHistory> pageResult = searchPlayerResultHistoryByTitle(user, pageable, playerResultHistoryTitle);
+        Page<LolPlayerResultHistory> pageResult = searchPlayerResultHistoryByTitle(pageable, playerResultHistoryTitle);
         return pageResult.map(LolPlayerResultHistorySimpleDto::of);
     }
 
@@ -247,8 +245,8 @@ public class RiftServiceImpl {
         return lolPlayerHistoryRepository.findById(playerHistoryId).orElseThrow(() -> new LolException(LOL_HISTORY_NOT_FOUND));
     }
 
-    protected Page<LolPlayerHistory> findPlayerHistoryByTitle(User user, Pageable pageable, String playerHistoryTitle) {
-        return lolPlayerHistoryRepository.searchPlayerHistoryByTitle(user, LolType.RIFT, pageable, playerHistoryTitle);
+    protected Page<LolPlayerHistory> findPlayerHistoryByTitle(Pageable pageable, String playerHistoryTitle) {
+        return lolPlayerHistoryRepository.searchPlayerHistoryByTitle(LolType.RIFT, pageable, playerHistoryTitle);
     }
 
     // PlayerResultHistory
@@ -264,7 +262,7 @@ public class RiftServiceImpl {
         return lolPlayerResultHistoryRepository.findById(playerResultistoryId).orElseThrow(() -> new LolException(LOL_RESULT_HISTORY_NOT_FOUND));
     }
 
-    protected Page<LolPlayerResultHistory> searchPlayerResultHistoryByTitle(User user, Pageable pageable,String playerResultHistoryTitle) {
-        return lolPlayerResultHistoryRepository.searchPlayerResultHistoryByTitle(user, LolType.RIFT, pageable, playerResultHistoryTitle);
+    protected Page<LolPlayerResultHistory> searchPlayerResultHistoryByTitle(Pageable pageable,String playerResultHistoryTitle) {
+        return lolPlayerResultHistoryRepository.searchPlayerResultHistoryByTitle(LolType.RIFT, pageable, playerResultHistoryTitle);
     }
 }
