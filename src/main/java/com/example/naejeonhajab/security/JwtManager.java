@@ -35,7 +35,7 @@ public class JwtManager {
     public String generateJwt(JwtDto jwtDto) {
         Date date = new Date();
 
-        return Jwts.builder()
+        return "Bearer " + Jwts.builder()
                 .setSubject(String.valueOf(jwtDto.getUserId()))
                 .claim("email", jwtDto.getEmail())
                 .claim("nickname", jwtDto.getNickname())
