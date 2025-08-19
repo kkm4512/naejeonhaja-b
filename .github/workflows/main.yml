@@ -1,0 +1,31 @@
+# .github/workflows/main.yml
+name: AI Code Reviewer
+
+on:
+  pull_request:
+    branches: [ dev ]
+    types:
+      - opened
+      - synchronize
+
+permissions: write-all
+
+jobs:
+  review:
+    runs-on: ubuntu-latest
+    env:
+      ACTIONS_STEP_DEBUG: true
+      ACTIONS_RUNNER_DEBUG: true
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@v3
+
+      - name: Run AI Code Reviewer
+        uses: kkm4512/ai-code-reviewer@main
+        with:
+          GITHUB_TOKEN: ${{ secrets.KKM_GITHUB_TOKEN }}
+          OPENAI_API_KEY: ${{ secrets.KKM_OPEN_AI_KEY }}
+          # 원래는 이런 한국어 설정 불가
+          COMMENT_LANGUAGE: "ko-KR"
+          OPENAI_API_MODEL: "gpt-5o"
+          exclude: "**/*.json, **/*.md"
