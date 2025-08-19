@@ -23,9 +23,9 @@ jobs:
       - name: Run AI Code Reviewer
         uses: kkm4512/ai-code-reviewer@main
         with:
-          GITHUB_TOKEN: ${{ secrets.KKM_GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
           # 원래는 이런 한국어 설정 불가
-          COMMENT_LANGUAGE: "ko-KR"
+          COMMENT_LANGUAGE: "en-US"
           OPENAI_API_MODEL: "gpt-4o"
           exclude: "**/*.json, **/*.md"
