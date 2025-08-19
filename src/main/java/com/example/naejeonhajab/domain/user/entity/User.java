@@ -52,9 +52,11 @@ public class User {
     @Column
     private String code;
 
+    @Builder.Default
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<LolPlayerHistory> playerHistories = new ArrayList<>();
 
+    @Builder.Default
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<LolPlayerResultHistory> playerResultHistories = new ArrayList<>();
 

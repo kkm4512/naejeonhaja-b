@@ -50,10 +50,11 @@ public class JwtSecurityFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest httpRequest, @NonNull HttpServletResponse httpResponse, @NonNull FilterChain chain) throws ServletException, IOException {
-        String jwt = httpRequest.getHeader(AUTHORIZATION_HEADER);
+        String bearerJwt = httpRequest.getHeader(AUTHORIZATION_HEADER);
 
         try {
-            if (jwt != null) {
+            if (bearerJwt != null) {
+                String jwt = bearerJwt.split(" ")[1];
                 Claims claims = jm.toClaims(jwt);
                 Long userId = Long.parseLong(claims.getSubject());
                 String email = claims.get("email", String.class);

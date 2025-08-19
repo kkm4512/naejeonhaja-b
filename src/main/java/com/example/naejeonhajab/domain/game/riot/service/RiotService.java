@@ -102,9 +102,8 @@ public class RiotService {
 
     public ApiResponse<RiotAccountDto> getAccountByPlayerName(String playerName) {
         String[] split = riotUtilService.splitByShop(playerName);
-        String cleanGameNameRaw =  split[0].replaceAll("\\s+", "");
-        String gameName = UrlEncodingHelper.encodeToUrl(cleanGameNameRaw);
-        String tagLine = split[1];
+        String gameName = UrlEncodingHelper.encodeToUrlConditionally(split[0]);
+        String tagLine = UrlEncodingHelper.encodeToUrlConditionally(split[1]);
         String url = RIOT_API_ASIA_BASE_URL + GET_ACCOUNT_BY_RIOT_ID_ENDPOINT;
 
         // 2) 경로 세그먼트로 안전하게 조립 (자동 %인코딩)
