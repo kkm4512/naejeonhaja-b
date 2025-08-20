@@ -18,6 +18,7 @@ public class AuthUser implements Principal, Serializable {
     private final Collection<? extends GrantedAuthority> authorities;
 
     public AuthUser(Long userId, String email, String nickname, UserRole userRole) {
+        // Test
         this.userId = userId;
         this.email = email;
         this.nickname = nickname;
