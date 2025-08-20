@@ -36,7 +36,7 @@ public class RiotController {
     public ApiResponse<RiotAccountDto> getAccountByRiotId(
             @PathVariable("playerName") String playerName
     ) {
-        // 변경
+        // 변경 - Test
         return riotService.getAccountByPlayerName(playerName);
     }
 
