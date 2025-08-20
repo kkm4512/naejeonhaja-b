@@ -85,9 +85,6 @@ public class RiotService {
     public ApiResponse<RiotPlayerBasicDto> getRiotPlayerBasicByPlayerName(String playerName) {
         try {
             RiotAccountDto riotAccountDto = getAccountByPlayerName(playerName).getData();
-            if (riotAccountDto == null) {
-                throw new DataDragonException(DataDragonApiResponse.DATA_DRAGON_API_BAD_REQUEST);
-            }
             RiotSummonerDto riotSummonerDto = getSummonersByPuuid(riotAccountDto.getPuuid()).getData();
             RiotLeagueDto riotLeagueDto = getLeagueByid(riotAccountDto.getPuuid()).getData();
             RiotPlayerBasicDto riotPlayerBasicDto = new RiotPlayerBasicDto(
