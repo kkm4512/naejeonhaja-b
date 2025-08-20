@@ -29,5 +29,5 @@ jobs:
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
           # 원래는 이런 한국어 설정 불가
           COMMENT_LANGUAGE: "ko-KR"
-          OPENAI_API_MODEL: "gpt-4o-mini"
+          OPENAI_API_MODEL: "gpt-5"
           exclude: "**/*.json, **/*.md"
