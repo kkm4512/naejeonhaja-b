@@ -24,7 +24,7 @@ jobs:
         uses: kkm4512/ai-code-reviewer@main
         with:
           GITHUB_TOKEN: ${{ secrets.KKM_GITHUB_TOKEN }}
-          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY  }}
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
           COMMENT_LANGUAGE: "ko-KR"
-          OPENAI_API_MODEL: "gpt-5"
+          OPENAI_API_MODEL: "gpt-4o"
           exclude: "**/*.json, **/*.md"
