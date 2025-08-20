@@ -87,8 +87,17 @@ public class RiotService {
     public ApiResponse<RiotPlayerBasicDto> getRiotPlayerBasicByPlayerName(String playerName) {
         try {
             RiotAccountDto riotAccountDto = getAccountByPlayerName(playerName).getData();
+            if (riotAccountDto == null) {
+                throw new RiotException(RiotApiResponse.RIOT_API_BAD_REQUEST);
+            }
             RiotSummonerDto riotSummonerDto = getSummonersByPuuid(riotAccountDto.getPuuid()).getData();
+            if (riotSummonerDto == null) {
+                throw new RiotException(RiotApiResponse.RIOT_API_BAD_REQUEST);
+            }
             RiotLeagueDto riotLeagueDto = getLeagueByid(riotAccountDto.getPuuid()).getData();
+            if (riotLeagueDto == null) {
+                throw new RiotException(RiotApiResponse.RIOT_API_BAD_REQUEST);
+            }
             RiotPlayerBasicDto riotPlayerBasicDto = new RiotPlayerBasicDto(
                     riotAccountDto,
                     riotSummonerDto,
