@@ -24,7 +24,7 @@ public class RiotController {
         return riotService.getRiotPlayerByPlayerName(playerName);
     }
 
-    // TEST
+
     @GetMapping("/riotPlayerBasic/{playerName}")
     public ApiResponse<RiotPlayerBasicDto> getRiotPlayerBasicByPlayerName(
             @PathVariable("playerName") String playerName
