@@ -84,11 +84,11 @@ public class RiotService {
     @GetRiotPlayerBasicStore
     public ApiResponse<RiotPlayerBasicDto> getRiotPlayerBasicByPlayerName(String playerName) {
         try {
-            RiotAccountDto riotAccountDto = getAccountByPlayerName(playerName).getData();
-            RiotSummonerDto riotSummonerDto = getSummonersByPuuid(riotAccountDto.getPuuid()).getData();
-            RiotLeagueDto riotLeagueDto = getLeagueByid(riotAccountDto.getPuuid()).getData();
+            RiotAccountDto riotAccountDt = getAccountByPlayerName(playerName).getData();
+            RiotSummonerDto riotSummonerDto = getSummonersByPuuid(riotAccountDt.getPuuid()).getData();
+            RiotLeagueDto riotLeagueDto = getLeagueByid(riotAccountDt.getPuuid()).getData();
             RiotPlayerBasicDto riotPlayerBasicDto = new RiotPlayerBasicDto(
-                    riotAccountDto,
+                    riotAccountDt,
                     riotSummonerDto,
                     riotLeagueDto
             );
