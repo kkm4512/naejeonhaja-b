@@ -5,18 +5,18 @@ import lombok.Getter;
 
 @Getter
 public class ApiResponse<T> {
-    private final int status;
+    private final int code;
     private final String message;
     private final T data;
 
     private ApiResponse(ApiResponseEnum responseEnum, T data) {
-        this.status = responseEnum.getStatus().value();
+        this.code = responseEnum.getCode().value();
         this.message = responseEnum.getMessage();
         this.data = data;
     }
 
-    public ApiResponse(int status, String message) {
-        this.status = status;
+    public ApiResponse(int code, String message) {
+        this.code = code;
         this.message = message;
         this.data = null;
     }

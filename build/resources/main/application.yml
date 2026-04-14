@@ -1,6 +1,10 @@
 server:
   port: 8080
 
+spring:
+  config:
+    import: optional:file:.env[.properties]
+
 riot:
   api:
     key: ${RIOT_API_KEY}

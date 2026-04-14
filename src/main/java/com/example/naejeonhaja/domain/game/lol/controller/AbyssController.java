@@ -12,12 +12,12 @@ import static com.example.naejeonhaja.common.response.enums.BaseApiResponse.SUCC
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/v1/game/lol/abyss")
+@RequestMapping("/api/v1/lol")
 public class AbyssController {
 
     private final AbyssService abyssService;
 
-    @PostMapping("/team")
+    @PostMapping("/abyss/team")
     public ApiResponse<LolTeamResponseDto> createTeam(@RequestBody @Valid LolPlayerRequestDto dto) {
         return ApiResponse.of(SUCCESS, abyssService.createTeam(dto));
     }

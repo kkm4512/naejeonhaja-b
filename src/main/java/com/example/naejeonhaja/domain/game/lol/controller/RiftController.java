@@ -12,12 +12,12 @@ import static com.example.naejeonhaja.common.response.enums.BaseApiResponse.SUCC
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/v1/game/lol/rift")
+@RequestMapping("/api/v1/lol")
 public class RiftController {
 
     private final RiftService riftService;
 
-    @PostMapping("/team")
+    @PostMapping("/rift/team")
     public ApiResponse<LolTeamResponseDto> createTeam(@RequestBody @Valid LolPlayerRequestDto dto) {
         return ApiResponse.of(SUCCESS, riftService.createTeam(dto));
     }

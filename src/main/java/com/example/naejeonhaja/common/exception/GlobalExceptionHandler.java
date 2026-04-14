@@ -15,7 +15,7 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ApiResponse<Void>> handleBaseException(BaseException e) {
         log.error("BaseException: {}", e.getMessage());
         return ResponseEntity
-                .status(e.getResponseEnum().getStatus())
+                .status(e.getResponseEnum().getCode())
                 .body(ApiResponse.of(e.getResponseEnum()));
     }
 
