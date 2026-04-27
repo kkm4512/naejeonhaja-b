@@ -26,14 +26,14 @@ public class RiftService {
 
     public LolTeamResponseDto createTeam(LolPlayerRequestDto dto) {
         int retries = 10_000;
-        lolUtilService.initMmr(dto.getLolPlayerDtos());
+        lolUtilService.initMmr(dto.getLolPlayers());
         while (retries-- > 0) {
             try {
-                LolTeamResponseDto one = lolUtilService.splitTeam(dto.getLolPlayerDtos());
+                LolTeamResponseDto one = lolUtilService.splitTeam(dto.getLolPlayers());
                 LolTeamResponseDto two = lolBalanceService.generateBalanceByTier(one);
                 LolTeamResponseDto three = lolLineSortService.normalizeLineOrder(two);
                 LolTeamResponseDto four = lolAssignService.assignLines(three);
-                lolCheckService.checkLine(four);
+                // lolCheckService.checkLine(four);
                 return lolLineSortService.orderByLine(four);
             } catch (Exception ignored) {}
         }

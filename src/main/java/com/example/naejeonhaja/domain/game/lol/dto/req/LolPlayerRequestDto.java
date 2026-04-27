@@ -15,5 +15,5 @@ import java.util.List;
 public class LolPlayerRequestDto {
     @Valid
     @Size(min = 10, max = 10, message = "정확히 10명의 플레이어가 필요합니다.")
-    List<LolPlayerDto> lolPlayerDtos;
+    List<LolPlayerDto> lolPlayers;
 }

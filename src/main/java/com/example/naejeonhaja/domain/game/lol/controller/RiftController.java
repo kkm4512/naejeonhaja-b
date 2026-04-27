@@ -17,7 +17,7 @@ public class RiftController {
 
     private final RiftService riftService;
 
-    @PostMapping("/rift/team")
+    @PostMapping("/rift/teams")
     public ApiResponse<LolTeamResponseDto> createTeam(@RequestBody @Valid LolPlayerRequestDto dto) {
         return ApiResponse.of(SUCCESS, riftService.createTeam(dto));
     }

@@ -7,22 +7,22 @@ import lombok.Getter;
 public class ApiResponse<T> {
     private final int code;
     private final String message;
-    private final T data;
+    private final T datas;
 
-    private ApiResponse(ApiResponseEnum responseEnum, T data) {
+    private ApiResponse(ApiResponseEnum responseEnum, T datas) {
         this.code = responseEnum.getCode().value();
         this.message = responseEnum.getMessage();
-        this.data = data;
+        this.datas = datas;
     }
 
     public ApiResponse(int code, String message) {
         this.code = code;
         this.message = message;
-        this.data = null;
+        this.datas = null;
     }
 
-    public static <T> ApiResponse<T> of(ApiResponseEnum responseEnum, T data) {
-        return new ApiResponse<>(responseEnum, data);
+    public static <T> ApiResponse<T> of(ApiResponseEnum responseEnum, T datas) {
+        return new ApiResponse<>(responseEnum, datas);
     }
 
     public static ApiResponse<Void> of(ApiResponseEnum responseEnum) {

@@ -41,6 +41,6 @@ public class LolBalanceServiceImpl {
                 bestTeamB = new ArrayList<>(teamB);
             }
         }
-        return new LolTeamResponseDto(bestTeamA, bestTeamB);
+        return LolTeamResponseDto.of(bestTeamA, bestTeamB, lolUtilService.calculateBalance(bestTeamA, bestTeamB));
     }
 }

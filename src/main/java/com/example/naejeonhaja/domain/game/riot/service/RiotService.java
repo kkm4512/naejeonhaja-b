@@ -46,10 +46,10 @@ public class RiotService {
 
     public ApiResponse<RiotPlayerDto> getRiotPlayerByPlayerName(String playerName) {
         try {
-            RiotAccountDto account = getAccountByPlayerName(playerName).getData();
-            RiotSummonerDto summoner = getSummonersByPuuid(account.getPuuid()).getData();
-            RiotLeagueDto league = getLeagueByPuuid(account.getPuuid()).getData();
-            List<RiotChampionMasteryDto> masteries = getChampionMasteryByPuuid(summoner.getPuuid()).getData();
+            RiotAccountDto account = getAccountByPlayerName(playerName).getDatas();
+            RiotSummonerDto summoner = getSummonersByPuuid(account.getPuuid()).getDatas();
+            RiotLeagueDto league = getLeagueByPuuid(account.getPuuid()).getDatas();
+            List<RiotChampionMasteryDto> masteries = getChampionMasteryByPuuid(summoner.getPuuid()).getDatas();
             List<RiotChampionDto> champions = masteries.stream()
                     .map(m -> dataDragonService.getChampionById(String.valueOf(m.getChampionId())))
                     .toList();
@@ -62,9 +62,9 @@ public class RiotService {
 
     public ApiResponse<RiotPlayerBasicDto> getRiotPlayerBasicByPlayerName(String playerName) {
         try {
-            RiotAccountDto account = getAccountByPlayerName(playerName).getData();
-            RiotSummonerDto summoner = getSummonersByPuuid(account.getPuuid()).getData();
-            RiotLeagueDto league = getLeagueByPuuid(account.getPuuid()).getData();
+            RiotAccountDto account = getAccountByPlayerName(playerName).getDatas();
+            RiotSummonerDto summoner = getSummonersByPuuid(account.getPuuid()).getDatas();
+            RiotLeagueDto league = getLeagueByPuuid(account.getPuuid()).getDatas();
             return ApiResponse.of(LOL_PLAYER_FOUND, new RiotPlayerBasicDto(account, summoner, league));
         } catch (Exception e) {
             log.error("getRiotPlayerBasic 실패: {}", e.getMessage());

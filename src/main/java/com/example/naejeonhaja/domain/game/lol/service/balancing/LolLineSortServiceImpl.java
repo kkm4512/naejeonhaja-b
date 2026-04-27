@@ -4,6 +4,8 @@ import com.example.naejeonhaja.domain.game.lol.dto.common.LolLinesDto;
 import com.example.naejeonhaja.domain.game.lol.dto.common.LolPlayerDto;
 import com.example.naejeonhaja.domain.game.lol.dto.common.LolTeamResponseDto;
 import com.example.naejeonhaja.domain.game.lol.enums.LolLine;
+import com.example.naejeonhaja.domain.game.lol.service.util.LolUtilService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.Comparator;
@@ -11,13 +13,15 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
+@RequiredArgsConstructor
 public class LolLineSortServiceImpl {
 
+    private final LolUtilService lolUtilService;
+
     public LolTeamResponseDto normalizeLineOrder(LolTeamResponseDto team) {
-        return new LolTeamResponseDto(
-                sortByLineRole(team.getTeamA()),
-                sortByLineRole(team.getTeamB())
-        );
+        List<LolPlayerDto> teamA = sortByLineRole(team.getTeamA());
+        List<LolPlayerDto> teamB = sortByLineRole(team.getTeamB());
+        return LolTeamResponseDto.of(teamA, teamB, lolUtilService.calculateBalance(teamA, teamB));
     }
 
     private List<LolPlayerDto> sortByLineRole(List<LolPlayerDto> players) {
@@ -33,10 +37,9 @@ public class LolLineSortServiceImpl {
 
     public LolTeamResponseDto orderByLine(LolTeamResponseDto team) {
         List<LolLine> order = List.of(LolLine.values());
-        return new LolTeamResponseDto(
-                sortByLine(team.getTeamA(), order),
-                sortByLine(team.getTeamB(), order)
-        );
+        List<LolPlayerDto> teamA = sortByLine(team.getTeamA(), order);
+        List<LolPlayerDto> teamB = sortByLine(team.getTeamB(), order);
+        return LolTeamResponseDto.of(teamA, teamB, lolUtilService.calculateBalance(teamA, teamB));
     }
 
     private List<LolPlayerDto> sortByLine(List<LolPlayerDto> players, List<LolLine> order) {

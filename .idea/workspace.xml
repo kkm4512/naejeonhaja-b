@@ -5,46 +5,69 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="ce55f466-7680-4e3e-895a-2ca54552ecff" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/modules/naejeonhaja.main.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/8.14/checksums/checksums.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/8.14/checksums/checksums.lock" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/copilotDiffState.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/8.14/executionHistory/executionHistory.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/8.14/executionHistory/executionHistory.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/8.14/executionHistory/executionHistory.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/8.14/executionHistory/executionHistory.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/8.14/fileHashes/fileHashes.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/8.14/fileHashes/fileHashes.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/8.14/fileHashes/fileHashes.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/8.14/fileHashes/fileHashes.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/8.14/fileHashes/resourceHashesCache.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/8.14/fileHashes/resourceHashesCache.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/outputFiles.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/outputFiles.bin" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/file-system.probe" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/file-system.probe" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/gradle.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/gradle.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/material_theme_project_new.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/material_theme_project_new.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/build.gradle" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/java/main/com/example/naejeonhaja/common/exception/GlobalExceptionHandler.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/com/example/naejeonhaja/common/exception/GlobalExceptionHandler.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/java/main/com/example/naejeonhaja/common/response/ApiResponse.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/com/example/naejeonhaja/common/response/ApiResponse.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/java/main/com/example/naejeonhaja/common/response/enums/ApiResponseEnum.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/com/example/naejeonhaja/common/response/enums/ApiResponseEnum.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/java/main/com/example/naejeonhaja/common/response/enums/BaseApiResponse.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/com/example/naejeonhaja/common/response/enums/BaseApiResponse.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/java/main/com/example/naejeonhaja/common/response/enums/LolApiResponse.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/com/example/naejeonhaja/common/response/enums/LolApiResponse.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/java/main/com/example/naejeonhaja/common/response/enums/RiotApiResponse.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/com/example/naejeonhaja/common/response/enums/RiotApiResponse.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/java/main/com/example/naejeonhaja/domain/game/lol/controller/AbyssController.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/com/example/naejeonhaja/domain/game/lol/controller/AbyssController.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/build/classes/java/main/com/example/naejeonhaja/domain/game/lol/controller/RiftController.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/com/example/naejeonhaja/domain/game/lol/controller/RiftController.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/classes/java/main/com/example/naejeonhaja/domain/game/lol/dto/req/LolPlayerRequestDto.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/com/example/naejeonhaja/domain/game/lol/dto/req/LolPlayerRequestDto.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/classes/java/main/com/example/naejeonhaja/domain/game/lol/service/AbyssService.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/com/example/naejeonhaja/domain/game/lol/service/AbyssService.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/classes/java/main/com/example/naejeonhaja/domain/game/lol/service/RiftService.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/com/example/naejeonhaja/domain/game/lol/service/RiftService.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/classes/java/main/com/example/naejeonhaja/domain/game/lol/service/balancing/LolAssignServiceImpl.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/com/example/naejeonhaja/domain/game/lol/service/balancing/LolAssignServiceImpl.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/classes/java/main/com/example/naejeonhaja/domain/game/lol/service/util/LolUtilService.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/com/example/naejeonhaja/domain/game/lol/service/util/LolUtilService.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/reports/problems/problems-report.html" beforeDir="false" afterPath="$PROJECT_DIR$/build/reports/problems/problems-report.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/build/tmp/compileJava/previous-compilation-data.bin" beforeDir="false" afterPath="$PROJECT_DIR$/build/tmp/compileJava/previous-compilation-data.bin" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/naejeonhaja/common/exception/GlobalExceptionHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/naejeonhaja/common/exception/GlobalExceptionHandler.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/example/naejeonhaja/common/response/ApiResponse.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/naejeonhaja/common/response/ApiResponse.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/naejeonhaja/common/response/enums/ApiResponseEnum.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/naejeonhaja/common/response/enums/ApiResponseEnum.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/naejeonhaja/common/response/enums/BaseApiResponse.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/naejeonhaja/common/response/enums/BaseApiResponse.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/naejeonhaja/common/response/enums/LolApiResponse.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/naejeonhaja/common/response/enums/LolApiResponse.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/naejeonhaja/common/response/enums/RiotApiResponse.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/naejeonhaja/common/response/enums/RiotApiResponse.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/naejeonhaja/domain/game/lol/controller/AbyssController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/naejeonhaja/domain/game/lol/controller/AbyssController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/example/naejeonhaja/domain/game/lol/controller/RiftController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/naejeonhaja/domain/game/lol/controller/RiftController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/application.yml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/application.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/naejeonhaja/domain/game/lol/dto/common/LolTeamResponseDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/naejeonhaja/domain/game/lol/dto/common/LolTeamResponseDto.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/naejeonhaja/domain/game/lol/dto/req/LolPlayerRequestDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/naejeonhaja/domain/game/lol/dto/req/LolPlayerRequestDto.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/naejeonhaja/domain/game/lol/service/AbyssService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/naejeonhaja/domain/game/lol/service/AbyssService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/naejeonhaja/domain/game/lol/service/RiftService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/naejeonhaja/domain/game/lol/service/RiftService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/naejeonhaja/domain/game/lol/service/balancing/LolAssignServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/naejeonhaja/domain/game/lol/service/balancing/LolAssignServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/naejeonhaja/domain/game/lol/service/balancing/LolBalanceServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/naejeonhaja/domain/game/lol/service/balancing/LolBalanceServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/naejeonhaja/domain/game/lol/service/balancing/LolLineSortServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/naejeonhaja/domain/game/lol/service/balancing/LolLineSortServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/naejeonhaja/domain/game/lol/service/util/LolUtilService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/naejeonhaja/domain/game/lol/service/util/LolUtilService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/naejeonhaja/domain/game/riot/service/RiotService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/naejeonhaja/domain/game/riot/service/RiotService.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
+  <component name="CopilotPersistence">
+    <persistenceIdMap>
+      <entry key="_C:/Project/naejeonhaja-b" value="3CLhlSEfdb7HpurnYlei6S2guGU" />
+    </persistenceIdMap>
+  </component>
   <component name="ExternalProjectsData">
     <projectState path="$PROJECT_DIR$">
       <ProjectState />
     </projectState>
+  </component>
+  <component name="ExternalProjectsManager">
+    <system id="GRADLE">
+      <state>
+        <projects_view>
+          <tree_state>
+            <expand>
+              <path>
+                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
+                <item name="naejeonhaja" type="f1a62948:ProjectNode" />
+              </path>
+            </expand>
+            <select />
+          </tree_state>
+        </projects_view>
+      </state>
+    </system>
   </component>
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
@@ -56,33 +79,38 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
-  <component name="GitHubPullRequestSearchHistory"><![CDATA[{
-  "lastFilter": {
-    "state": "OPEN",
-    "assignee": "kkm4512"
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;,
+    &quot;assignee&quot;: &quot;kkm4512&quot;
   }
-}]]></component>
-  <component name="GithubPullRequestsUISettings"><![CDATA[{
-  "selectedUrlAndAccountId": {
-    "url": "https://github.com/kkm4512/naejeonhaja-b.git",
-    "accountId": "b4561318-00d2-48b4-8561-fedd67b6d04f"
+}</component>
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/kkm4512/naejeonhaja-b.git&quot;,
+    &quot;accountId&quot;: &quot;b4561318-00d2-48b4-8561-fedd67b6d04f&quot;
   }
-}]]></component>
-  <component name="ProjectColorInfo"><![CDATA[{
-  "customColor": "",
-  "associatedIndex": 4
-}]]></component>
+}</component>
+  <component name="ProjectColorInfo">{
+  &quot;customColor&quot;: &quot;&quot;,
+  &quot;associatedIndex&quot;: 4
+}</component>
   <component name="ProjectId" id="3CLhlSEfdb7HpurnYlei6S2guGU" />
+  <component name="ProjectLevelVcsManager">
+    <ConfirmationsSetting value="1" id="Add" />
+  </component>
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
-    "Gradle.naejeonhaja-b [:com.example.naejeonhaja.NaejeonhajaApplication.main()].executor": "Run",
+    "Gradle.Build naejeonhaja-b.executor": "Run",
+    "Gradle.naejeonhaja-b [:com.example.naejeonhaja.NaejeonhajaApplication.main()].executor": "Debug",
     "ModuleVcsDetector.initialDetectionPerformed": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
+    "RunOnceActivity.git.unshallow": "true",
     "SHARE_PROJECT_CONFIGURATION_FILES": "true",
     "git-widget-placeholder": "main",
     "kotlin-language-version-configured": "true",
@@ -137,5 +165,13 @@
       <updated>1776170909335</updated>
     </task>
     <servers />
+  </component>
+  <component name="github-copilot-workspace">
+    <instructionFileLocations>
+      <option value=".github/instructions" />
+    </instructionFileLocations>
+    <promptFileLocations>
+      <option value=".github/prompts" />
+    </promptFileLocations>
   </component>
 </project>

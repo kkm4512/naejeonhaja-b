@@ -21,10 +21,10 @@ public class AbyssService {
     // 칼바람은 라인 배정 없이 MMR 밸런싱만
     public LolTeamResponseDto createTeam(LolPlayerRequestDto dto) {
         int retries = 10_000;
-        lolUtilService.initMmr(dto.getLolPlayerDtos());
+        lolUtilService.initMmr(dto.getLolPlayers());
         while (retries-- > 0) {
             try {
-                LolTeamResponseDto one = lolUtilService.splitTeam(dto.getLolPlayerDtos());
+                LolTeamResponseDto one = lolUtilService.splitTeam(dto.getLolPlayers());
                 return lolBalanceService.generateBalanceByTier(one);
             } catch (Exception ignored) {}
         }
