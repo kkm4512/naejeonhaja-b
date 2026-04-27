@@ -14,10 +14,14 @@ import java.util.List;
 @AllArgsConstructor
 public class LolTeamResponseDto {
     private LolBalanceEnum balance;
+    private int teamATotalMmr;
+    private int teamBTotalMmr;
     private List<LolPlayerDto> teamA;
     private List<LolPlayerDto> teamB;
 
     public static LolTeamResponseDto of(List<LolPlayerDto> teamA, List<LolPlayerDto> teamB, LolBalanceEnum balance) {
-        return new LolTeamResponseDto(balance, teamA, teamB);
+        int teamATotalMmr = teamA.stream().mapToInt(LolPlayerDto::getMmr).sum();
+        int teamBTotalMmr = teamB.stream().mapToInt(LolPlayerDto::getMmr).sum();
+        return new LolTeamResponseDto(balance, teamATotalMmr, teamBTotalMmr, teamA, teamB);
     }
 }

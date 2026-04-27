@@ -5,37 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="ce55f466-7680-4e3e-895a-2ca54552ecff" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/copilotDiffState.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/8.14/executionHistory/executionHistory.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/8.14/executionHistory/executionHistory.bin" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/8.14/executionHistory/executionHistory.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/8.14/executionHistory/executionHistory.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/8.14/fileHashes/fileHashes.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/8.14/fileHashes/fileHashes.bin" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/8.14/fileHashes/fileHashes.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/8.14/fileHashes/fileHashes.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/8.14/fileHashes/resourceHashesCache.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/8.14/fileHashes/resourceHashesCache.bin" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/outputFiles.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/outputFiles.bin" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/file-system.probe" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/file-system.probe" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/gradle.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/gradle.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/material_theme_project_new.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/material_theme_project_new.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/java/main/com/example/naejeonhaja/domain/game/lol/controller/RiftController.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/com/example/naejeonhaja/domain/game/lol/controller/RiftController.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/java/main/com/example/naejeonhaja/domain/game/lol/dto/req/LolPlayerRequestDto.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/com/example/naejeonhaja/domain/game/lol/dto/req/LolPlayerRequestDto.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/java/main/com/example/naejeonhaja/domain/game/lol/service/AbyssService.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/com/example/naejeonhaja/domain/game/lol/service/AbyssService.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/java/main/com/example/naejeonhaja/domain/game/lol/service/RiftService.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/com/example/naejeonhaja/domain/game/lol/service/RiftService.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/java/main/com/example/naejeonhaja/domain/game/lol/service/balancing/LolAssignServiceImpl.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/com/example/naejeonhaja/domain/game/lol/service/balancing/LolAssignServiceImpl.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/java/main/com/example/naejeonhaja/domain/game/lol/service/util/LolUtilService.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/com/example/naejeonhaja/domain/game/lol/service/util/LolUtilService.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/reports/problems/problems-report.html" beforeDir="false" afterPath="$PROJECT_DIR$/build/reports/problems/problems-report.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/tmp/compileJava/previous-compilation-data.bin" beforeDir="false" afterPath="$PROJECT_DIR$/build/tmp/compileJava/previous-compilation-data.bin" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/naejeonhaja/common/response/ApiResponse.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/naejeonhaja/common/response/ApiResponse.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/naejeonhaja/domain/game/lol/controller/RiftController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/naejeonhaja/domain/game/lol/controller/RiftController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/naejeonhaja/domain/game/lol/dto/common/LolTeamResponseDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/naejeonhaja/domain/game/lol/dto/common/LolTeamResponseDto.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/naejeonhaja/domain/game/lol/dto/req/LolPlayerRequestDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/naejeonhaja/domain/game/lol/dto/req/LolPlayerRequestDto.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/naejeonhaja/domain/game/lol/service/AbyssService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/naejeonhaja/domain/game/lol/service/AbyssService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/naejeonhaja/domain/game/lol/service/RiftService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/naejeonhaja/domain/game/lol/service/RiftService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/naejeonhaja/domain/game/lol/service/balancing/LolAssignServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/naejeonhaja/domain/game/lol/service/balancing/LolAssignServiceImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/naejeonhaja/domain/game/lol/service/balancing/LolBalanceServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/naejeonhaja/domain/game/lol/service/balancing/LolBalanceServiceImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/naejeonhaja/domain/game/lol/service/balancing/LolLineSortServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/naejeonhaja/domain/game/lol/service/balancing/LolLineSortServiceImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/naejeonhaja/domain/game/lol/service/util/LolUtilService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/naejeonhaja/domain/game/lol/service/util/LolUtilService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/naejeonhaja/domain/game/riot/service/RiotService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/naejeonhaja/domain/game/riot/service/RiotService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/test.json" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

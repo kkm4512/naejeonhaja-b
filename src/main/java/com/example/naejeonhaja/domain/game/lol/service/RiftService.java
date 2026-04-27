@@ -25,7 +25,7 @@ public class RiftService {
     private final LolAssignServiceImpl lolAssignService;
 
     public LolTeamResponseDto createTeam(LolPlayerRequestDto dto) {
-        int retries = 10_000;
+        int retries = 1_000;
         lolUtilService.initMmr(dto.getLolPlayers());
         while (retries-- > 0) {
             try {
@@ -33,7 +33,7 @@ public class RiftService {
                 LolTeamResponseDto two = lolBalanceService.generateBalanceByTier(one);
                 LolTeamResponseDto three = lolLineSortService.normalizeLineOrder(two);
                 LolTeamResponseDto four = lolAssignService.assignLines(three);
-                // lolCheckService.checkLine(four);
+                lolCheckService.checkLine(four);
                 return lolLineSortService.orderByLine(four);
             } catch (Exception ignored) {}
         }
