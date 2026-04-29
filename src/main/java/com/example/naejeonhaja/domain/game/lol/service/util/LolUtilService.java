@@ -50,8 +50,6 @@ public class LolUtilService {
         int sumA = teamA.stream().mapToInt(LolPlayerDto::getMmr).sum();
         int sumB = teamB.stream().mapToInt(LolPlayerDto::getMmr).sum();
         int diff = Math.abs(sumA - sumB);
-        if (diff <= 100) return LolBalanceEnum.GOOD;
-        else if (diff <= 300) return LolBalanceEnum.FAIR;
-        else return LolBalanceEnum.BAD;
+        return LolBalanceEnum.fromDifference(diff);
     }
 }
