@@ -346,6 +346,33 @@ PUUID를 통해 랭크 정보(Solo Ranked 기준)를 조회합니다.
 
 ---
 
+## 🌐 CORS 설정
+
+프론트엔드와의 상호작용을 위해 CORS(Cross-Origin Resource Sharing)가 설정되어 있습니다.
+
+### 허용된 엔드포인트
+- `/api/**`: 모든 API 엔드포인트
+- `/health`: Health Check
+- `/docs/**`: Swagger UI
+
+### 허용된 메서드
+- `GET`, `POST`, `PUT`, `DELETE`, `OPTIONS`
+
+### 허용된 헤더
+- 모든 헤더 허용
+
+### 개발 환경
+현재 모든 도메인(`*`)에서 접근 가능하도록 설정되어 있습니다.
+
+### 프로덕션 환경
+보안을 위해 특정 도메인만 허용하는 것을 권장합니다:
+
+```java
+.allowedOrigins("https://yourdomain.com", "https://www.yourdomain.com")
+```
+
+---
+
 ## 📚 프로젝트 구조
 
 ```
@@ -479,7 +506,7 @@ docker run -p 8080:8080 --env-file .env naejeonhaja-simple
 
 ```bash
 # Health check 직접 확인
-curl http://localhost:8080/actuator/health
+curl http://localhost:8080/health
 ```
 
 **응답**:
@@ -510,5 +537,5 @@ docker-compose logs --since 1h naejeonhaja
 
 ---
 
-**최종 수정**: 2026-04-29  
+**최종 수정**: 2026-04-29
 **버전**: 0.0.1-SNAPSHOT
