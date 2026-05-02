@@ -15,7 +15,10 @@ COPY src/ src/
 RUN gradle build -x test --no-daemon
 
 # Production stage
-FROM openjdk:17-jre-slim
+FROM eclipse-temurin:17-jre
+
+# Install curl for health checks
+RUN apt-get update && apt-get install -y curl && rm -rf /var/lib/apt/lists/*
 
 # Set working directory
 WORKDIR /app
