@@ -15,16 +15,25 @@ import java.util.Set;
 public class LolCheckServiceImpl {
 
     public void checkLine(LolTeamResponseDto team) {
-        if (!hasUniqueLines(team.getTeamA()) || !hasUniqueLines(team.getTeamB())) {
+        if (!hasAllRequiredLines(team.getTeamA()) || !hasAllRequiredLines(team.getTeamB())) {
             throw new BaseException(BaseApiResponse.TEAM_MISMATCH);
         }
     }
 
-    private boolean hasUniqueLines(List<LolPlayerDto> players) {
+    private boolean hasAllRequiredLines(List<LolPlayerDto> players) {
         Set<LolLine> lines = new HashSet<>();
         for (LolPlayerDto p : players) {
-            lines.add(p.getLines().get(0).getLine());
+            if (!p.getLines().isEmpty()) {
+                lines.add(p.getLines().get(0).getLine());
+            }
         }
-        return lines.size() == players.size();
+
+        // 각 팀에 TOP, JUNGLE, MID, AD, SUPPORT가 모두 있어야 함
+        return lines.contains(LolLine.TOP) &&
+                lines.contains(LolLine.JUNGLE) &&
+                lines.contains(LolLine.MID) &&
+                lines.contains(LolLine.AD) &&
+                lines.contains(LolLine.SUPPORT) &&
+                lines.size() == 5; // 중복 없이 정확히 5개 라인
     }
 }
