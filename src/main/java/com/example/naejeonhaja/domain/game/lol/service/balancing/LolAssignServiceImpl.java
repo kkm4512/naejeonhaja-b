@@ -47,44 +47,7 @@ public class LolAssignServiceImpl {
                 }
             }
         }
-        // 남은 라인 강제 할당 (메인 우선)
-        LolLine[] allLines = {LolLine.TOP, LolLine.JUNGLE, LolLine.MID, LolLine.AD, LolLine.SUPPORT};
-        for (LolLine line : allLines) {
-            if (assignedLines.contains(line)) continue;
-            for (LolPlayerDto player : players) {
-                if (lineMap.containsValue(player)) continue; // 이미 할당됨
-                // 메인 라인 확인
-                boolean hasMain = player.getLines().stream().anyMatch(l -> l.getLine() == line && l.getLineRole() == LolLineRole.MAINLINE);
-                if (hasMain) {
-                    lineMap.put(line, player);
-                    assignedLines.add(line);
-                    break;
-                }
-            }
-            if (assignedLines.contains(line)) continue;
-            // 서브 라인
-            for (LolPlayerDto player : players) {
-                if (lineMap.containsValue(player)) continue;
-                boolean hasSub = player.getLines().stream().anyMatch(l -> l.getLine() == line && l.getLineRole() == LolLineRole.SUBLINE);
-                if (hasSub) {
-                    lineMap.put(line, player);
-                    assignedLines.add(line);
-                    player.subtractionMmr(200);
-                    player.updateMmrReduced();
-                    break;
-                }
-            }
-            if (assignedLines.contains(line)) continue;
-            // 강제 할당: 할당되지 않은 플레이어에 메인으로
-            for (LolPlayerDto player : players) {
-                if (!lineMap.containsValue(player)) {
-                    lineMap.put(line, player);
-                    assignedLines.add(line);
-                    // role은 메인, MMR 감소 없음
-                    break;
-                }
-            }
-        }
+        // 요청된 라인대로만 배정, 강제 할당하지 않음
     }
 
     private List<LolPlayerDto> updatePlayerLines(List<LolPlayerDto> players, Map<LolLine, LolPlayerDto> lineMap) {
