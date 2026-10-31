@@ -11,3 +11,8 @@ README.md linguist-documentation=false
 
 # Vendor files
 gradle/wrapper/gradle-wrapper.jar linguist-vendored=true
+
+# Line endings (gradlew must stay LF so it runs inside Linux/Docker)
+gradlew text eol=lf
+*.sh text eol=lf
+*.bat text eol=crlf

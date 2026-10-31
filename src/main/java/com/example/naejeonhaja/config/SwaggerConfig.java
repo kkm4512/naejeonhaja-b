@@ -14,6 +14,6 @@ public class SwaggerConfig {
                 .info(new Info()
                         .title("내전하자 API")
                         .description("리그 오브 레전드 내전 팀 구성 플랫폼")
-                        .version("1.0.0"));
+                        .version("0.1.0"));
     }
 }
